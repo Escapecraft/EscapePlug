@@ -40,6 +40,7 @@ public class PigJouster {
 	 */
 	public boolean handleCommand(CommandSender sender,String commandLabel, String[] args){
 		if(sender instanceof Player){
+			//TODO: ADD PERMISSIONS FOR THESE COMMANDS!
 			if(commandLabel.equals("pig-active")){
 				activepunch.add((Player)sender);
 			}

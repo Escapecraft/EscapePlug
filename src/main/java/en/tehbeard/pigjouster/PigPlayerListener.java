@@ -12,14 +12,14 @@ public class PigPlayerListener extends PlayerListener {
 			if(event.getRightClicked() instanceof Pig){
 				Pig piggy = (Pig)event.getRightClicked();
 				if(!PigJouster.isPig(piggy)){
-
+					//ad pig to jousting roster and add a saddle
 					PigJouster.addPig(piggy);
 					piggy.setSaddle(true);
 					event.getPlayer().sendMessage("The pig magically transforms into a jousting pig!");
 				}
 				else
 				{
-
+					//remove pig from jousting roster and remove the saddle
 					PigJouster.removePig(piggy);
 					piggy.setSaddle(false);
 					event.getPlayer().sendMessage("The pig magically transforms into a regular pig!");
