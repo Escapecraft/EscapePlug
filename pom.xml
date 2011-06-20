@@ -29,6 +29,13 @@
       <type>jar</type>
       <scope>compile</scope>
     </dependency>
+    <dependency>
+      <groupId>com.nijikokun.bukkit</groupId>
+      <artifactId>Permissions</artifactId>
+      <version>3.1.6</version>
+      <type>jar</type>
+      <scope>compile</scope>
+    </dependency>
   </dependencies>
 
   <properties>
