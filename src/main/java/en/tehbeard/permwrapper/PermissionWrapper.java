@@ -1,6 +1,7 @@
 package en.tehbeard.permwrapper;
 
 
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
@@ -28,9 +29,9 @@ public class PermissionWrapper {
 	 * @param op whether it should be an op command if permissions fails
 	 * @return
 	 */
-	public boolean hasPermission(Player player,String node,boolean op){
+	public static boolean hasPermission(Player player,String node,boolean op){
 		if(permissionHandler!=null){
-			if(permissionHandler.has(player, node)){
+			if(permissionHandler.has(player,"escapeplug."+node)){
 				return true;
 			}		}
 		else
@@ -48,9 +49,18 @@ public class PermissionWrapper {
 	return false;
 	}
 	
-	public boolean inGroup(Player player, String group){
+	/**
+	 * Check if player is in a group
+	 * @param world
+	 * @param player
+	 * @param group
+	 * @return
+	 */
+	public static boolean inGroup(World world, Player player, String group){
 		if(permissionHandler!=null){
-			//permissionHandler.
+			return permissionHandler.inGroup(world.getName(),
+                    player.getName(),
+                    group);
 		}
 		return false;
 		
