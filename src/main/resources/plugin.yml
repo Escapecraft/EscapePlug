@@ -11,3 +11,6 @@ commands:
     pig-deactive:
         description: deactivate pig punching
         usage: /<command>
+    mentor:
+        description: Teleports you to a builder or default
+        usage: /mentor <player>
