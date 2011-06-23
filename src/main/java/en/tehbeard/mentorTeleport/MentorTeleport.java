@@ -1,5 +1,7 @@
 package en.tehbeard.mentorTeleport;
 
+import net.escapecraft.escapePlug.IEscapePlugCommandHandler;
+
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -12,7 +14,7 @@ import en.tehbeard.permwrapper.PermissionWrapper;
  * @author James
  *
  */
-public class MentorTeleport {
+public class MentorTeleport implements IEscapePlugCommandHandler {
 
 	private Plugin plugin;
 	public MentorTeleport(Plugin plugin){

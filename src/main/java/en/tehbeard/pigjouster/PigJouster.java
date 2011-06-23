@@ -2,6 +2,8 @@ package en.tehbeard.pigjouster;
 
 import java.util.HashSet;
 
+import net.escapecraft.escapePlug.IEscapePlugCommandHandler;
+
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Pig;
 import org.bukkit.entity.Player;
@@ -12,7 +14,7 @@ import en.tehbeard.permwrapper.PermissionWrapper;
  * @author James
  *
  */
-public class PigJouster {
+public class PigJouster implements IEscapePlugCommandHandler {
 	private static HashSet<Player> activepunch = new HashSet<Player>(); 
 	private static HashSet<Pig> pigs = new HashSet<Pig>();
 
