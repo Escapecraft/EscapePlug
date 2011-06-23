@@ -5,3 +5,12 @@ commands:
     antislime:
         description: remove all slimes
         usage: /<command>
+    pig-active:
+        description: Activate pig punching
+        usage: /<command>
+    pig-deactive:
+        description: deactivate pig punching
+        usage: /<command>
+    mentor:
+        description: Teleports you to a builder or default
+        usage: /mentor <player>
