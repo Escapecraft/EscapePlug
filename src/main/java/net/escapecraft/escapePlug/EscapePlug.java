@@ -1,5 +1,7 @@
 package net.escapecraft.escapePlug;
 
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.logging.Logger;
 
 import org.bukkit.command.Command;
@@ -8,23 +10,47 @@ import org.bukkit.event.Event;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import de.hydrox.antiSlime.SlimeDamageListener;
+import en.tehbeard.mentorTeleport.MentorTeleport;
+import en.tehbeard.pigjouster.PigJouster;
+import en.tehbeard.pigjouster.PigListener;
 
 public class EscapePlug extends JavaPlugin {
 
 	private static final Logger log = Logger.getLogger("Minecraft");
+	
+	private HashSet<IEscapePlugCommandHandler> commandHandlers = new HashSet<IEscapePlugCommandHandler>();
 
 	public void onEnable() {
-		log.info("[EscapePlug] EscapePlug loaded");
+		log.info("[EscapePlug] loading EscapePlug");
 
 		//start loading AntiSlime
-		SlimeDamageListener listener = new SlimeDamageListener();
-		this.getServer().getPluginManager().registerEvent(Event.Type.ENTITY_TARGET,listener,Event.Priority.Highest,this);
-		this.getServer().getPluginManager().registerEvent(Event.Type.ENTITY_DAMAGE,listener,Event.Priority.Highest,this);
+		SlimeDamageListener slimeDamageListener = new SlimeDamageListener();
+		this.getServer().getPluginManager().registerEvent(Event.Type.ENTITY_TARGET, slimeDamageListener, Event.Priority.Normal, this);
+		this.getServer().getPluginManager().registerEvent(Event.Type.ENTITY_DAMAGE, slimeDamageListener, Event.Priority.Normal, this);
 		//finished loading AntiSlime
+		
+		//start loading MentorTeleport
+		commandHandlers.add(new MentorTeleport(this));
+		//finished loading MentorTeleport
+		
+		//start loading PigJouster
+		commandHandlers.add(new PigJouster());
+		PigListener pigListener = new PigListener();
+		this.getServer().getPluginManager().registerEvent(Event.Type.ENTITY_DAMAGE, pigListener, Event.Priority.Normal, this);
+		//finished loading PigJouster
+		log.info("[EscapePlug] EscapePlug loaded");
 	}
 
 	public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args){
-		return true;
+		Iterator<IEscapePlugCommandHandler> iter = commandHandlers.iterator();
+		while (iter.hasNext()) {
+			IEscapePlugCommandHandler handler = (IEscapePlugCommandHandler) iter.next();
+			boolean result = handler.handleCommand(sender, commandLabel, args);
+			if (result) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public void onDisable() {
