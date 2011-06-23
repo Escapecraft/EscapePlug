@@ -1,13 +1,11 @@
 package en.tehbeard.permwrapper;
 
-
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 import com.nijiko.permissions.PermissionHandler;
 import com.nijikokun.bukkit.Permissions.Permissions;
-import org.bukkit.plugin.Plugin;
 
 public class PermissionWrapper {
 	private static PermissionHandler permissionHandler;

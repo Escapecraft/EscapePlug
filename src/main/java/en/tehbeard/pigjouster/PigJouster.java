@@ -1,4 +1,5 @@
 package en.tehbeard.pigjouster;
+
 import java.util.HashSet;
 
 import org.bukkit.command.CommandSender;

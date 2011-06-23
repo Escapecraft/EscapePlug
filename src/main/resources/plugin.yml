@@ -2,9 +2,6 @@ name: EscapePlug
 main: net.escapecraft.escapePlug.EscapePlug
 version: 0.1.2
 commands:
-    antislime:
-        description: remove all slimes
-        usage: /<command>
     pig-active:
         description: Activate pig punching
         usage: /<command>
