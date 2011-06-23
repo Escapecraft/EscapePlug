@@ -47,10 +47,12 @@ public class PigJouster {
 				//TODO: ADD PERMISSIONS FOR THESE COMMANDS!
 				if(commandLabel.equals("pig-active")){
 					activepunch.add((Player)sender);
+					return true;
 				}
 
 				if(commandLabel.equals("pig-deactive")){
 					activepunch.remove((Player)sender);
+					return true;
 				}
 			}
 		}
