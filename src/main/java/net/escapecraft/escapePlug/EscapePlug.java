@@ -13,6 +13,7 @@ import de.hydrox.antiSlime.SlimeDamageListener;
 import en.tehbeard.mentorTeleport.MentorTeleport;
 import en.tehbeard.pigjouster.PigJouster;
 import en.tehbeard.pigjouster.PigListener;
+import en.tehbeard.pigjouster.PigPlayerListener;
 
 public class EscapePlug extends JavaPlugin {
 
@@ -36,7 +37,9 @@ public class EscapePlug extends JavaPlugin {
 		//start loading PigJouster
 		commandHandlers.add(new PigJouster());
 		PigListener pigListener = new PigListener();
+		PigPlayerListener pigPlayerListener = new PigPlayerListener();
 		this.getServer().getPluginManager().registerEvent(Event.Type.ENTITY_DAMAGE, pigListener, Event.Priority.Normal, this);
+		this.getServer().getPluginManager().registerEvent(Event.Type.PLAYER_INTERACT_ENTITY, pigPlayerListener, Event.Priority.Normal, this);
 		//finished loading PigJouster
 		log.info("[EscapePlug] EscapePlug loaded");
 	}
