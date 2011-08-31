@@ -6,8 +6,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
-import en.tehbeard.permwrapper.PermissionWrapper;
-
 
 /**
  * Mentor Teleportation to newbies.
@@ -29,28 +27,32 @@ public class MentorTeleport implements IEscapePlugCommandHandler {
 	public boolean handleCommand(CommandSender sender,String commandLabel, String[] args){
 		if(sender instanceof Player){
 			//TODO: ADD PERMISSIONS FOR THESE COMMANDS!
-			if(commandLabel.equals("mentor")){
-				if(PermissionWrapper.hasPermission((Player)sender, "mentor.teleport",false)){
-					if(args.length == 1){
-						if(plugin.getServer().getPlayer(args[0])!=null){
-							Player p = plugin.getServer().getPlayer(args[0]);
-							if(PermissionWrapper.inGroup(p.getWorld(),p,"default")||PermissionWrapper.inGroup(p.getWorld(),p,"builder")){
-								sender.sendMessage("Sending you to " + p.getName());
-								((Player)sender).teleport(p);
-								return true;
-								}
+			if(commandLabel.equals("mentortp")){
+				if(args.length == 1){
+					if(plugin.getServer().getPlayer(args[0])!=null){
+						Player p = plugin.getServer().getPlayer(args[0]);
+						if(!p.hasPermission("escapeplug.mentor.teleport.notarget")){
+							sender.sendMessage("Sending you to " + p.getName());
+							((Player)sender).teleport(p);
+							return true;
 						}
 						else
 						{
-							sender.sendMessage("Cannot find player");
+							sender.sendMessage("You are not allowed to teleport to this player.");
+							return true;
 						}
 					}
 					else
 					{
-						sender.sendMessage("No player selected");
+						sender.sendMessage("Cannot find player");
+						return true;
 					}
 				}
-
+				else
+				{
+					sender.sendMessage("No player selected");
+					return true;
+				}
 			}
 		}
 

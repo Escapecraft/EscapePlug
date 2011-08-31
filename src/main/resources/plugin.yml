@@ -1,13 +1,32 @@
 name: EscapePlug
 main: net.escapecraft.escapePlug.EscapePlug
-version: 0.1.2
+version: 0.0.1
 commands:
     pig-active:
         description: Activate pig punching
         usage: /<command>
+        permission: escapeplug.pigjoust
     pig-deactive:
         description: deactivate pig punching
         usage: /<command>
-    mentor:
+        permission: escapeplug.pigjoust
+    mentortp:
         description: Teleports you to a builder or default
-        usage: /mentor <player>
+        usage: /mentortp <player>
+        permission: escapeplug.mentor.teleport
+permissions:
+  escapeplug.*:
+    description: Supernode for EscapePlug commands.
+    children:
+      escapeplug.pigjoust: true
+      escapeplug.mentor.teleport: true
+      escapeplug.mentor.teleport.notarget: true
+  escapeplug.mentor.teleport:
+    description: Allows Mentors to teleport to other Players.
+    default: op
+  escapeplug.mentor.teleport.notarget:
+    description: Disallows Mentors to teleport to this Player.
+    default: op
+  escapeplug.pigjoust:
+    default: op
+        

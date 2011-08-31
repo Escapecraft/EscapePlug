@@ -7,8 +7,6 @@ import net.escapecraft.escapePlug.IEscapePlugCommandHandler;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Pig;
 import org.bukkit.entity.Player;
-
-import en.tehbeard.permwrapper.PermissionWrapper;
 /**Simplifed pig management
  * 
  * @author James
@@ -45,7 +43,7 @@ public class PigJouster implements IEscapePlugCommandHandler {
 	 */
 	public boolean handleCommand(CommandSender sender,String commandLabel, String[] args){
 		if(sender instanceof Player){
-			if(PermissionWrapper.hasPermission((Player)sender, "pigjoust",true)){
+			if(sender.hasPermission("escapeplug.pigjoust")){
 				//TODO: ADD PERMISSIONS FOR THESE COMMANDS!
 				if(commandLabel.equals("pig-active")){
 					activepunch.add((Player)sender);
