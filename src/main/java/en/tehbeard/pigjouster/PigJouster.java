@@ -42,6 +42,10 @@ public class PigJouster implements CommandExecutor {
 	 * @return
 	 */
 	public boolean onCommand(CommandSender sender,Command cmd, String commandLabel, String[] args){
+		if (!(sender.hasPermission("escapeplug.pigjoust"))) {
+			sender.sendMessage("You don't have permission for pig-jousting.");
+			return true;
+		}
 		if(sender instanceof Player){
 			//TODO: ADD PERMISSIONS FOR THESE COMMANDS!
 			if(commandLabel.equals("pig-active")){
