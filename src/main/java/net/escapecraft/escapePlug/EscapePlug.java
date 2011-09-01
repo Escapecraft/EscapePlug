@@ -26,9 +26,11 @@ public class EscapePlug extends JavaPlugin {
 		loadConfig();
 
 		//start loading AntiSlime
-		SlimeDamageListener slimeDamageListener = new SlimeDamageListener();
-		this.getServer().getPluginManager().registerEvent(Event.Type.ENTITY_TARGET, slimeDamageListener, Event.Priority.Normal, this);
-		this.getServer().getPluginManager().registerEvent(Event.Type.ENTITY_DAMAGE, slimeDamageListener, Event.Priority.Normal, this);
+		if(config.getBoolean("plugin.antislime.enabled",true)){
+			SlimeDamageListener slimeDamageListener = new SlimeDamageListener();
+			this.getServer().getPluginManager().registerEvent(Event.Type.ENTITY_TARGET, slimeDamageListener, Event.Priority.Normal, this);
+			this.getServer().getPluginManager().registerEvent(Event.Type.ENTITY_DAMAGE, slimeDamageListener, Event.Priority.Normal, this);
+		}
 		//finished loading AntiSlime
 
 		//start loading MentorTeleport
@@ -71,6 +73,7 @@ public class EscapePlug extends JavaPlugin {
 			config.setProperty("plugin.mentortp.enabled",true);
 			config.setProperty("plugin.pigjoust.enabled",true);
 			config.setProperty("plugin.timezone.enabled",true);
+			config.setProperty("plugin.antislime.enabled",true);
 			config.save();
 		}
 		config.load();
