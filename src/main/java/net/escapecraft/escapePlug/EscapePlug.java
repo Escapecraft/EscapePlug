@@ -27,9 +27,12 @@ public class EscapePlug extends JavaPlugin {
 
 		//start loading AntiSlime
 		if(config.getBoolean("plugin.antislime.enabled",true)){
+			log.info("[EscapePlug] loading AntiSlime");
 			SlimeDamageListener slimeDamageListener = new SlimeDamageListener();
 			this.getServer().getPluginManager().registerEvent(Event.Type.ENTITY_TARGET, slimeDamageListener, Event.Priority.Normal, this);
 			this.getServer().getPluginManager().registerEvent(Event.Type.ENTITY_DAMAGE, slimeDamageListener, Event.Priority.Normal, this);
+		} else {
+			log.info("[EscapePlug] skipping AntiSlime");
 		}
 		//finished loading AntiSlime
 
@@ -38,6 +41,8 @@ public class EscapePlug extends JavaPlugin {
 			log.info("[EscapePlug] loading MentorTP");
 			getCommand("mentortp").setExecutor(new MentorTeleport(this));
 			//finished loading MentorTeleport
+		} else {
+			log.info("[EscapePlug] skipping MentorTP");
 		}
 
 		//start loading PigJouster
@@ -50,6 +55,8 @@ public class EscapePlug extends JavaPlugin {
 			this.getServer().getPluginManager().registerEvent(Event.Type.ENTITY_DAMAGE, pigListener, Event.Priority.Normal, this);
 			this.getServer().getPluginManager().registerEvent(Event.Type.PLAYER_INTERACT_ENTITY, pigPlayerListener, Event.Priority.Normal, this);
 			//finished loading PigJouster
+		} else {
+			log.info("[EscapePlug] skipping PigJouster");
 		}
 
 
@@ -58,6 +65,8 @@ public class EscapePlug extends JavaPlugin {
 			log.info("[EscapePlug] loading Timezone");
 			getCommand("timezone").setExecutor(new TimezoneCommands());
 			//finished loading Timezone
+		} else {
+			log.info("[EscapePlug] skipping Timezone");
 		}
 		log.info("[EscapePlug] EscapePlug loaded");
 	}
