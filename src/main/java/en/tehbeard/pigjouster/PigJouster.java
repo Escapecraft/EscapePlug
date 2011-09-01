@@ -2,8 +2,8 @@ package en.tehbeard.pigjouster;
 
 import java.util.HashSet;
 
-import net.escapecraft.escapePlug.IEscapePlugCommandHandler;
-
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Pig;
 import org.bukkit.entity.Player;
@@ -12,7 +12,7 @@ import org.bukkit.entity.Player;
  * @author James
  *
  */
-public class PigJouster implements IEscapePlugCommandHandler {
+public class PigJouster implements CommandExecutor {
 	private static HashSet<Player> activepunch = new HashSet<Player>(); 
 	private static HashSet<Pig> pigs = new HashSet<Pig>();
 
@@ -41,19 +41,17 @@ public class PigJouster implements IEscapePlugCommandHandler {
 	 * @param args
 	 * @return
 	 */
-	public boolean handleCommand(CommandSender sender,String commandLabel, String[] args){
+	public boolean onCommand(CommandSender sender,Command cmd, String commandLabel, String[] args){
 		if(sender instanceof Player){
-			if(sender.hasPermission("escapeplug.pigjoust")){
-				//TODO: ADD PERMISSIONS FOR THESE COMMANDS!
-				if(commandLabel.equals("pig-active")){
-					activepunch.add((Player)sender);
-					return true;
-				}
+			//TODO: ADD PERMISSIONS FOR THESE COMMANDS!
+			if(commandLabel.equals("pig-active")){
+				activepunch.add((Player)sender);
+				return true;
+			}
 
-				if(commandLabel.equals("pig-deactive")){
-					activepunch.remove((Player)sender);
-					return true;
-				}
+			if(commandLabel.equals("pig-deactive")){
+				activepunch.remove((Player)sender);
+				return true;
 			}
 		}
 		return false;

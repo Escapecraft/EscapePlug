@@ -1,7 +1,7 @@
 package en.tehbeard.mentorTeleport;
 
-import net.escapecraft.escapePlug.IEscapePlugCommandHandler;
-
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -12,7 +12,7 @@ import org.bukkit.plugin.Plugin;
  * @author James
  *
  */
-public class MentorTeleport implements IEscapePlugCommandHandler {
+public class MentorTeleport implements CommandExecutor {
 
 	private Plugin plugin;
 	public MentorTeleport(Plugin plugin){
@@ -24,9 +24,8 @@ public class MentorTeleport implements IEscapePlugCommandHandler {
 	 * @param args
 	 * @return
 	 */
-	public boolean handleCommand(CommandSender sender,String commandLabel, String[] args){
+	public boolean onCommand(CommandSender sender,Command cmd,String commandLabel, String[] args){
 		if(sender instanceof Player){
-			//TODO: ADD PERMISSIONS FOR THESE COMMANDS!
 			if(commandLabel.equals("mentortp")){
 				if(args.length == 1){
 					if(plugin.getServer().getPlayer(args[0])!=null){
