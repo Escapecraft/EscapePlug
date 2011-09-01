@@ -14,6 +14,10 @@ commands:
         description: Teleports you to a builder or default
         usage: /mentortp <player>
         permission: escapeplug.mentor.teleport
+    timezone:
+        description: shows and converts timezones
+        usage: /<command>
+        aliases: [tz, clock]
 permissions:
   escapeplug.*:
     description: Supernode for EscapePlug commands.
