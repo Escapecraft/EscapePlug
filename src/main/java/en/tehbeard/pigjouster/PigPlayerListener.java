@@ -22,6 +22,7 @@ public class PigPlayerListener extends PlayerListener {
 					//remove pig from jousting roster and remove the saddle
 					PigJouster.removePig(piggy);
 					piggy.setSaddle(false);
+					piggy.eject();
 					event.getPlayer().sendMessage("The pig magically transforms into a regular pig!");
 				}
 
