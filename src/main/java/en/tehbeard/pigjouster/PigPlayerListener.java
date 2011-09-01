@@ -25,7 +25,8 @@ public class PigPlayerListener extends PlayerListener {
 					piggy.eject();
 					event.getPlayer().sendMessage("The pig magically transforms into a regular pig!");
 				}
-
+				//canel event so they don't jump on the pig
+				event.setCancelled(true);
 			}
 		}
 	}
