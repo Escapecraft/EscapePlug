@@ -9,6 +9,7 @@ import org.bukkit.util.config.Configuration;
 
 import de.hydrox.antiSlime.SlimeDamageListener;
 import de.hydrox.bukkit.timezone.TimezoneCommands;
+import en.tehbeard.cartCollect.CartCollectListener;
 import en.tehbeard.mentorTeleport.MentorTeleport;
 import en.tehbeard.pigjouster.PigJouster;
 import en.tehbeard.pigjouster.PigListener;
@@ -51,6 +52,12 @@ public class EscapePlug extends JavaPlugin {
 		}
 
 
+		if(config.getBoolean("plugin.collectcart.enabled",false)){
+			log.info("[EscapePlug] Collect Cart enabled");
+			this.getServer().getPluginManager().registerEvent(Event.Type.VEHICLE_MOVE, new CartCollectListener(), Event.Priority.Normal, this);
+		}
+
+
 		//start loading Timezone
 		if(config.getBoolean("plugin.timezone.enabled",true)){
 			log.info("[EscapePlug] loading Timezone");
@@ -71,6 +78,8 @@ public class EscapePlug extends JavaPlugin {
 			config.setProperty("plugin.mentortp.enabled",true);
 			config.setProperty("plugin.pigjoust.enabled",true);
 			config.setProperty("plugin.timezone.enabled",true);
+			config.setProperty("plugin.collectcart.enabled",false);
+			
 			config.save();
 		}
 		config.load();
