@@ -4,12 +4,15 @@ import java.io.File;
 import java.util.logging.Logger;
 
 import org.bukkit.event.Event;
+import org.bukkit.event.entity.EntityListener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.config.Configuration;
 
 import de.hydrox.antiSlime.SlimeDamageListener;
 import de.hydrox.bukkit.timezone.TimezoneCommands;
 import en.tehbeard.cartCollect.CartCollectListener;
+import en.tehbeard.endernerf.EndernerfListener;
+import en.tehbeard.gamemode.GameModeToggle;
 import en.tehbeard.mentorTeleport.MentorTeleport;
 import en.tehbeard.pigjouster.PigJouster;
 import en.tehbeard.pigjouster.PigListener;
@@ -20,7 +23,7 @@ public class EscapePlug extends JavaPlugin {
 
 	private static final Logger log = Logger.getLogger("Minecraft");
 	private Configuration config = null;
-public static EscapePlug self = null;
+	public static EscapePlug self = null;
 	public void onEnable() {
 		self = this;
 		log.info("[EscapePlug] loading EscapePlug");
@@ -60,16 +63,16 @@ public static EscapePlug self = null;
 			this.getServer().getPluginManager().registerEvent(Event.Type.VEHICLE_MOVE, new CartCollectListener(), Event.Priority.Normal, this);
 		}
 		//finish collect cart
-		
-		
+
+
 		//start quick craft 
 		if(config.getBoolean("plugin.quickcraft.enabled",false)){
 			log.info("[EscapePlug] QuickCraft enabled");
 			quickCraft.enable(config.getNode("quickcraft.config"));
 		}
 		//finish quickcraft
-		
-		
+
+
 
 		//start loading Timezone
 		if(config.getBoolean("plugin.timezone.enabled",true)){
@@ -77,6 +80,27 @@ public static EscapePlug self = null;
 			getCommand("timezone").setExecutor(new TimezoneCommands());
 			//finished loading Timezone
 		}
+
+
+		//start loading togglemode
+		if(config.getBoolean("plugin.togglemode.enabled",true)){
+			log.info("[EscapePlug] loading ToggleGameMode");
+			getCommand("togglemode").setExecutor(new GameModeToggle());
+			//finished loading togglemode
+		}
+
+		//start loading endernerf
+		if(config.getBoolean("plugin.endernerf.enabled",true)){
+			log.info("[EscapePlug] loading enderNerf");
+			EntityListener el = new EndernerfListener();
+			this.getServer().getPluginManager().registerEvent(Event.Type.ENDERMAN_PICKUP, el, Event.Priority.Highest, this);
+			this.getServer().getPluginManager().registerEvent(Event.Type.ENDERMAN_PLACE, el, Event.Priority.Highest, this);
+
+			//finished loading endernerf
+		}
+
+
+
 		log.info("[EscapePlug] EscapePlug loaded");
 	}
 
@@ -94,10 +118,16 @@ public static EscapePlug self = null;
 			config.setProperty("plugin.timezone.enabled",true);
 			config.setProperty("plugin.collectcart.enabled",false);
 			config.setProperty("plugin.quickcraft.enabled",false);
-			
+			config.setProperty("plugin.togglemode.enabled",false);
+			config.setProperty("plugin.endernerf.enabled",true);
+
 			config.save();
 		}
 		config.load();
 
+	}
+
+	public static void printCon(String line){
+		log.info("[EscapePlug] "+line);
 	}
 }

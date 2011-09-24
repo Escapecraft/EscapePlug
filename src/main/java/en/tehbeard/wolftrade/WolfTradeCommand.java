@@ -16,8 +16,6 @@ public class WolfTradeCommand implements CommandExecutor {
 		wolfSession = new HashMap<String,session>(); 
 	}
 	
-	@Override
-
 	public boolean onCommand(CommandSender sender, Command cmd, String cmdlbl,
 			String[] args) {
 		if(sender instanceof Player == false){

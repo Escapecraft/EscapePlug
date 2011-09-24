@@ -25,6 +25,7 @@ public class CartCollectListener extends VehicleListener {
 				if(e.isDead()){continue;}
 
 
+				//if item
 				if(e instanceof Item){
 
 					HashMap<Integer, ? extends ItemStack> contain = ((StorageMinecart)event.getVehicle()).getInventory().all(
@@ -36,6 +37,7 @@ public class CartCollectListener extends VehicleListener {
 					}
 					if(ignore && ((StorageMinecart)event.getVehicle()).getInventory().firstEmpty()==-1){return;}
 
+					//pickup item
 					if(e.getLocation().distance(event.getVehicle().getLocation())<2){
 						((StorageMinecart)event.getVehicle()).getInventory().addItem(
 								((Item)e).getItemStack());
