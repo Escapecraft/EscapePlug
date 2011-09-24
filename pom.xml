@@ -3,6 +3,7 @@
   <groupId>net.escapecraft</groupId>
   <artifactId>EscapePlug</artifactId>
   <version>0.0.1-SNAPSHOT</version>
+  <packaging>jar</packaging>
   <name>EscapePlug</name>
   <url></url>
 

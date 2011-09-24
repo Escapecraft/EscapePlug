@@ -18,6 +18,10 @@ commands:
         description: shows and converts timezones
         usage: /<command>
         aliases: [tz, clock]
+    togglemode:
+        description: Toggles gamemode
+        usage: /<command>
+
 permissions:
   escapeplug.*:
     description: Supernode for EscapePlug commands.
@@ -25,6 +29,7 @@ permissions:
       escapeplug.pigjoust: true
       escapeplug.mentor.teleport: true
       escapeplug.mentor.teleport.notarget: true
+      escapeplug.gamemode: true
   escapeplug.mentor.teleport:
     description: Allows Mentors to teleport to other Players.
     default: op
@@ -32,5 +37,7 @@ permissions:
     description: Disallows Mentors to teleport to this Player.
     default: op
   escapeplug.pigjoust:
+    default: op
+  escapeplug.gamemode:
     default: op
         
