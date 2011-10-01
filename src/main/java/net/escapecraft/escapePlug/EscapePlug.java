@@ -18,6 +18,7 @@ import en.tehbeard.pigjouster.PigJouster;
 import en.tehbeard.pigjouster.PigListener;
 import en.tehbeard.pigjouster.PigPlayerListener;
 import en.tehbeard.quickCraft.quickCraft;
+import en.tehbeard.reserve.ReserveListener;
 
 public class EscapePlug extends JavaPlugin {
 
@@ -30,6 +31,12 @@ public class EscapePlug extends JavaPlugin {
 
 		//load config
 		loadConfig();
+
+		//Starting reserve list
+		if(config.getBoolean("plugin.reserve.enabled",true)){
+			ReserveListener rl = new ReserveListener();
+			this.getServer().getPluginManager().registerEvent(Event.Type.PLAYER_LOGIN, rl, Event.Priority.Highest, this);
+		}
 
 		//start loading AntiSlime
 		if(config.getBoolean("plugin.antislime.enabled",true)){
@@ -58,6 +65,10 @@ public class EscapePlug extends JavaPlugin {
 			getCommand("pig-deactive").setExecutor(new PigJouster());
 			PigListener pigListener = new PigListener();
 			PigPlayerListener pigPlayerListener = new PigPlayerListener();
+
+
+
+
 			this.getServer().getPluginManager().registerEvent(Event.Type.ENTITY_DAMAGE, pigListener, Event.Priority.Normal, this);
 			this.getServer().getPluginManager().registerEvent(Event.Type.PLAYER_INTERACT_ENTITY, pigPlayerListener, Event.Priority.Normal, this);
 			//finished loading PigJouster
