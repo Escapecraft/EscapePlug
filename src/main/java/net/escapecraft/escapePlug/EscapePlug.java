@@ -13,6 +13,7 @@ import de.hydrox.bukkit.timezone.TimezoneCommands;
 import en.tehbeard.cartCollect.CartCollectListener;
 import en.tehbeard.endernerf.EndernerfListener;
 import en.tehbeard.gamemode.GameModeToggle;
+import en.tehbeard.mentorTeleport.MentorBack;
 import en.tehbeard.mentorTeleport.MentorTeleport;
 import en.tehbeard.pigjouster.PigJouster;
 import en.tehbeard.pigjouster.PigListener;
@@ -48,6 +49,7 @@ public class EscapePlug extends JavaPlugin {
 		if(config.getBoolean("plugin.mentortp.enabled",true)){
 			log.info("[EscapePlug] loading MentorTP");
 			getCommand("mentortp").setExecutor(new MentorTeleport(this));
+			getCommand("mentorback").setExecutor(new MentorBack(this));
 			//finished loading MentorTeleport
 		}
 
@@ -106,7 +108,7 @@ public class EscapePlug extends JavaPlugin {
 			EntityListener el = new EndernerfListener();
 			this.getServer().getPluginManager().registerEvent(Event.Type.ENDERMAN_PICKUP, el, Event.Priority.Highest, this);
 			this.getServer().getPluginManager().registerEvent(Event.Type.ENDERMAN_PLACE, el, Event.Priority.Highest, this);
-
+		
 			//finished loading endernerf
 		}
 
