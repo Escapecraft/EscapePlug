@@ -25,6 +25,7 @@ public class MentorTeleport implements CommandExecutor {
 	 * @return
 	 */
 	public boolean onCommand(CommandSender sender,Command cmd,String commandLabel, String[] args){
+		
 		if (!(sender.hasPermission("escapeplug.mentor.teleport"))) {
 			sender.sendMessage("You don't have permission to teleport.");
 			return true;
@@ -36,6 +37,7 @@ public class MentorTeleport implements CommandExecutor {
 						Player p = plugin.getServer().getPlayer(args[0]);
 						if(!p.hasPermission("escapeplug.mentor.teleport.notarget")){
 							sender.sendMessage("Sending you to " + p.getName());
+							MentorBack.prevLoc.put(((Player)sender).getName(), ((Player)sender).getLocation());
 							((Player)sender).teleport(p);
 							return true;
 						}
