@@ -19,7 +19,7 @@
   	<dependency>
   		<groupId>org.bukkit</groupId>
   		<artifactId>bukkit</artifactId>
-  		<version>1.0.0-R1-SNAPSHOT</version>
+  		<version>1.0.0-R1-hydrox-SNAPSHOT</version>
   		<type>jar</type>
   		<scope>compile</scope>
   		<optional>false</optional>
@@ -27,7 +27,7 @@
   	<dependency>
   		<groupId>org.bukkit</groupId>
   		<artifactId>craftbukkit</artifactId>
-  		<version>1.0.0-SNAPSHOT</version>
+  		<version>1.0.0-newChunkCache-SNAPSHOT</version>
   		<type>jar</type>
   		<scope>compile</scope>
   		<optional>false</optional>
