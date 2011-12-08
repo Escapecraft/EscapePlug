@@ -14,6 +14,10 @@ commands:
         description: Teleports you to a builder or default
         usage: /mentortp <player>
         permission: escapeplug.mentor.teleport
+    mentorback:
+        description: Teleports you back to your previous location
+        usage: /mentorback 
+        permission: escapeplug.mentor.teleport
     timezone:
         description: shows and converts timezones
         usage: /<command>
@@ -21,7 +25,9 @@ commands:
     togglemode:
         description: Toggles gamemode
         usage: /<command>
-
+    creativeblock:
+        description: places a block where you are standing
+        usage: /<command>
 permissions:
   escapeplug.*:
     description: Supernode for EscapePlug commands.
