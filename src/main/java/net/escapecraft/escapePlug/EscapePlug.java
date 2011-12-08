@@ -10,9 +10,12 @@ import org.bukkit.util.config.Configuration;
 
 import de.hydrox.antiSlime.SlimeDamageListener;
 import de.hydrox.bukkit.timezone.TimezoneCommands;
+import de.hydrox.lockdown.LockdownCommand;
+import de.hydrox.lockdown.LockdownListener;
 import en.tehbeard.cartCollect.CartCollectListener;
 import en.tehbeard.endernerf.EndernerfListener;
 import en.tehbeard.gamemode.GameModeToggle;
+import en.tehbeard.mentorTeleport.MentorBack;
 import en.tehbeard.mentorTeleport.MentorTeleport;
 import en.tehbeard.pigjouster.PigJouster;
 import en.tehbeard.pigjouster.PigListener;
@@ -53,6 +56,7 @@ public class EscapePlug extends JavaPlugin {
 		if(config.getBoolean("plugin.mentortp.enabled",true)){
 			log.info("[EscapePlug] loading MentorTP");
 			getCommand("mentortp").setExecutor(new MentorTeleport(this));
+			getCommand("mentorback").setExecutor(new MentorBack(this));
 			//finished loading MentorTeleport
 		} else {
 			log.info("[EscapePlug] skipping MentorTP");
@@ -117,8 +121,18 @@ public class EscapePlug extends JavaPlugin {
 			EntityListener el = new EndernerfListener();
 			this.getServer().getPluginManager().registerEvent(Event.Type.ENDERMAN_PICKUP, el, Event.Priority.Highest, this);
 			this.getServer().getPluginManager().registerEvent(Event.Type.ENDERMAN_PLACE, el, Event.Priority.Highest, this);
-
+		
 			//finished loading endernerf
+		}
+
+		//start loading lockdown
+		if(config.getBoolean("plugin.lockdown.enabled",true)){
+			log.info("[EscapePlug] loading Emergency Lockdown");
+			LockdownListener lockdownListener = new LockdownListener();
+			getCommand("lockdown").setExecutor(new LockdownCommand(lockdownListener));
+			this.getServer().getPluginManager().registerEvent(Event.Type.PLAYER_LOGIN, lockdownListener, Event.Priority.Highest, this);
+			this.getServer().getPluginManager().registerEvent(Event.Type.PLAYER_JOIN, lockdownListener, Event.Priority.Highest, this);
+			//finished loading lockdown
 		}
 
 
