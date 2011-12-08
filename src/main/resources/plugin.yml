@@ -25,7 +25,9 @@ commands:
     togglemode:
         description: Toggles gamemode
         usage: /<command>
-
+    creativeblock:
+        description: places a block where you are standing
+        usage: /<command>
 permissions:
   escapeplug.*:
     description: Supernode for EscapePlug commands.

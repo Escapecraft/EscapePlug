@@ -20,6 +20,7 @@ import en.tehbeard.pigjouster.PigListener;
 import en.tehbeard.pigjouster.PigPlayerListener;
 import en.tehbeard.quickCraft.quickCraft;
 import en.tehbeard.reserve.ReserveListener;
+import en.tehbeard.worldDiff.WorldDiff;
 
 public class EscapePlug extends JavaPlugin {
 
@@ -112,7 +113,7 @@ public class EscapePlug extends JavaPlugin {
 			//finished loading endernerf
 		}
 
-
+		new WorldDiff(null);
 
 		log.info("[EscapePlug] EscapePlug loaded");
 	}
