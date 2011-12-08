@@ -21,6 +21,12 @@ commands:
     togglemode:
         description: Toggles gamemode
         usage: /<command>
+    lockdown:
+        description: Changes lockdown mode
+        usage: |
+            /<command> enable - Enables Lockdown-Mode
+            /<command> disable - Disables Lockdown-Mode
+        permission: escapeplug.lockdown.change
 
 permissions:
   escapeplug.*:
