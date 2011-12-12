@@ -18,13 +18,15 @@ public class LockdownCommand implements CommandExecutor {
 			sender.sendMessage(ChatColor.RED + "You don't have permission to change lockdown.");
 			return true;
 		}
-		if (args[0].equalsIgnoreCase("enable")) {
-			this.listener.isLockdownActive = true;
-			return true;
-		}
-		if (args[0].equalsIgnoreCase("disable")) {
-			this.listener.isLockdownActive = false;
-			return true;
+		if (args.length >= 1) {
+			if (args[0].equalsIgnoreCase("enable")) {
+				this.listener.isLockdownActive = true;
+				return true;
+			}
+			if (args[0].equalsIgnoreCase("disable")) {
+				this.listener.isLockdownActive = false;
+				return true;
+			}
 		}
 		return false;
 	}
