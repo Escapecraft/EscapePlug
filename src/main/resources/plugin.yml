@@ -40,6 +40,18 @@ permissions:
       escapeplug.mentor.teleport: true
       escapeplug.mentor.teleport.notarget: true
       escapeplug.gamemode: true
+      escapeplug.lockdown: true
+  escapeplug.lockdown:
+    description: gives full permission on Lockdown-mode.
+    children:
+      escapeplug.lockdown.allow: true
+      escapeplug.lockdown.change: true
+  escapeplug.lockdown.allow:
+    description: Allows players to join while Lockdown-mode.
+    default: op
+  escapeplug.lockdown.change:
+    description: Allows players to change Lockdown-mode.
+    default: op
   escapeplug.mentor.teleport:
     description: Allows Mentors to teleport to other Players.
     default: op
