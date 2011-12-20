@@ -5,12 +5,8 @@ plugin:
         enabled: true
     togglemode:
         enabled: false
-    collectcart:
-        enabled: false
     mentortp:
         enabled: true
-    quickcraft:
-        enabled: false
     endernerf:
         enabled: true
     pigjoust:
