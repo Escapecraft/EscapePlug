@@ -29,10 +29,6 @@ public class EscapePlug extends JavaPlugin {
 	private static final Logger log = Logger.getLogger("Minecraft");
 	public static EscapePlug self = null;
 	//Hatme config variables
-	public static boolean rbAllow;
-	public static boolean rbOp;
-	public static String notAllowedMsg;
-	public static List<Integer> rbBlocks;
 	
 	public void onEnable() {
 		self = this;
@@ -127,14 +123,17 @@ public class EscapePlug extends JavaPlugin {
 		//start loading hatMe
 		if(getConfig().getBoolean("plugin.hatme.enabled", true)){
 			log.info("[EscapePlug] loading hatMe");
-			rbBlocks = getConfig().getList("plugin.hatme.allowed");
-			rbAllow = getConfig().getBoolean("plugin.hatme.enable");
-			notAllowedMsg = getConfig().getString("plugin.hatme.notAllowedMsg");
-			rbOp = getConfig().getBoolean("plugin.hatme.opnorestrict");
 			
-			getCommand("hat").setExecutor(new HatmeCommand());
-			getCommand("unhat").setExecutor(new HatmeCommand());
-			//finished loading hatMe
+			//get Config
+			List<Integer> rbBlocks = getConfig().getList("plugin.hatme.allowed");
+			boolean rbAllow = getConfig().getBoolean("plugin.hatme.enable");
+			String notAllowedMsg = getConfig().getString("plugin.hatme.notAllowedMsg");
+			boolean rbOp = getConfig().getBoolean("plugin.hatme.opnorestrict");
+
+			//construct command and assign to /hat and /unhat
+			HatmeCommand hatMe = new HatmeCommand(rbBlocks,rbAllow,notAllowedMsg,rbOp);
+			getCommand("hat").setExecutor(hatMe);
+			getCommand("unhat").setExecutor(hatMe);
 		}
 
 

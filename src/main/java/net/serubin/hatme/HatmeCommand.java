@@ -13,12 +13,20 @@ import org.bukkit.inventory.PlayerInventory;
 
 public class HatmeCommand implements CommandExecutor {
 	
-	public static boolean rbAllow = net.escapecraft.escapePlug.EscapePlug.rbAllow;
-	public static boolean rbOp = net.escapecraft.escapePlug.EscapePlug.rbOp;
-	public static String notAllowedMsg = net.escapecraft.escapePlug.EscapePlug.notAllowedMsg;
-	public static List<Integer> rbBlocks = net.escapecraft.escapePlug.EscapePlug.rbBlocks;
-	public static List<Integer> allowID;
-	
+	private String notAllowedMsg;
+	private boolean rbAllow;
+	private List<Integer> rbBlocks;
+	private List<Integer> allowID;
+	private boolean rbOp;
+	public HatmeCommand(List<Integer> rbBlocks, boolean rbAllow,
+			String notAllowedMsg, boolean rbOp) {
+		// TODO Auto-generated constructor stub
+		this.rbBlocks = rbBlocks;
+		this.rbAllow = rbAllow;
+		this.notAllowedMsg = notAllowedMsg;
+		this.rbOp = rbOp;
+	}
+
 	public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
         if (!(sender instanceof Player)) {
             sender.sendMessage("This command requires an instance of a player.");
