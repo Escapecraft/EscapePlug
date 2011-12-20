@@ -58,3 +58,4 @@ plugin:
         - 112
         opnorestrict: true
         notAllowedMsg: Invalid Item
+        hatversion: 7.4-ECV
