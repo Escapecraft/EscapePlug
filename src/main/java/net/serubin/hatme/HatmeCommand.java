@@ -107,12 +107,12 @@ public class HatmeCommand implements CommandExecutor {
 	  }
 
 	private boolean checkPermissionBasic(Player player) {
-		if (player.hasPermission("hatme.hat") || player.hasPermission("hatme.*") || player.isOp()) return true;
+		if (player.hasPermission("escapeplug.hatme.hat") || player.hasPermission("escapeplug.hatme.*") || player.isOp()) return true;
 		return false;
 	}
 
 	 private boolean checkPermissionGive(Player player) {
-	 if(player.hasPermission("hatme.give") || player.hasPermission("hatme.*") || player.isOp()) return true;
+	 if(player.hasPermission("escapeplug.hatme.give") || player.hasPermission("escapeplug.hatme.*") || player.isOp()) return true;
 	 return false;
 	 }
 

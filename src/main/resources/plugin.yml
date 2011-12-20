@@ -70,4 +70,7 @@ permissions:
     default: op
   escapeplug.gamemode:
     default: op
-        
+  escapeplug.hatme.hat:
+    default: op
+  escapeplug.hatme.give:
+    default: op
