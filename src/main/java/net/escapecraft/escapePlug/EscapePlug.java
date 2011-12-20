@@ -1,7 +1,10 @@
 package net.escapecraft.escapePlug;
 
 import java.io.File;
+import java.util.List;
 import java.util.logging.Logger;
+
+import net.serubin.hatme.HatmeCommand;
 
 import org.bukkit.event.Event;
 import org.bukkit.event.entity.EntityListener;
@@ -12,7 +15,6 @@ import de.hydrox.antiSlime.SlimeDamageListener;
 import de.hydrox.bukkit.timezone.TimezoneCommands;
 import de.hydrox.lockdown.LockdownCommand;
 import de.hydrox.lockdown.LockdownListener;
-import en.tehbeard.cartCollect.CartCollectListener;
 import en.tehbeard.endernerf.EndernerfListener;
 import en.tehbeard.gamemode.GameModeToggle;
 import en.tehbeard.mentorTeleport.MentorBack;
@@ -20,29 +22,34 @@ import en.tehbeard.mentorTeleport.MentorTeleport;
 import en.tehbeard.pigjouster.PigJouster;
 import en.tehbeard.pigjouster.PigListener;
 import en.tehbeard.pigjouster.PigPlayerListener;
-import en.tehbeard.quickCraft.quickCraft;
 import en.tehbeard.reserve.ReserveListener;
 
 public class EscapePlug extends JavaPlugin {
 
 	private static final Logger log = Logger.getLogger("Minecraft");
-	private Configuration config = null;
 	public static EscapePlug self = null;
+	//Hatme config variables
+	public static boolean rbAllow;
+	public static boolean rbOp;
+	public static String notAllowedMsg;
+	public static List<Integer> rbBlocks;
+	
 	public void onEnable() {
 		self = this;
 		log.info("[EscapePlug] loading EscapePlug");
 
-		//load config
-		loadConfig();
+		//load/creates/fixes config
+		getConfig().options().copyDefaults(true);
+		saveConfig();
 
 		//Starting reserve list
-		if(config.getBoolean("plugin.reserve.enabled",true)){
+		if(getConfig().getBoolean("plugin.reserve.enabled", true)){
 			ReserveListener rl = new ReserveListener();
 			this.getServer().getPluginManager().registerEvent(Event.Type.PLAYER_LOGIN, rl, Event.Priority.Highest, this);
 		}
 
 		//start loading AntiSlime
-		if(config.getBoolean("plugin.antislime.enabled",true)){
+		if(getConfig().getBoolean("plugin.antislime.enabled", true)){
 			log.info("[EscapePlug] loading AntiSlime");
 			SlimeDamageListener slimeDamageListener = new SlimeDamageListener();
 			this.getServer().getPluginManager().registerEvent(Event.Type.ENTITY_TARGET, slimeDamageListener, Event.Priority.Normal, this);
@@ -53,7 +60,7 @@ public class EscapePlug extends JavaPlugin {
 		//finished loading AntiSlime
 
 		//start loading MentorTeleport
-		if(config.getBoolean("plugin.mentortp.enabled",true)){
+		if(getConfig().getBoolean("plugin.mentortp.enabled", true)){
 			log.info("[EscapePlug] loading MentorTP");
 			getCommand("mentortp").setExecutor(new MentorTeleport(this));
 			getCommand("mentorback").setExecutor(new MentorBack(this));
@@ -63,7 +70,7 @@ public class EscapePlug extends JavaPlugin {
 		}
 
 		//start loading PigJouster
-		if(config.getBoolean("plugin.pigjoust.enabled",true)){
+		if(getConfig().getBoolean("plugin.pigjoust.enabled", true)){
 			log.info("[EscapePlug] loading PigJouster");
 			getCommand("pig-active").setExecutor(new PigJouster());
 			getCommand("pig-deactive").setExecutor(new PigJouster());
@@ -80,26 +87,8 @@ public class EscapePlug extends JavaPlugin {
 			log.info("[EscapePlug] skipping PigJouster");
 		}
 
-
-		//start collect cart 
-		if(config.getBoolean("plugin.collectcart.enabled",false)){
-			log.info("[EscapePlug] Collect Cart enabled");
-			this.getServer().getPluginManager().registerEvent(Event.Type.VEHICLE_MOVE, new CartCollectListener(), Event.Priority.Normal, this);
-		}
-		//finish collect cart
-
-
-		//start quick craft 
-		if(config.getBoolean("plugin.quickcraft.enabled",false)){
-			log.info("[EscapePlug] QuickCraft enabled");
-			quickCraft.enable(config.getNode("quickcraft.config"));
-		}
-		//finish quickcraft
-
-
-
 		//start loading Timezone
-		if(config.getBoolean("plugin.timezone.enabled",true)){
+		if(getConfig().getBoolean("plugin.timezone.enabled", true)){
 			log.info("[EscapePlug] loading Timezone");
 			getCommand("timezone").setExecutor(new TimezoneCommands());
 			//finished loading Timezone
@@ -109,14 +98,14 @@ public class EscapePlug extends JavaPlugin {
 
 
 		//start loading togglemode
-		if(config.getBoolean("plugin.togglemode.enabled",true)){
+		if(getConfig().getBoolean("plugin.togglemode.enabled", true)){
 			log.info("[EscapePlug] loading ToggleGameMode");
 			getCommand("togglemode").setExecutor(new GameModeToggle());
 			//finished loading togglemode
 		}
 
 		//start loading endernerf
-		if(config.getBoolean("plugin.endernerf.enabled",true)){
+		if(getConfig().getBoolean("plugin.endernerf.enabled", true)){
 			log.info("[EscapePlug] loading enderNerf");
 			EntityListener el = new EndernerfListener();
 			this.getServer().getPluginManager().registerEvent(Event.Type.ENDERMAN_PICKUP, el, Event.Priority.Highest, this);
@@ -126,13 +115,26 @@ public class EscapePlug extends JavaPlugin {
 		}
 
 		//start loading lockdown
-		if(config.getBoolean("plugin.lockdown.enabled",true)){
+		if(getConfig().getBoolean("plugin.lockdown.enabled", true)){
 			log.info("[EscapePlug] loading Emergency Lockdown");
 			LockdownListener lockdownListener = new LockdownListener();
 			getCommand("lockdown").setExecutor(new LockdownCommand(lockdownListener));
 			this.getServer().getPluginManager().registerEvent(Event.Type.PLAYER_LOGIN, lockdownListener, Event.Priority.Highest, this);
 			this.getServer().getPluginManager().registerEvent(Event.Type.PLAYER_JOIN, lockdownListener, Event.Priority.Highest, this);
 			//finished loading lockdown
+		}
+		
+		//start loading hatMe
+		if(getConfig().getBoolean("plugin.hatme.enabled", true)){
+			log.info("[EscapePlug] loading hatMe");
+			rbBlocks = getConfig().getList("plugin.hatme.allowed");
+			rbAllow = getConfig().getBoolean("plugin.hatme.enable");
+			notAllowedMsg = getConfig().getString("plugin.hatme.notAllowedMsg");
+			rbOp = getConfig().getBoolean("plugin.hatme.opnorestrict");
+			
+			getCommand("hat").setExecutor(new HatmeCommand());
+			getCommand("unhat").setExecutor(new HatmeCommand());
+			//finished loading hatMe
 		}
 
 
@@ -143,24 +145,6 @@ public class EscapePlug extends JavaPlugin {
 	public void onDisable() {
 		self=null;
 		log.info("[EscapePlug] EscapePlug unloaded");
-	}
-
-	private void loadConfig(){
-		File f = new File(getDataFolder(),"Config.yml");
-		config = new Configuration(f);
-		if(!f.exists()){
-			config.setProperty("plugin.mentortp.enabled",true);
-			config.setProperty("plugin.pigjoust.enabled",true);
-			config.setProperty("plugin.timezone.enabled",true);
-			config.setProperty("plugin.antislime.enabled",true);
-			config.setProperty("plugin.collectcart.enabled",false);
-			config.setProperty("plugin.quickcraft.enabled",false);
-			config.setProperty("plugin.togglemode.enabled",false);
-			config.setProperty("plugin.endernerf.enabled",true);
-			config.save();
-		}
-		config.load();
-
 	}
 
 	public static void printCon(String line){
