@@ -55,6 +55,12 @@ permissions:
     children:
       escapeplug.lockdown.allow: true
       escapeplug.lockdown.change: true
+  escapeplug.hatme:
+    description: gives full permission on Hatme.
+    children:
+      escapeplug.hatme.hat: true
+      escapeplug.hatme.give: true
+      escapeplug.hatme.norestrict: true
   escapeplug.lockdown.allow:
     description: Allows players to join while Lockdown-mode.
     default: op
@@ -75,6 +81,11 @@ permissions:
   escapeplug.gamemode:
     default: op
   escapeplug.hatme.hat:
+    description: Allows player to use given item as a hat
     default: op
   escapeplug.hatme.give:
+    description: Allows player to use item in hand as a hat
+    default: op
+  escapeplug.hatme.norestrict:
+    description: Player Overwrites the block-restriction
     default: op
