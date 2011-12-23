@@ -1,0 +1,66 @@
+plugin:
+    antislime:
+        enabled: true
+    timezone:
+        enabled: true
+    togglemode:
+        enabled: false
+    mentortp:
+        enabled: true
+    endernerf:
+        enabled: true
+    pigjoust:
+        enabled: true
+    hatme:
+        enabled: true
+#hatme config
+        enable: true
+        allowed: 
+        - 0
+        - 1
+        - 2
+        - 3
+        - 4
+        - 5
+        - 12
+        - 13
+        - 14
+        - 15
+        - 17
+        - 18
+        - 20
+        - 22
+        - 23
+        - 24
+        - 25
+        - 35
+        - 41
+        - 42
+        - 44
+        - 45
+        - 46
+        - 47
+        - 48
+        - 49
+        - 52
+        - 54
+        - 57
+        - 58
+        - 80
+        - 81
+        - 82
+        - 87
+        - 88
+        - 89
+        - 91
+        - 98
+        - 103
+        - 112
+        opnorestrict: true
+        notAllowedMsg: Invalid Item
+        hatversion: 7.4-ECV
+    lockdown:
+        enabled: true
+        noticifationmsg: "!!!SERVER IS IN LOCKDOWN-MODE!!!"
+        rejectmsg: "Server Full"
+
