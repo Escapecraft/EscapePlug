@@ -113,7 +113,7 @@ public class EscapePlug extends JavaPlugin {
 		//start loading lockdown
 		if(getConfig().getBoolean("plugin.lockdown.enabled", true)){
 			log.info("[EscapePlug] loading Emergency Lockdown");
-			LockdownListener lockdownListener = new LockdownListener();
+			LockdownListener lockdownListener = new LockdownListener(this);
 			getCommand("lockdown").setExecutor(new LockdownCommand(lockdownListener));
 			this.getServer().getPluginManager().registerEvent(Event.Type.PLAYER_LOGIN, lockdownListener, Event.Priority.Highest, this);
 			this.getServer().getPluginManager().registerEvent(Event.Type.PLAYER_JOIN, lockdownListener, Event.Priority.Highest, this);
