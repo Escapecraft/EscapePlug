@@ -140,7 +140,6 @@ public class HatmeCommand implements CommandExecutor {
 
 	private boolean checkPermissionBasic(Player player) {
 		if (player.hasPermission("escapeplug.hatme.hat")
-				|| player.hasPermission("escapeplug.hatme.*")
 				|| player.hasPermission("escapeplug.hatme.hat."
 						+ player.getItemInHand().getTypeId()))
 			return true;
@@ -151,7 +150,6 @@ public class HatmeCommand implements CommandExecutor {
 
 	private boolean checkPermissionGive(Player player, String[] args) {
 		if (player.hasPermission("escapeplug.hatme.give")
-				|| player.hasPermission("escapeplug.hatme.*")
 				|| player.hasPermission("escapeplug.hatme.give."
 						+ Integer.parseInt(args[0])))
 			return true;
@@ -161,8 +159,7 @@ public class HatmeCommand implements CommandExecutor {
 	}
 
 	private boolean checkPermissionNoRestrict(Player player) {
-		if (player.hasPermission("escapeplug.hatme.norestrict")
-				|| player.hasPermission("escapeplug.hatme.*"))
+		if (player.hasPermission("escapeplug.hatme.norestrict"))
 			return true;
 		if (rbOp = true && player.isOp())
 			return true;
