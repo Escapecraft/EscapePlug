@@ -50,6 +50,7 @@ permissions:
       escapeplug.gamemode: true
       escapeplug.lockdown: true
       escapeplug.notify: true
+      escapeplug.hatme: true
   escapeplug.lockdown:
     description: gives full permission on Lockdown-mode.
     children:
