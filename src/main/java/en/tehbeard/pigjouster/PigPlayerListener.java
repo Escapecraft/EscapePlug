@@ -2,12 +2,10 @@ package en.tehbeard.pigjouster;
 
 import net.escapecraft.escapePlug.EscapePlug;
 
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Pig;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerListener;
-import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerPreLoginEvent;
 
 public class PigPlayerListener extends PlayerListener {

@@ -1,6 +1,5 @@
 package net.escapecraft.escapePlug;
 
-import java.io.File;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -9,7 +8,6 @@ import net.serubin.hatme.HatmeCommand;
 import org.bukkit.event.Event;
 import org.bukkit.event.entity.EntityListener;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.util.config.Configuration;
 
 import de.hydrox.antiSlime.SlimeDamageListener;
 import de.hydrox.bukkit.timezone.TimezoneCommands;
@@ -125,7 +123,7 @@ public class EscapePlug extends JavaPlugin {
 			log.info("[EscapePlug] loading hatMe");
 			
 			//get Config
-			List<Integer> rbBlocks = getConfig().getList("plugin.hatme.allowed");
+			List<Integer> rbBlocks = getConfig().getIntegerList("plugin.hatme.allowed");
 			boolean rbAllow = getConfig().getBoolean("plugin.hatme.enable");
 			String notAllowedMsg = getConfig().getString("plugin.hatme.notAllowedMsg");
 			boolean rbOp = getConfig().getBoolean("plugin.hatme.opnorestrict");
