@@ -13,6 +13,7 @@ import de.hydrox.antiSlime.SlimeDamageListener;
 import de.hydrox.bukkit.timezone.TimezoneCommands;
 import de.hydrox.lockdown.LockdownCommand;
 import de.hydrox.lockdown.LockdownListener;
+import de.hydrox.mobcontrol.MobControlListener;
 import en.tehbeard.endernerf.EndernerfListener;
 import en.tehbeard.gamemode.GameModeToggle;
 import en.tehbeard.mentorTeleport.MentorBack;
@@ -136,7 +137,15 @@ public class EscapePlug extends JavaPlugin {
 			log.info("[EscapePlug] loaded hatMe version " + hatversion);
 		}
 
-
+		//start loading mobcontrol
+		if (getConfig().getBoolean("plugin.mobcontrol.enabled", true)) {
+			log.info("[EscapePlug] loading MobControl");
+			List<String> worlds = getConfig().getStringList("plugin.mobcontrol.worlds");
+			List<String> mobs = getConfig().getStringList("plugin.mobcontrol.mobs");
+			MobControlListener mobControlListener = new MobControlListener(worlds, mobs);
+			this.getServer().getPluginManager().registerEvent(Event.Type.CREATURE_SPAWN, mobControlListener, Event.Priority.Normal, this);
+			//finished loading mobcontrol
+		}
 
 		log.info("[EscapePlug] EscapePlug loaded");
 	}
