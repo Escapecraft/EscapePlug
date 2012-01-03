@@ -51,7 +51,8 @@ public class WhoCommand implements CommandExecutor {
 						playersString.append(ChatColor.WHITE);
 					}
 				}
-				playersString.append(player.getName() + " ");
+				playersString.append(player.getName());
+				playersString.append(" ");
 			}
 			sender.sendMessage(ChatColor.GOLD + "Players: " + playersString);
 		}

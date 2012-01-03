@@ -1,6 +1,7 @@
 package en.tehbeard.pigjouster;
 
 import java.util.HashSet;
+import java.util.Set;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -13,8 +14,8 @@ import org.bukkit.entity.Player;
  *
  */
 public class PigJouster implements CommandExecutor {
-	private static HashSet<Player> activepunch = new HashSet<Player>(); 
-	private static HashSet<Pig> pigs = new HashSet<Pig>();
+	private static Set<Player> activepunch = new HashSet<Player>(); 
+	private static Set<Pig> pigs = new HashSet<Pig>();
 
 	public static void addPig(Pig pig){
 		pigs.add(pig);

@@ -67,7 +67,7 @@ public class EscapePlug extends JavaPlugin {
 		if (getConfig().getBoolean("plugin.mentortp.enabled", true)) {
 			log.info("[EscapePlug] loading MentorTP");
 			getCommand("mentortp").setExecutor(new MentorTeleport(this));
-			getCommand("mentorback").setExecutor(new MentorBack(this));
+			getCommand("mentorback").setExecutor(new MentorBack());
 			//finished loading MentorTeleport
 		} else {
 			log.info("[EscapePlug] skipping MentorTP");
