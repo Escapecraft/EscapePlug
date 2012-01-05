@@ -29,6 +29,11 @@
         <artifactId>DroxPerms</artifactId>
         <version>0.2.0</version>
     </dependency>
+    <dependency>
+        <groupId>me.tehbeard</groupId>
+        <artifactId>BeardStat</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </dependency>
   </dependencies>
 
   <properties>

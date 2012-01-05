@@ -3,6 +3,8 @@ package net.escapecraft.escapePlug;
 import java.util.List;
 import java.util.logging.Logger;
 
+import me.tehbeard.BeardStat.BeardStat;
+import me.tehbeard.BeardStat.containers.PlayerStatManager;
 import net.serubin.hatme.HatmeCommand;
 
 import org.bukkit.event.Event;
@@ -30,6 +32,7 @@ public class EscapePlug extends JavaPlugin {
 	private static final Logger log = Logger.getLogger("Minecraft");
 
 	private DroxPermsAPI droxPermsAPI = null;
+	private boolean beardStatLoaded = false;
 
 	public static EscapePlug self = null;
 
@@ -44,6 +47,11 @@ public class EscapePlug extends JavaPlugin {
 		DroxPerms droxPerms = ((DroxPerms) this.getServer().getPluginManager().getPlugin("DroxPerms"));
 		if (droxPerms != null) {
 			droxPermsAPI = droxPerms.getAPI();
+		}
+
+		BeardStat beardStat = ((BeardStat) this.getServer().getPluginManager().getPlugin("BeardStat"));
+		if (beardStat != null) {
+			beardStatLoaded = true;
 		}
 
 		//Starting reserve list
@@ -145,7 +153,7 @@ public class EscapePlug extends JavaPlugin {
 		//start loading who
 		if (getConfig().getBoolean("plugin.who.enabled", true)) {
 			log.info("[EscapePlug] loading Who");
-			getCommand("who").setExecutor(new WhoCommand(droxPermsAPI));
+			getCommand("who").setExecutor(new WhoCommand(droxPermsAPI, beardStatLoaded));
 			//finished loading who
 		}
 

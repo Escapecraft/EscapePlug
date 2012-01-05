@@ -2,6 +2,8 @@ package de.hydrox.who;
 
 import java.util.Arrays;
 
+import me.tehbeard.BeardStat.containers.PlayerStatManager;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -16,10 +18,12 @@ public class WhoCommand implements CommandExecutor {
 
 	private DroxPermsAPI perms = null;
 	private PlayerComparator playerCompare = null;
+	private boolean beardStatLoaded = false;
 
-	public WhoCommand(DroxPermsAPI perms) {
+	public WhoCommand(DroxPermsAPI perms, boolean beardStatLoaded) {
 		this.perms = perms;
 		this.playerCompare = new PlayerComparator(perms);
+		this.beardStatLoaded = beardStatLoaded;
 	}
 
 	public boolean onCommand(CommandSender sender, Command cmd,
@@ -83,6 +87,28 @@ public class WhoCommand implements CommandExecutor {
 						effectivePrefix = groupPrefix;
 					}
 					sender.sendMessage(ChatColor.GOLD + "Shown Name: " + effectivePrefix + player.getName());
+				}
+				if (beardStatLoaded) {
+					long seconds = PlayerStatManager.getPlayerBlob(player.getName()).getStat("stats","playedfor").getValue();
+					int weeks   = (int) seconds / 604800;
+					int days = (int)Math.ceil((seconds -604800*weeks) / 86400);
+					int hours = (int)Math.ceil((seconds - (86400 * days + 604800*weeks)) / 3600);
+					int minutes = (int)Math.ceil((seconds - (604800*weeks + 86400 * days + 3600 * hours)) / 60);
+					StringBuffer playTime = new StringBuffer();
+					playTime.append(ChatColor.GOLD + "Playtime: ");
+					if (weeks > 0) {
+						playTime.append(weeks +" weeks ");
+					}
+					if (days > 0) {
+						playTime.append(days +" days ");
+					}
+					if (hours > 0) {
+						playTime.append(hours +" hours ");
+					}
+					if (minutes > 0) {
+						playTime.append(minutes +" mins ");
+					}
+					sender.sendMessage(playTime.toString());
 				}
 				sender.sendMessage(ChatColor.GOLD + "OP: " + player.isOp());
 			}
