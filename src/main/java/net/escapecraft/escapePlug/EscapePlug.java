@@ -5,8 +5,11 @@ import java.util.logging.Logger;
 
 import net.serubin.hatme.HatmeCommand;
 
+import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.Event;
 import org.bukkit.event.entity.EntityListener;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import de.hydrox.antiSlime.SlimeDamageListener;
@@ -15,6 +18,8 @@ import de.hydrox.lockdown.LockdownCommand;
 import de.hydrox.lockdown.LockdownListener;
 import en.tehbeard.endernerf.EndernerfListener;
 import en.tehbeard.gamemode.GameModeToggle;
+import en.tehbeard.kitPlugin.Kit;
+import en.tehbeard.kitPlugin.KitPluginDataManager;
 import en.tehbeard.mentorTeleport.MentorBack;
 import en.tehbeard.mentorTeleport.MentorTeleport;
 import en.tehbeard.pigjouster.PigJouster;
@@ -136,8 +141,16 @@ public class EscapePlug extends JavaPlugin {
 			log.info("[EscapePlug] loaded hatMe version " + hatversion);
 		}
 
-
-
+		log.info("[EscapePlug] Loading EscapeKit");
+		
+		KitPluginDataManager.boot(this);
+		Kit kit = new Kit("test",0);
+		ItemStack is = new ItemStack(Material.DIAMOND_SWORD,1);
+		is.addEnchantment(Enchantment.DAMAGE_ALL, 5);
+		kit.addItem(is);
+		
+		KitPluginDataManager.getInstance().addKit(kit);
+		KitPluginDataManager.getInstance().saveData();
 		log.info("[EscapePlug] EscapePlug loaded");
 	}
 

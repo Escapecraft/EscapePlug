@@ -39,7 +39,13 @@ commands:
       aliases: [unhat, unhatme, unhm]
       description: Command to take your "hat" off.
       usage: /<command> - takes item off head
-
+    kit:
+      description: kit related commands
+      usage: /command kitname
+    kit-admin:
+      description: admin kit related commands
+      usage: /command make|delete
+            
 permissions:
   escapeplug.*:
     description: Supernode for EscapePlug commands.
