@@ -97,7 +97,7 @@ public class Kit {
 	 * @return
 	 */
 	public boolean canUsePerm(Permissible permissible){
-		return permissible.hasPermission("escapeplug.kit.*")|| permissible.hasPermission("escapeplug.kit."+name);
+		return permissible.isOp() || permissible.hasPermission("escapeplug.kit.*")|| permissible.hasPermission("escapeplug.kit."+name);
 	}
 	
 	/**

@@ -96,3 +96,6 @@ permissions:
   escapeplug.hatme.norestrict:
     description: Player Overwrites the block-restriction
     default: op
+  escapeplug.kit.*:
+    description: Player can use any kit
+    default: op

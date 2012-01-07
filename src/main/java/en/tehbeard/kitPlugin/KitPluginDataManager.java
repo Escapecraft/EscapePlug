@@ -2,6 +2,7 @@ package en.tehbeard.kitPlugin;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -153,7 +154,10 @@ public class KitPluginDataManager {
 	public Kit getKit(String name){
 		return kits.get(name);
 	}
-	
+
+	public Collection<Kit> getKits(){
+		return kits.values();
+	}
 	
 	public void removeKit(String name){
 		kits.remove(name);

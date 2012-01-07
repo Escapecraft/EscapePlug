@@ -20,6 +20,7 @@ import en.tehbeard.endernerf.EndernerfListener;
 import en.tehbeard.gamemode.GameModeToggle;
 import en.tehbeard.kitPlugin.Kit;
 import en.tehbeard.kitPlugin.KitPluginDataManager;
+import en.tehbeard.kitPlugin.command.KitCommand;
 import en.tehbeard.mentorTeleport.MentorBack;
 import en.tehbeard.mentorTeleport.MentorTeleport;
 import en.tehbeard.pigjouster.PigJouster;
@@ -144,13 +145,9 @@ public class EscapePlug extends JavaPlugin {
 		log.info("[EscapePlug] Loading EscapeKit");
 		
 		KitPluginDataManager.boot(this);
-		Kit kit = new Kit("test",0);
-		ItemStack is = new ItemStack(Material.DIAMOND_SWORD,1);
-		is.addEnchantment(Enchantment.DAMAGE_ALL, 5);
-		kit.addItem(is);
 		
-		KitPluginDataManager.getInstance().addKit(kit);
-		KitPluginDataManager.getInstance().saveData();
+		getCommand("kit").setExecutor(new KitCommand());
+
 		log.info("[EscapePlug] EscapePlug loaded");
 	}
 
