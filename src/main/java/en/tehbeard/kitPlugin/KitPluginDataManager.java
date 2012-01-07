@@ -1,6 +1,8 @@
 package en.tehbeard.kitPlugin;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
@@ -8,6 +10,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Scanner;
 import java.util.Set;
 
 import org.bukkit.Bukkit;
@@ -84,7 +87,7 @@ public class KitPluginDataManager {
 											Enchantment.getById(Integer.parseInt(enc[0])), 
 											Integer.parseInt(enc[1]));
 								}
-								
+
 								kit.addItem(is
 										);
 							}
@@ -106,15 +109,15 @@ public class KitPluginDataManager {
 			List<String> lis = new LinkedList<String>();
 			String rec;
 			for(ItemStack is: kit.getItems()){
-				
+
 				rec = ""+is.getType().getId()+"|"+
 						is.getDurability()+"|"+
 						is.getAmount();
-				
+
 				for(Entry<Enchantment, Integer> es : is.getEnchantments().entrySet()){
 					rec += "|" + es.getKey().getId() + ":" + es.getValue();
 				}
-				
+
 				lis.add(rec);
 			}
 			config.set("kits." + kit.getName() + ".items",lis);
@@ -128,7 +131,7 @@ public class KitPluginDataManager {
 		}
 	}
 
-	
+
 	KitPluginDataManager(Plugin plugin) {
 		dbFile = new File(plugin.getDataFolder(),"kits.yml");
 
@@ -138,6 +141,45 @@ public class KitPluginDataManager {
 
 	}
 
+	public void convertKitDb(File file){
+		Scanner in;
+		try {
+			in = new Scanner(file);
+			System.out.println("Converting old kit database");
+			while(in.hasNext()){
+				//# Name;ID Amount;ID Amount;ID amount (etc)[;-cooldown]
+				String line = in.next();
+				//# Name;ID Amount;ID Amount;ID amount (etc)[;-cooldown]
+				if(!line.startsWith("#")){
+					String[] part = line.split("\\;");
+					if(part.length > 1){
+						String name = part[0];
+						int timer = 0;
+						int items = part.length;
+						if(part[part.length-1].startsWith("-")){
+							timer = Integer.parseInt(part[part.length-1].replace("\\-",""));
+							items = items - 1;
+						}
+						Kit newKit = new Kit(name,timer);
+						for(int i = 1; i < items ; i++){
+							String[] item = part[i].split(" ");
+							newKit.addItem(new ItemStack(
+									Integer.parseInt(item[0]),
+									Integer.parseInt(item[1])
+									));
+						}
+						addKit(newKit);
+					}
+				}
+			}
+
+			in.close();
+			System.out.println("Conversion complete");
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	/**
 	 * Add a kit
 	 * @param kit
@@ -145,7 +187,7 @@ public class KitPluginDataManager {
 	public void addKit(Kit kit){
 		kits.put(kit.getName(),kit);
 	}
-	
+
 	/**
 	 * get a kit 
 	 * @param name
@@ -158,10 +200,10 @@ public class KitPluginDataManager {
 	public Collection<Kit> getKits(){
 		return kits.values();
 	}
-	
+
 	public void removeKit(String name){
 		kits.remove(name);
 	}
-	
-	
+
+
 }

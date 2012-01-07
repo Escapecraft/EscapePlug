@@ -1,5 +1,6 @@
 package net.escapecraft.escapePlug;
 
+import java.io.File;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -149,6 +150,12 @@ public class EscapePlug extends JavaPlugin {
 			KitPluginDataManager.boot(this);
 			getCommand("kit").setExecutor(new KitCommand());
 			getCommand("kit-admin").setExecutor(new KitAdminCommand());
+			
+			//try conversion
+			File file = new File(getDataFolder(),"kits.txt");
+			if(file.exists()){
+				KitPluginDataManager.getInstance().convertKitDb(file);
+			}
 		}
 		log.info("[EscapePlug] EscapePlug loaded");
 	}
