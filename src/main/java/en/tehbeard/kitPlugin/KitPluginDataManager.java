@@ -163,13 +163,32 @@ public class KitPluginDataManager {
 						Kit newKit = new Kit(name,timer);
 						for(int i = 1; i < items ; i++){
 							String[] item = part[i].split(" ");
+							int id = 1;
+							short dam = 0;
+							if(item[0].split("\\:").length==2){
+								id = Integer.parseInt(item[0].split("\\:")[0]);
+								dam = Short.parseShort(item[0].split("\\:")[1]);
+							}
+							else
+							{
+								id = Integer.parseInt(item[0]);
+							}
+							
+							int count = 1;
+							if(item.length==2){
+							count = Integer.parseInt(item[1]);
+							}
 							newKit.addItem(new ItemStack(
-									Integer.parseInt(item[0]),
-									Integer.parseInt(item[1])
+									id,
+									
+									count,
+									dam
 									));
 						}
 						addKit(newKit);
+						
 					}
+					
 				}
 			}
 
@@ -179,6 +198,7 @@ public class KitPluginDataManager {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		saveData();
 	}
 	/**
 	 * Add a kit
