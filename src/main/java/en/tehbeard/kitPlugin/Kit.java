@@ -106,7 +106,10 @@ public class Kit {
 	 * @return
 	 */
 	public Result giveKit(Player player){
-		return giveKit(player,false);
+		return giveKit(player,(
+				player.hasPermission("escapeplug.kit.*.noCooldown")||
+				player.hasPermission("escapeplug.kit." + name + ".noCooldown")
+				));
 	}
 	
 	/**
@@ -116,6 +119,7 @@ public class Kit {
 	 * @return
 	 */
 	public Result giveKit(Player player,boolean overrideContexts){
+		
 		if(!overrideContexts){
 			for(KitContext kc : KitContext.getContexts(player.getName())){
 				if(kc.getName().equals(name)){

@@ -6,6 +6,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 import en.tehbeard.kitPlugin.Kit;
 import en.tehbeard.kitPlugin.KitPluginDataManager;
@@ -30,6 +31,21 @@ public class KitCommand implements CommandExecutor{
 						msg+=kit.getName();
 					}
 				}
+			}
+			sender.sendMessage(msg);
+		}
+		
+		if(args.length==1 && sender instanceof Player){
+			Kit kit = KitPluginDataManager.getInstance().getKit(args[0]);
+			if(kit == null){
+				sender.sendMessage(ChatColor.RED + " Kit does not exist");
+				return true;
+			}
+			
+			switch(kit.giveKit((Player)sender)){
+			case OK:sender.sendMessage("Enjoy your kit!");KitPluginDataManager.getInstance().saveData();;break;
+			case PERM:sender.sendMessage("You can't use that kit!");break;
+			case TIMER:sender.sendMessage("You must wait till you can use that kit!");break;
 			}
 		}
 

@@ -99,3 +99,12 @@ permissions:
   escapeplug.kit.*:
     description: Player can use any kit
     default: op
+  escapeplug.kit.admin:
+    description: Player can use add, delete kits
+    default: op
+  escapeplug.kit.give:
+    description: Player give any other player a kit
+    default: op
+  escapeplug.kit.*.noCooldown:
+    description: cooldown does not apply to any kit
+    default: op

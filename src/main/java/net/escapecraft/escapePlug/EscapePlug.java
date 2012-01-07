@@ -20,6 +20,7 @@ import en.tehbeard.endernerf.EndernerfListener;
 import en.tehbeard.gamemode.GameModeToggle;
 import en.tehbeard.kitPlugin.Kit;
 import en.tehbeard.kitPlugin.KitPluginDataManager;
+import en.tehbeard.kitPlugin.command.KitAdminCommand;
 import en.tehbeard.kitPlugin.command.KitCommand;
 import en.tehbeard.mentorTeleport.MentorBack;
 import en.tehbeard.mentorTeleport.MentorTeleport;
@@ -147,7 +148,7 @@ public class EscapePlug extends JavaPlugin {
 		KitPluginDataManager.boot(this);
 		
 		getCommand("kit").setExecutor(new KitCommand());
-
+		getCommand("kit-admin").setExecutor(new KitAdminCommand());
 		log.info("[EscapePlug] EscapePlug loaded");
 	}
 
