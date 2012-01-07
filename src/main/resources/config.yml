@@ -63,4 +63,19 @@ plugin:
         enabled: true
         noticifationmsg: "!!!SERVER IS IN LOCKDOWN-MODE!!!"
         rejectmsg: "Server Full"
+    blockalert:
+        enabled: true
+        worlds:
+            break:
+                survival: 
+# Goldblock
+                    - 41
+# Diamondblock
+                    - 57
+            place:
+                survival:
+# Bedrock
+                    - 7
+# TNT
+                    - 46
 

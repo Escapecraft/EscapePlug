@@ -16,14 +16,21 @@
   </repositories>
 
   <dependencies>
-  	<dependency>
-  		<groupId>org.bukkit</groupId>
-  		<artifactId>bukkit</artifactId>
-  		<version>1.0.0-R1-SNAPSHOT</version>
-  		<type>jar</type>
-  		<scope>compile</scope>
-  		<optional>false</optional>
-  	</dependency>
+    <dependency>
+      <groupId>org.bukkit</groupId>
+      <artifactId>bukkit</artifactId>
+      <version>1.0.0-R1-SNAPSHOT</version>
+      <type>jar</type>
+      <scope>compile</scope>
+      <optional>false</optional>
+    </dependency>
+    <dependency>
+        <groupId>uk.co.oliwali</groupId>
+        <artifactId>HawkEye</artifactId>
+        <version>1.0.5b</version>
+        <scope>system</scope>
+        <systemPath>${project.basedir}/lib/HawkEye.jar</systemPath>
+    </dependency>
   </dependencies>
 
   <properties>

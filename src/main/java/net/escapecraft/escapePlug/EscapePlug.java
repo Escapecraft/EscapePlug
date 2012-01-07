@@ -1,15 +1,25 @@
 package net.escapecraft.escapePlug;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.logging.Logger;
 
 import net.serubin.hatme.HatmeCommand;
 
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.event.Event;
 import org.bukkit.event.entity.EntityListener;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import uk.co.oliwali.HawkEye.HawkEye;
 import de.hydrox.antiSlime.SlimeDamageListener;
+import de.hydrox.blockalert.AbstractListener;
+import de.hydrox.blockalert.AlertListener;
+import de.hydrox.blockalert.AlertListenerHawkEye;
+import de.hydrox.blockalert.ModeratorListner;
 import de.hydrox.bukkit.timezone.TimezoneCommands;
 import de.hydrox.lockdown.LockdownCommand;
 import de.hydrox.lockdown.LockdownListener;
@@ -25,6 +35,9 @@ import en.tehbeard.reserve.ReserveListener;
 public class EscapePlug extends JavaPlugin {
 
 	private static final Logger log = Logger.getLogger("Minecraft");
+
+	private boolean hawkEyeLoaded = false;
+
 	public static EscapePlug self = null;
 	//Hatme config variables
 	
@@ -35,6 +48,11 @@ public class EscapePlug extends JavaPlugin {
 		//load/creates/fixes config
 		getConfig().options().copyDefaults(true);
 		saveConfig();
+
+		HawkEye hawkEye = (HawkEye)this.getServer().getPluginManager().getPlugin("HawkEye");
+		if (hawkEye != null) {
+			hawkEyeLoaded = true;
+		}
 
 		//Starting reserve list
 		if(getConfig().getBoolean("plugin.reserve.enabled", true)){
@@ -137,6 +155,37 @@ public class EscapePlug extends JavaPlugin {
 		}
 
 
+
+		//start loading blockalert
+		if (getConfig().getBoolean("plugin.blockalert.enabled", true)) {
+			Map<String, List<Integer>> notifyBlockBreak = new HashMap<String, List<Integer>>();
+			Map<String, List<Integer>> notifyBlockPlace = new HashMap<String, List<Integer>>();
+			Set<String> worlds = getConfig().getConfigurationSection("plugin.blockalert.worlds.break.").getKeys(false);
+			for (String world : worlds) {
+				Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_PURPLE + "World " + world);
+				List<Integer> blockBreakList = getConfig().getIntegerList("plugin.blockalert.worlds.break." + world);
+				notifyBlockBreak.put(world, blockBreakList);
+			}
+			worlds = getConfig().getConfigurationSection("plugin.blockalert.worlds.place.").getKeys(false);
+			for (String world : worlds) {
+				Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_PURPLE + "World " + world);
+				List<Integer> blockPlaceList = getConfig().getIntegerList("plugin.blockalert.worlds.place." + world);
+				notifyBlockPlace.put(world, blockPlaceList);
+			}
+			log.info("[EscapePlug] loading BlockAlert");
+			AbstractListener alertListener = null;
+			if (hawkEyeLoaded) {
+				alertListener = new AlertListenerHawkEye(notifyBlockBreak, notifyBlockPlace);				
+			} else {
+				alertListener = new AlertListener(notifyBlockBreak, notifyBlockPlace);
+			}
+			ModeratorListner modListener = new ModeratorListner(alertListener);
+			this.getServer().getPluginManager().registerEvent(Event.Type.PLAYER_JOIN, modListener, Event.Priority.Monitor, this);
+			this.getServer().getPluginManager().registerEvent(Event.Type.PLAYER_QUIT, modListener, Event.Priority.Monitor, this);
+			this.getServer().getPluginManager().registerEvent(Event.Type.BLOCK_BREAK, alertListener, Event.Priority.Monitor, this);
+			this.getServer().getPluginManager().registerEvent(Event.Type.BLOCK_PLACE, alertListener, Event.Priority.Monitor, this);
+			//finished loading blockalert
+		}
 
 		log.info("[EscapePlug] EscapePlug loaded");
 	}
