@@ -34,7 +34,7 @@ public class EscapePlug extends JavaPlugin {
 	private static final Logger log = Logger.getLogger("Minecraft");
 	public static EscapePlug self = null;
 	//Hatme config variables
-	
+
 	public void onEnable() {
 		self = this;
 		log.info("[EscapePlug] loading EscapePlug");
@@ -111,7 +111,7 @@ public class EscapePlug extends JavaPlugin {
 			EntityListener el = new EndernerfListener();
 			this.getServer().getPluginManager().registerEvent(Event.Type.ENDERMAN_PICKUP, el, Event.Priority.Highest, this);
 			this.getServer().getPluginManager().registerEvent(Event.Type.ENDERMAN_PLACE, el, Event.Priority.Highest, this);
-		
+
 			//finished loading endernerf
 		}
 
@@ -124,11 +124,11 @@ public class EscapePlug extends JavaPlugin {
 			this.getServer().getPluginManager().registerEvent(Event.Type.PLAYER_JOIN, lockdownListener, Event.Priority.Highest, this);
 			//finished loading lockdown
 		}
-		
+
 		//start loading hatMe
 		if(getConfig().getBoolean("plugin.hatme.enabled", true)){
 			log.info("[EscapePlug] loading hatMe");
-			
+
 			//get Config
 			List<Integer> rbBlocks = getConfig().getIntegerList("plugin.hatme.allowed");
 			boolean rbAllow = getConfig().getBoolean("plugin.hatme.enable");
@@ -143,12 +143,13 @@ public class EscapePlug extends JavaPlugin {
 			log.info("[EscapePlug] loaded hatMe version " + hatversion);
 		}
 
-		log.info("[EscapePlug] Loading EscapeKit");
-		
-		KitPluginDataManager.boot(this);
-		
-		getCommand("kit").setExecutor(new KitCommand());
-		getCommand("kit-admin").setExecutor(new KitAdminCommand());
+		if(getConfig().getBoolean("plugin.kitplugin.enabled", true)){
+			log.info("[EscapePlug] Loading EscapeKit");
+
+			KitPluginDataManager.boot(this);
+			getCommand("kit").setExecutor(new KitCommand());
+			getCommand("kit-admin").setExecutor(new KitAdminCommand());
+		}
 		log.info("[EscapePlug] EscapePlug loaded");
 	}
 
