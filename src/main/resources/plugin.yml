@@ -60,10 +60,10 @@ permissions:
       escapeplug.lockdown: true
       escapeplug.notify: true
       escapeplug.hatme: true
-      escapeplug.kit.*: true
+      escapeplug.kit.kit.*: true
       escapeplug.kit.admin: true
       escapeplug.kit.give: true
-      escapeplug.kit.*.noCooldown: true
+      escapeplug.kit.kit.*.noCooldown: true
   escapeplug.lockdown:
     description: gives full permission on Lockdown-mode.
     children:

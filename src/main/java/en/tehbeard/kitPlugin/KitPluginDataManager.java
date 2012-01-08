@@ -145,10 +145,11 @@ public class KitPluginDataManager {
 		Scanner in;
 		try {
 			in = new Scanner(file);
+			
 			System.out.println("Converting old kit database");
-			while(in.hasNext()){
+			while(in.hasNextLine()){
 				//# Name;ID Amount;ID Amount;ID amount (etc)[;-cooldown]
-				String line = in.next();
+				String line = in.nextLine();
 				//# Name;ID Amount;ID Amount;ID amount (etc)[;-cooldown]
 				if(!line.startsWith("#")){
 					String[] part = line.split("\\;");
@@ -157,7 +158,7 @@ public class KitPluginDataManager {
 						int timer = 0;
 						int items = part.length;
 						if(part[part.length-1].startsWith("-")){
-							timer = Integer.parseInt(part[part.length-1].replace("\\-",""));
+							timer = 0 - Integer.parseInt(part[part.length-1]);
 							items = items - 1;
 						}
 						Kit newKit = new Kit(name,timer);
