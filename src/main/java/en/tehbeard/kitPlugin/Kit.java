@@ -97,7 +97,7 @@ public class Kit {
 	 * @return
 	 */
 	public boolean canUsePerm(Permissible permissible){
-		return permissible.isOp() || permissible.hasPermission("escapeplug.kit.kit.*")|| permissible.hasPermission("escapeplug.kit."+name);
+		return permissible.hasPermission("escapeplug.kit.kits.*")|| permissible.hasPermission("escapeplug.kits."+name);
 	}
 	
 	/**
@@ -107,8 +107,8 @@ public class Kit {
 	 */
 	public Result giveKit(Player player){
 		return giveKit(player,(
-				player.hasPermission("escapeplug.kit.kit.*.noCooldown")||
-				player.hasPermission("escapeplug.kit.kit." + name + ".noCooldown")
+				player.hasPermission("escapeplug.kit.kits.*.noCooldown")||
+				player.hasPermission("escapeplug.kit.kits." + name + ".noCooldown")
 				));
 	}
 	

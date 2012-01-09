@@ -43,7 +43,7 @@ public class KitCommand implements CommandExecutor{
 			}
 			
 			switch(kit.giveKit((Player)sender)){
-			case OK:sender.sendMessage("Enjoy your kit!");KitPluginDataManager.getInstance().saveData();;break;
+			case OK:sender.sendMessage("Enjoy your kit!");KitPluginDataManager.getInstance().saveData();break;
 			case PERM:sender.sendMessage("You can't use that kit!");break;
 			case TIMER:sender.sendMessage("You must wait till you can use that kit!");break;
 			}

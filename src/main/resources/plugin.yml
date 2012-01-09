@@ -60,10 +60,7 @@ permissions:
       escapeplug.lockdown: true
       escapeplug.notify: true
       escapeplug.hatme: true
-      escapeplug.kit.kit.*: true
-      escapeplug.kit.admin: true
-      escapeplug.kit.give: true
-      escapeplug.kit.kit.*.noCooldown: true
+      escapeplug.kit.*: true
   escapeplug.lockdown:
     description: gives full permission on Lockdown-mode.
     children:
@@ -103,7 +100,15 @@ permissions:
   escapeplug.hatme.norestrict:
     description: Player Overwrites the block-restriction
     default: op
-  escapeplug.kit.kit.*:
+  escapeplug.kit.*:
+    description: gives all the kit related permissions
+    default: op
+    children:
+      escapeplug.kit.kits.*: true
+      escapeplug.kit.kits.*.nocooldown: true    
+      escapeplug.kit.admin: true
+      escapeplug.kit.give: true
+  escapeplug.kit.kits.*:
     description: Player can use any kit
     default: op
   escapeplug.kit.admin:
@@ -112,6 +117,6 @@ permissions:
   escapeplug.kit.give:
     description: Player give any other player a kit
     default: op
-  escapeplug.kit.kit.*.noCooldown:
+  escapeplug.kit.kits.*.noCooldown:
     description: cooldown does not apply to any kit
     default: op
