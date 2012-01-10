@@ -18,7 +18,7 @@ import org.bukkit.inventory.PlayerInventory;
 
 @ComponentDescriptor(name="HatMe",slug="hatme",version="7.4-ECV")
 @BukkitCommand(command={"hat","unhat"})
-public class HatmeCommand extends AbstractComponent implements CommandExecutor {
+public class HatmeComponent extends AbstractComponent implements CommandExecutor {
 
 	private String notAllowedMsg;
 	private boolean rbAllow;
@@ -26,7 +26,7 @@ public class HatmeCommand extends AbstractComponent implements CommandExecutor {
 	private List<Integer> allowID;
 	private boolean rbOp;
 
-	public HatmeCommand(List<Integer> rbBlocks, boolean rbAllow,
+	public HatmeComponent(List<Integer> rbBlocks, boolean rbAllow,
 			String notAllowedMsg, boolean rbOp) {
 		// TODO Auto-generated constructor stub
 		this.rbBlocks = rbBlocks;
@@ -235,7 +235,7 @@ public class HatmeCommand extends AbstractComponent implements CommandExecutor {
 	@Override
 	public boolean enable(EscapePlug plugin) {
 		
-		log.info("[EscapePlug] loading hatMe");
+		
 
 		//get Config
 		rbBlocks = plugin.getConfig().getIntegerList("plugin.hatme.allowed");

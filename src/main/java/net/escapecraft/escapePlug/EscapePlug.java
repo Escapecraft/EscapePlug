@@ -13,7 +13,7 @@ import net.escapecraft.escapePlug.component.AbstractComponent;
 import net.escapecraft.escapePlug.component.BukkitCommand;
 import net.escapecraft.escapePlug.component.BukkitEvent;
 import net.escapecraft.escapePlug.component.ComponentDescriptor;
-import net.serubin.hatme.HatmeCommand;
+import net.serubin.hatme.HatmeComponent;
 
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.event.Event;
@@ -133,6 +133,10 @@ public class EscapePlug extends JavaPlugin {
 		//start loading Timezone
 		startComponent(TimezoneComponent.class);
 		
+
+		//start loading hatMe
+		startComponent(HatmeComponent.class);
+		
 		
 		//start loading AntiSlime
 		if(getConfig().getBoolean("plugin.antislime.enabled", true)){
@@ -181,24 +185,6 @@ public class EscapePlug extends JavaPlugin {
 		}
 
 		
-
-		//start loading hatMe
-		if(getConfig().getBoolean("plugin.hatme.enabled", true)){
-			log.info("[EscapePlug] loading hatMe");
-
-			//get Config
-			List<Integer> rbBlocks = getConfig().getIntegerList("plugin.hatme.allowed");
-			boolean rbAllow = getConfig().getBoolean("plugin.hatme.enable");
-			String notAllowedMsg = getConfig().getString("plugin.hatme.notAllowedMsg");
-			boolean rbOp = getConfig().getBoolean("plugin.hatme.opnorestrict");
-			String hatversion = getConfig().getString("plugin.hatme.hatversion");
-
-			//construct command and assign to /hat and /unhat
-			HatmeCommand hatMe = new HatmeCommand(rbBlocks,rbAllow,notAllowedMsg,rbOp);
-			getCommand("hat").setExecutor(hatMe);
-			getCommand("unhat").setExecutor(hatMe);
-			log.info("[EscapePlug] loaded hatMe version " + hatversion);
-		}
 
 		log.info("[EscapePlug] EscapePlug loaded");
 	}
