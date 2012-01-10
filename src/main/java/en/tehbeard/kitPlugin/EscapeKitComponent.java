@@ -1,6 +1,5 @@
 package en.tehbeard.kitPlugin;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -13,45 +12,37 @@ import java.util.Map.Entry;
 import java.util.Scanner;
 import java.util.Set;
 
-import org.bukkit.Bukkit;
+import net.escapecraft.escapePlug.EscapePlug;
+import net.escapecraft.escapePlug.component.AbstractComponent;
+import net.escapecraft.escapePlug.component.ComponentDescriptor;
+
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.Plugin;
+
+
+import en.tehbeard.kitPlugin.command.KitAdminCommand;
+import en.tehbeard.kitPlugin.command.KitCommand;
 
 /**
  * Manages loading and saving of kit data
  * @author james
  *
  */
-public class KitPluginDataManager {
+
+@ComponentDescriptor(name="EscapeKit",slug="kitplugin",version="1.0")
+public class EscapeKitComponent extends AbstractComponent{
 
 	private YamlConfiguration config = null;
 
-	private static KitPluginDataManager instance;
-	private Plugin plugin;
+	
 	private Map<String,Kit> kits;
-	private File dbFile = new File(Bukkit.getPluginManager().getPlugin("EscapePlug").getDataFolder(),"kits.yml");
+	private File dbFile;
 
-	/**
-	 * Initialise EscapeKit
-	 * @param plugin
-	 */
-	public static void boot(Plugin plugin) {
-		if(instance == null){instance = new KitPluginDataManager(plugin);}
-
-	}
-
-	/**
-	 * Get an instance of EscapeKit
-	 * @return
-	 */
-	public static KitPluginDataManager getInstance() {
-		return instance;
-	}
-
+	
+	
 	/**
 	 * reload Kit Data from file
 	 */
@@ -68,7 +59,7 @@ public class KitPluginDataManager {
 			if(keySet!=null){
 				for(String key : keySet){
 					ConfigurationSection  kitConfig = kitSection.getConfigurationSection(key);
-					System.out.println("Loading kit " + key);
+					
 					Kit kit = new Kit(key,kitConfig.getInt("timer"));
 
 					List<String> items  = (List<String>)kitConfig.getList("items");
@@ -105,7 +96,6 @@ public class KitPluginDataManager {
 	public void saveData(){
 		for(Kit kit : kits.values()){ 
 			config.set("kits." + kit.getName() + ".timer",kit.getCooldown());
-			int i = 0;
 			List<String> lis = new LinkedList<String>();
 			String rec;
 			for(ItemStack is: kit.getItems()){
@@ -132,14 +122,7 @@ public class KitPluginDataManager {
 	}
 
 
-	KitPluginDataManager(Plugin plugin) {
-		dbFile = new File(plugin.getDataFolder(),"kits.yml");
-
-		//register serialization classes
-
-		loadData();
-
-	}
+	
 
 	public void convertKitDb(File file){
 		Scanner in;
@@ -226,5 +209,40 @@ public class KitPluginDataManager {
 		kits.remove(name);
 	}
 
+	@Override
+	public boolean enable(EscapePlug plugin) {
+		dbFile = new File(plugin.getDataFolder(),"kits.yml");
+		loadData();
+		
+		dbFile = new File(plugin.getDataFolder(),"kits.yml");
 
+		plugin.registerCommands(new KitCommand(this));
+		plugin.registerCommands(new KitAdminCommand(this));
+
+		//try conversion
+		File file = new File(plugin.getDataFolder(),"kits.txt");
+		if(file.exists()){
+			convertKitDb(file);
+		}
+
+		
+		//register serialization classes
+
+		loadData();
+
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void tidyUp() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void reloadConfig() {
+		// TODO Auto-generated method stub
+		
+	}
 }

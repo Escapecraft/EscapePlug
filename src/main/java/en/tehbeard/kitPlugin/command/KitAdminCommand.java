@@ -1,6 +1,8 @@
 package en.tehbeard.kitPlugin.command;
 
 
+import net.escapecraft.escapePlug.component.BukkitCommand;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -8,14 +10,18 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import en.tehbeard.kitPlugin.Kit;
-import en.tehbeard.kitPlugin.KitPluginDataManager;
+import en.tehbeard.kitPlugin.EscapeKitComponent;
 
+@BukkitCommand(command="kit-admin")
 public class KitAdminCommand implements CommandExecutor{
 
+	private EscapeKitComponent dataManager;
+	public KitAdminCommand(EscapeKitComponent dataManager){
+		this.dataManager = dataManager;
+	}
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String lbl,
 			String[] args) {
-		// TODO Auto-generated method stub
 
 
 		if(args.length==2 && sender instanceof Player){
@@ -32,13 +38,13 @@ public class KitAdminCommand implements CommandExecutor{
 						newKit.addItem(is);
 					}
 				}
-				KitPluginDataManager.getInstance().addKit(newKit);
-				KitPluginDataManager.getInstance().saveData();
+				dataManager.addKit(newKit);
+				dataManager.saveData();
 			}
 
 			if(args[0].equalsIgnoreCase("del")){
-				KitPluginDataManager.getInstance().removeKit(args[1]);
-				KitPluginDataManager.getInstance().saveData();
+				dataManager.removeKit(args[1]);
+				dataManager.saveData();
 			}
 		}
 		return true;

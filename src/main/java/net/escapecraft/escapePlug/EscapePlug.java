@@ -26,13 +26,13 @@ import de.hydrox.bukkit.timezone.TimezoneCommands;
 import de.hydrox.lockdown.LockdownCommand;
 import de.hydrox.lockdown.LockdownListener;
 import en.tehbeard.endernerf.EndernerfListener;
-import en.tehbeard.gamemode.GameModeToggle;
-import en.tehbeard.kitPlugin.KitPluginDataManager;
+import en.tehbeard.gamemode.GameModeToggleComponent;
+import en.tehbeard.kitPlugin.EscapeKitComponent;
 import en.tehbeard.kitPlugin.command.KitAdminCommand;
 import en.tehbeard.kitPlugin.command.KitCommand;
-import en.tehbeard.mentorTeleport.MentorBack;
-import en.tehbeard.mentorTeleport.MentorTeleport;
-import en.tehbeard.mentorTeleport.MentorTpComponent;
+
+import en.tehbeard.mentorTeleport.MentorTeleportComponent;
+
 import en.tehbeard.pigjouster.PigJouster;
 import en.tehbeard.pigjouster.PigListener;
 import en.tehbeard.pigjouster.PigPlayerListener;
@@ -42,7 +42,6 @@ import en.tehbeard.reserve.ReserveListComponent;
 public class EscapePlug extends JavaPlugin {
 
 	private static final Logger log = Logger.getLogger("Minecraft");
-	public static EscapePlug self = null;
 
 	//keeps a record of all active Components
 	private Set<AbstractComponent> activeComponents = new HashSet<AbstractComponent>();
@@ -109,7 +108,7 @@ public class EscapePlug extends JavaPlugin {
 	}
 
 	public void onEnable() {
-		self = this;
+		
 		log.info("[EscapePlug] loading EscapePlug");
 
 		//load/creates/fixes config
@@ -120,9 +119,14 @@ public class EscapePlug extends JavaPlugin {
 		startComponent(ReserveListComponent.class);
 
 		//start loading MentorTeleport
-		startComponent(MentorTpComponent.class);
+		startComponent(MentorTeleportComponent.class);
+
+		//start loading togglemode
+		startComponent(GameModeToggleComponent.class);
 		
-		
+		//start EscapeKit
+		startComponent(EscapeKitComponent.class);
+	
 		//start loading AntiSlime
 		if(getConfig().getBoolean("plugin.antislime.enabled", true)){
 			log.info("[EscapePlug] loading AntiSlime");
@@ -164,12 +168,7 @@ public class EscapePlug extends JavaPlugin {
 		}
 
 
-		//start loading togglemode
-		if(getConfig().getBoolean("plugin.togglemode.enabled", true)){
-			log.info("[EscapePlug] loading ToggleGameMode");
-			getCommand("togglemode").setExecutor(new GameModeToggle());
-			//finished loading togglemode
-		}
+
 
 		//start loading endernerf
 		if(getConfig().getBoolean("plugin.endernerf.enabled", true)){
@@ -209,24 +208,13 @@ public class EscapePlug extends JavaPlugin {
 			log.info("[EscapePlug] loaded hatMe version " + hatversion);
 		}
 
-		if(getConfig().getBoolean("plugin.kitplugin.enabled", true)){
-			log.info("[EscapePlug] Loading EscapeKit");
-
-			KitPluginDataManager.boot(this);
-			getCommand("kit").setExecutor(new KitCommand());
-			getCommand("kit-admin").setExecutor(new KitAdminCommand());
-
-			//try conversion
-			File file = new File(getDataFolder(),"kits.txt");
-			if(file.exists()){
-				KitPluginDataManager.getInstance().convertKitDb(file);
-			}
-		}
 		log.info("[EscapePlug] EscapePlug loaded");
 	}
 
 	public void onDisable() {
-		self=null;
+		for(AbstractComponent comp: activeComponents){
+			comp.tidyUp();
+		}
 		log.info("[EscapePlug] EscapePlug unloaded");
 	}
 
