@@ -6,11 +6,19 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
 
+import net.escapecraft.escapePlug.EscapePlug;
+import net.escapecraft.escapePlug.component.AbstractComponent;
+import net.escapecraft.escapePlug.component.BukkitCommand;
+import net.escapecraft.escapePlug.component.BukkitEvent;
+import net.escapecraft.escapePlug.component.ComponentDescriptor;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
-public class TimezoneCommands implements CommandExecutor {
+@ComponentDescriptor(name="timezone",slug="timezone",version="1.0")
+@BukkitCommand(command={"timezone"})
+public class TimezoneComponent extends AbstractComponent implements CommandExecutor {
 
 	public boolean onCommand(CommandSender sender, Command command,
 			String label, String[] args) {
@@ -47,8 +55,8 @@ public class TimezoneCommands implements CommandExecutor {
 				String parsedString = null;
 				try {
 					parsedString = parseDate(args);
-			        DateFormat format =
-			            DateFormat.getTimeInstance(DateFormat.SHORT);
+					DateFormat format =
+							DateFormat.getTimeInstance(DateFormat.SHORT);
 					Date parsedDate = format.parse(parsedString);
 					sender.sendMessage("Original string: " + parsedString);
 					String[] tmp = serverFormat.format(parsedDate).split(" ");
@@ -96,5 +104,23 @@ public class TimezoneCommands implements CommandExecutor {
 
 	private String parseDate(String [] args) {
 		return  args[1] + " " + args[2];
+	}
+
+	@Override
+	public boolean enable(EscapePlug plugin) {
+		plugin.registerCommands(this);
+		return true;
+	}
+
+	@Override
+	public void tidyUp() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void reloadConfig() {
+		// TODO Auto-generated method stub
+
 	}
 }

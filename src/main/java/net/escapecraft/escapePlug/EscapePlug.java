@@ -22,7 +22,7 @@ import org.bukkit.event.entity.EntityListener;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import de.hydrox.antiSlime.SlimeDamageListener;
-import de.hydrox.bukkit.timezone.TimezoneCommands;
+import de.hydrox.bukkit.timezone.TimezoneComponent;
 import de.hydrox.lockdown.LockdownComponent;
 import de.hydrox.lockdown.LockdownListener;
 import en.tehbeard.endernerf.EndernerfListener;
@@ -130,6 +130,10 @@ public class EscapePlug extends JavaPlugin {
 		//start loading lockdown
 		startComponent(LockdownComponent.class);
 		
+		//start loading Timezone
+		startComponent(TimezoneComponent.class);
+		
+		
 		//start loading AntiSlime
 		if(getConfig().getBoolean("plugin.antislime.enabled", true)){
 			log.info("[EscapePlug] loading AntiSlime");
@@ -161,14 +165,7 @@ public class EscapePlug extends JavaPlugin {
 			log.info("[EscapePlug] skipping PigJouster");
 		}
 
-		//start loading Timezone
-		if(getConfig().getBoolean("plugin.timezone.enabled", true)){
-			log.info("[EscapePlug] loading Timezone");
-			getCommand("timezone").setExecutor(new TimezoneCommands());
-			//finished loading Timezone
-		} else {
-			log.info("[EscapePlug] skipping Timezone");
-		}
+		
 
 
 
