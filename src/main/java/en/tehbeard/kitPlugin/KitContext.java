@@ -26,6 +26,10 @@ public class KitContext {
 	public String getName(){
 		return kit;
 	}
+	
+	public long time(){
+		return timeIn;
+	}
 	public boolean canUseTime(){
 		return (timeIn < System.currentTimeMillis());
 	}
@@ -51,7 +55,10 @@ public class KitContext {
 			}
 		contexts.get(player).add(context);
 	}
-
+	
+	public static  HashMap<String,Set<KitContext>> getAllContexts(){
+		return contexts;
+	}
 	
 	
 }

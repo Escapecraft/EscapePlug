@@ -41,6 +41,9 @@ public class EscapeKitComponent extends AbstractComponent{
 	private Map<String,Kit> kits;
 	private File dbFile;
 
+
+	private EscapePlug plugin;
+
 	
 	
 	/**
@@ -88,6 +91,28 @@ public class EscapeKitComponent extends AbstractComponent{
 				}
 			}
 		}
+		
+		//load contexts
+		ConfigurationSection contextSection = config.getConfigurationSection("contexts");
+		if(contextSection!=null){
+			Set<String> keySet = contextSection.getKeys(false);
+			if(keySet!=null){
+				for(String playerName : keySet){
+					ConfigurationSection player = contextSection.getConfigurationSection(playerName);
+					
+					if(player!=null){
+						Set<String> kitSet = player.getKeys(false);
+						if(kitSet!=null){
+							for(String kit:kitSet){
+								long time = Long.parseLong(player.getString(kit,"0"));
+								KitContext.addContext(playerName, new KitContext(kit, time));
+							}
+						}
+						
+					}
+				}
+			}
+		}
 	}
 
 	/**
@@ -111,6 +136,13 @@ public class EscapeKitComponent extends AbstractComponent{
 				lis.add(rec);
 			}
 			config.set("kits." + kit.getName() + ".items",lis);
+		}
+		//save contexts
+		for(Entry<String, Set<KitContext>> ks: KitContext.getAllContexts().entrySet()){
+			//contexts.PLAYER.KIT:time
+			for(KitContext context: ks.getValue()){
+				config.set("contexts." + ks.getKey() + "." + context.getName(),""+context.time());
+			}
 		}
 
 		try {
@@ -211,6 +243,7 @@ public class EscapeKitComponent extends AbstractComponent{
 
 	@Override
 	public boolean enable(EscapePlug plugin) {
+		this.plugin = plugin;
 		dbFile = new File(plugin.getDataFolder(),"kits.yml");
 		loadData();
 		
@@ -237,6 +270,7 @@ public class EscapeKitComponent extends AbstractComponent{
 	@Override
 	public void tidyUp() {
 		// TODO Auto-generated method stub
+		plugin.printCon("Saving kit data");
 		
 	}
 
