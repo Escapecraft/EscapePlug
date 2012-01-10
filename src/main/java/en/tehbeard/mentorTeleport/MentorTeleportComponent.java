@@ -11,6 +11,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
+import org.tulonsae.mc.util.Log;
 
 /**
  * Mentor Teleportation to newbies.
@@ -89,7 +90,7 @@ public class MentorTeleportComponent extends AbstractComponent implements Comman
 
 	}
 	@Override
-	public boolean enable(EscapePlug plugin) {
+	public boolean enable(Log log,EscapePlug plugin) {
 		this.plugin = plugin;
 		plugin.registerCommands(this);
 		return true;

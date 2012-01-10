@@ -1,4 +1,5 @@
 plugin:
+    debugmode: false
     reserve:
         enabled: true
     antislime:

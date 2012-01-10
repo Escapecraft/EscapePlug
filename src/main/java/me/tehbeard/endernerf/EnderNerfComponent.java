@@ -5,6 +5,7 @@ import org.bukkit.event.Event.Type;
 import org.bukkit.event.entity.EndermanPickupEvent;
 import org.bukkit.event.entity.EndermanPlaceEvent;
 import org.bukkit.event.entity.EntityListener;
+import org.tulonsae.mc.util.Log;
 
 import net.escapecraft.escapePlug.EscapePlug;
 import net.escapecraft.escapePlug.component.AbstractComponent;
@@ -15,7 +16,7 @@ import net.escapecraft.escapePlug.component.ComponentDescriptor;
 public class EnderNerfComponent extends AbstractComponent {
 
 	@Override
-	public boolean enable(EscapePlug plugin) {
+	public boolean enable(Log log,EscapePlug plugin) {
 		plugin.registerEvents(new EndListener());
 		return true;
 	}

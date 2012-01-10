@@ -3,6 +3,7 @@ package net.escapecraft.escapePlug.component;
 import java.util.Set;
 
 import org.bukkit.command.CommandExecutor;
+import org.tulonsae.mc.util.Log;
 
 import net.escapecraft.escapePlug.EscapePlug;
 
@@ -17,7 +18,7 @@ public abstract class AbstractComponent {
 	 * Called upon being enabled
 	 * @param plugin instance of EscapePlug
 	 */
-	public abstract boolean enable(EscapePlug plugin);
+	public abstract boolean enable(Log log,EscapePlug plugin);
 	
 	/**
 	 * Called during onDisable() 

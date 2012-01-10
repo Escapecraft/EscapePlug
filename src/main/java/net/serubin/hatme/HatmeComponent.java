@@ -16,12 +16,12 @@ import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.tulonsae.mc.util.Log;
 
 @ComponentDescriptor(name="HatMe",slug="hatme",version="7.4-ECV")
 @BukkitCommand(command={"hat","unhat"})
@@ -35,7 +35,7 @@ public class HatmeComponent extends AbstractComponent implements CommandExecutor
 
 	private YamlConfiguration config;
 	private File configFile;
-	private EscapePlug plugin;
+	private Log log;
 	
 
 	public boolean onCommand(CommandSender sender, Command cmd,
@@ -236,11 +236,12 @@ public class HatmeComponent extends AbstractComponent implements CommandExecutor
 	}
 
 	@Override
-	public boolean enable(EscapePlug plugin) {
-		this.plugin = plugin;
+	public boolean enable(Log log,EscapePlug plugin) {
+		this.log = log;
 		configFile = new File(plugin.getDataFolder(),"hatme.yml");
 		config = YamlConfiguration.loadConfiguration(configFile );
 		
+		initialConfig();
 		readConfig();
 		
 
@@ -318,7 +319,7 @@ public class HatmeComponent extends AbstractComponent implements CommandExecutor
 		 try {
 			config.save(configFile);
 		} catch (IOException e) {
-			plugin.printCon("Could not read hatme config!");
+			log.severe("Could not read hatme config!");
 			e.printStackTrace();
 		}
 	}
@@ -334,13 +335,13 @@ public class HatmeComponent extends AbstractComponent implements CommandExecutor
 			config.load(configFile);
 			readConfig();
 		} catch (FileNotFoundException e) {
-			plugin.printCon("Could not find hatme config!");
+			log.severe("Could not find hatme config!");
 			e.printStackTrace();
 		} catch (IOException e) {
-			plugin.printCon("Could not read hatme config!");
+			log.severe("Could not read hatme config!");
 			e.printStackTrace();
 		} catch (InvalidConfigurationException e) {
-			plugin.printCon("Config file is broken!");
+			log.severe("Config file is broken!");
 			e.printStackTrace();
 		}
 

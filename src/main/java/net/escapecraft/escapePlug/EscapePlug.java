@@ -1,12 +1,12 @@
 package net.escapecraft.escapePlug;
 
-import java.io.File;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.HashSet;
-import java.util.List;
+
 import java.util.Set;
-import java.util.logging.Logger;
+import java.util.logging.Level;
 
 
 import me.tehbeard.endernerf.EnderNerfComponent;
@@ -19,8 +19,8 @@ import net.serubin.hatme.HatmeComponent;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.event.Event;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityListener;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.tulonsae.mc.util.Log;
 
 import de.hydrox.antiSlime.SlimeDamageListener;
 import de.hydrox.bukkit.timezone.TimezoneComponent;
@@ -38,7 +38,7 @@ import en.tehbeard.reserve.ReserveListComponent;
 
 public class EscapePlug extends JavaPlugin {
 
-	private static final Logger log = Logger.getLogger("Minecraft");
+	private static final Log log = new Log("EscapePlug");
 
 	//keeps a record of all active Components
 	private Set<AbstractComponent> activeComponents = new HashSet<AbstractComponent>();
@@ -50,10 +50,11 @@ public class EscapePlug extends JavaPlugin {
 				ComponentDescriptor cd = (ComponentDescriptor)a;
 				if(getConfig().getBoolean("plugin." +cd.slug() + ".enabled", true)){
 					try {
-						printCon("Enabling " + cd.name() + " " + cd.version());
-						enableComponent(component.newInstance());
+						log.info("Enabling " + cd.name() + " " + cd.version());
+						Log compLog = new Log("EscapePlug",cd.name());
+						enableComponent(compLog,component.newInstance());
 					} catch (Exception e) {
-						printCon("COULD NOT START");
+						log.info("COULD NOT START");
 						e.printStackTrace();
 					} 
 				}
@@ -61,10 +62,10 @@ public class EscapePlug extends JavaPlugin {
 		}
 
 	}
-	
-	
-	public void enableComponent(AbstractComponent component){
-		if(component.enable(this)){
+
+
+	private void enableComponent(Log log,AbstractComponent component){
+		if(component.enable(log,this)){
 			activeComponents.add(component);
 		}
 	}
@@ -80,13 +81,13 @@ public class EscapePlug extends JavaPlugin {
 
 				if(a instanceof BukkitEvent){
 					BukkitEvent bv = (BukkitEvent)a;
-					printCon("registering event hook " + bv.type().toString());
+					log.config("registering event hook " + bv.type().toString());
 					this.getServer().getPluginManager().registerEvent(bv.type(), listener,bv.priority(), this);
 				}
 			}
 		}
 	}
-	
+
 	/**
 	 * Register a command executor
 	 * @param executor
@@ -97,21 +98,27 @@ public class EscapePlug extends JavaPlugin {
 			if(a instanceof BukkitCommand){
 				BukkitCommand bc = (BukkitCommand)a;
 				for(String comm : bc.command()){
-					printCon("Registering command /" +comm);
+					log.config("Registering command /" +comm);
 					getCommand(comm).setExecutor(executor);
+				}
 			}
 		}
 	}
-	}
 
 	public void onEnable() {
-		
+
 		log.info("[EscapePlug] loading EscapePlug");
 
+		
 		//load/creates/fixes config
 		getConfig().options().copyDefaults(true);
 		saveConfig();
 
+		if(getConfig().getBoolean("plugin.debugmode",false)){
+			Log.setLogLevel(Level.CONFIG);
+			log.info("DEBUG MODE ENABLED");
+		}
+		
 		//Starting reserve list
 		startComponent(ReserveListComponent.class);
 
@@ -120,23 +127,23 @@ public class EscapePlug extends JavaPlugin {
 
 		//start loading togglemode
 		startComponent(GameModeToggleComponent.class);
-		
+
 		//start EscapeKit
 		startComponent(EscapeKitComponent.class);
-	
+
 		//start loading lockdown
 		startComponent(LockdownComponent.class);
-		
+
 		//start loading Timezone
 		startComponent(TimezoneComponent.class);
-		
+
 
 		//start loading hatMe
 		startComponent(HatmeComponent.class);
-		
+
 		//start loading endernerf
 		startComponent(EnderNerfComponent.class);
-		
+
 		//start loading AntiSlime
 		if(getConfig().getBoolean("plugin.antislime.enabled", true)){
 			log.info("[EscapePlug] loading AntiSlime");
@@ -168,9 +175,9 @@ public class EscapePlug extends JavaPlugin {
 			log.info("[EscapePlug] skipping PigJouster");
 		}
 
-	
 
-		
+
+
 
 		log.info("[EscapePlug] EscapePlug loaded");
 	}
@@ -182,7 +189,5 @@ public class EscapePlug extends JavaPlugin {
 		log.info("[EscapePlug] EscapePlug unloaded");
 	}
 
-	public void printCon(String line){
-		log.info("[EscapePlug] "+line);
-	}
+
 }

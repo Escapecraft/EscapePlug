@@ -6,10 +6,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
 
+
 import net.escapecraft.escapePlug.EscapePlug;
 import net.escapecraft.escapePlug.component.AbstractComponent;
 import net.escapecraft.escapePlug.component.BukkitCommand;
-import net.escapecraft.escapePlug.component.BukkitEvent;
 import net.escapecraft.escapePlug.component.ComponentDescriptor;
 
 import org.bukkit.command.Command;
@@ -107,7 +107,7 @@ public class TimezoneComponent extends AbstractComponent implements CommandExecu
 	}
 
 	@Override
-	public boolean enable(EscapePlug plugin) {
+	public boolean enable(org.tulonsae.mc.util.Log log,EscapePlug plugin) {
 		plugin.registerCommands(this);
 		return true;
 	}

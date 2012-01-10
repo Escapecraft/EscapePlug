@@ -10,6 +10,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.tulonsae.mc.util.Log;
 
 @ComponentDescriptor(name = "Toggle GameMode", slug = "togglemode", version = "1.0")
 @BukkitCommand(command = { "togglemode" })
@@ -34,7 +35,7 @@ public class GameModeToggleComponent extends AbstractComponent implements Comman
 	}
 
 	@Override
-	public boolean enable(EscapePlug plugin) {
+	public boolean enable(Log log,EscapePlug plugin) {
 		
 		plugin.registerCommands(this);
 	

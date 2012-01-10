@@ -21,6 +21,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
+import org.tulonsae.mc.util.Log;
 import org.yaml.snakeyaml.Yaml;
 
 
@@ -38,7 +39,7 @@ public class EscapeKitComponent extends AbstractComponent{
 
 	private YamlConfiguration kitConfig = null;
 	private YamlConfiguration contextConfig = null;
-	
+
 	private Map<String,Kit> kits;
 	private File dbKitsFile;
 
@@ -47,13 +48,17 @@ public class EscapeKitComponent extends AbstractComponent{
 
 
 	private File dbContextFile;
+	private Log log;
 
-	
-	
+
+	public void loadData(){
+		loadData(true);
+	}
 	/**
 	 * reload Kit Data from file
+	 * @param loadContext 
 	 */
-	public void loadData(){
+	public void loadData(boolean loadContext){
 		kits = new HashMap<String,Kit>();
 		//load config
 
@@ -66,7 +71,7 @@ public class EscapeKitComponent extends AbstractComponent{
 			if(keySet!=null){
 				for(String key : keySet){
 					ConfigurationSection  kitConfig = kitSection.getConfigurationSection(key);
-					
+
 					Kit kit = new Kit(key,kitConfig.getInt("timer"));
 
 					List<String> items  = (List<String>)kitConfig.getList("items");
@@ -95,24 +100,26 @@ public class EscapeKitComponent extends AbstractComponent{
 				}
 			}
 		}
-		
+
 		//load contexts
-		contextConfig = YamlConfiguration.loadConfiguration(dbContextFile); 
-		if(contextConfig!=null){
-			Set<String> keySet = contextConfig.getKeys(false);
-			if(keySet!=null){
-				for(String playerName : keySet){
-					ConfigurationSection player = contextConfig.getConfigurationSection(playerName);
-					
-					if(player!=null){
-						Set<String> kitSet = player.getKeys(false);
-						if(kitSet!=null){
-							for(String kit:kitSet){
-								long time = Long.parseLong(player.getString(kit,"0"));
-								KitContext.addContext(playerName, new KitContext(kit, time));
+		if(loadContext){
+			contextConfig = YamlConfiguration.loadConfiguration(dbContextFile); 
+			if(contextConfig!=null){
+				Set<String> keySet = contextConfig.getKeys(false);
+				if(keySet!=null){
+					for(String playerName : keySet){
+						ConfigurationSection player = contextConfig.getConfigurationSection(playerName);
+
+						if(player!=null){
+							Set<String> kitSet = player.getKeys(false);
+							if(kitSet!=null){
+								for(String kit:kitSet){
+									long time = Long.parseLong(player.getString(kit,"0"));
+									KitContext.addContext(playerName, new KitContext(kit, time));
+								}
 							}
+
 						}
-						
 					}
 				}
 			}
@@ -159,14 +166,14 @@ public class EscapeKitComponent extends AbstractComponent{
 	}
 
 
-	
+
 
 	public void convertKitDb(File file){
 		Scanner in;
 		try {
 			in = new Scanner(file);
-			
-			System.out.println("Converting old kit database");
+
+			log.info("Converting old kit database");
 			while(in.hasNextLine()){
 				//# Name;ID Amount;ID Amount;ID amount (etc)[;-cooldown]
 				String line = in.nextLine();
@@ -194,27 +201,27 @@ public class EscapeKitComponent extends AbstractComponent{
 							{
 								id = Integer.parseInt(item[0]);
 							}
-							
+
 							int count = 1;
 							if(item.length==2){
-							count = Integer.parseInt(item[1]);
+								count = Integer.parseInt(item[1]);
 							}
 							newKit.addItem(new ItemStack(
 									id,
-									
+
 									count,
 									dam
 									));
 						}
 						addKit(newKit);
-						
+
 					}
-					
+
 				}
 			}
 
 			in.close();
-			System.out.println("Conversion complete");
+			log.info("Conversion complete");
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -247,12 +254,13 @@ public class EscapeKitComponent extends AbstractComponent{
 	}
 
 	@Override
-	public boolean enable(EscapePlug plugin) {
+	public boolean enable(Log log,EscapePlug plugin) {
+		this.log = log;
 		this.plugin = plugin;
 		dbKitsFile = new File(plugin.getDataFolder(),"kits.yml");
 		dbContextFile = new File(plugin.getDataFolder(),"kits-players.yml");
 		loadData();
-		
+
 
 		plugin.registerCommands(new KitCommand(this));
 		plugin.registerCommands(new KitAdminCommand(this));
@@ -263,7 +271,7 @@ public class EscapeKitComponent extends AbstractComponent{
 			convertKitDb(file);
 		}
 
-		
+
 
 		loadData();
 
@@ -274,13 +282,13 @@ public class EscapeKitComponent extends AbstractComponent{
 	@Override
 	public void tidyUp() {
 		// TODO Auto-generated method stub
-		plugin.printCon("Saving kit data");
+		log.info("Saving kit data");
 		saveData();
 	}
 
 	@Override
 	public void reloadConfig() {
 		// TODO Auto-generated method stub
-		
+		loadData(false);
 	}
 }

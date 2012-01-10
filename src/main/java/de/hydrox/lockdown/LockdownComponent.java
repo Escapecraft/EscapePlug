@@ -11,6 +11,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.tulonsae.mc.util.Log;
 
 @ComponentDescriptor(name="Emergency lockdown",slug="lockdown",version="1.0")
 @BukkitCommand(command = { "lockdown" })
@@ -49,7 +50,7 @@ public class LockdownComponent extends AbstractComponent implements CommandExecu
 		return false;
 	}
 	@Override
-	public boolean enable(EscapePlug plugin) {
+	public boolean enable(Log log,EscapePlug plugin) {
 		listener = new LockdownListener(plugin);
 		plugin.registerEvents(listener);
 		plugin.registerCommands(this);

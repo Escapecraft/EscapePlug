@@ -9,23 +9,25 @@ import org.bukkit.event.Event.Type;
 import org.bukkit.event.player.PlayerListener;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerLoginEvent.Result;
+import org.tulonsae.mc.util.Log;
 
 
 public class ReserveListener extends PlayerListener {
 	
-	EscapePlug plugin;
-	public ReserveListener(EscapePlug plugin){
-		this.plugin = plugin;
+	
+	private Log log;
+	public ReserveListener(Log log){
+		this.log = log;
 	}
 	@BukkitEvent(priority = Priority.Highest, type = Type.PLAYER_LOGIN)
 	public void onPlayerLogin(PlayerLoginEvent event){
-		plugin.printCon("Event Fired!");
+		log.fine("Event Fired!");
 		if(event.getResult()!=Result.KICK_WHITELIST){
 			if(event.getPlayer().hasPermission("escapeplug.reserve.allow")){
-				plugin.printCon("Allowing player in");
+				log.fine("Allowing player in");
 			}
 			if((Bukkit.getOnlinePlayers().length >= Bukkit.getMaxPlayers()) && event.getPlayer().hasPermission("escapeplug.reserve.allow")==false){
-				plugin.printCon("Disallowing " + event.getPlayer().getName() + " to enter!");
+				log.fine("Disallowing " + event.getPlayer().getName() + " to enter!");
 				event.setKickMessage("server is full :(");
 				event.setResult(PlayerLoginEvent.Result.KICK_FULL);
 			}
