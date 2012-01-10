@@ -28,10 +28,5 @@ public class ReserveListComponent extends AbstractComponent{
 		
 	}
 
-	@Override
-	public Set<CommandExecutor> getCommands() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 }
