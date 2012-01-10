@@ -18,9 +18,7 @@ public class LockdownComponent extends AbstractComponent implements CommandExecu
 
 	LockdownListener listener = null;
 	
-	public LockdownComponent(LockdownListener listener) {
-		this.listener = listener;
-	}
+	
 	public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
 		if (!(sender.hasPermission("escapeplug.lockdown.change"))) {
 			sender.sendMessage(ChatColor.RED + "You don't have permission to change lockdown.");
@@ -52,8 +50,8 @@ public class LockdownComponent extends AbstractComponent implements CommandExecu
 	}
 	@Override
 	public boolean enable(EscapePlug plugin) {
-		
-		plugin.registerEvents(new LockdownListener(plugin));
+		listener = new LockdownListener(plugin);
+		plugin.registerEvents(listener);
 		plugin.registerCommands(this);
 		
 		//finished loading lockdown
