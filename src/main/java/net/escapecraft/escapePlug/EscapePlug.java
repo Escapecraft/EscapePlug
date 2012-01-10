@@ -169,20 +169,7 @@ public class EscapePlug extends JavaPlugin {
 			log.info("[EscapePlug] skipping PigJouster");
 		}
 
-		
-
-
-
-
-		//start loading endernerf
-		if(getConfig().getBoolean("plugin.endernerf.enabled", true)){
-			log.info("[EscapePlug] loading enderNerf");
-			EntityListener el = new EndernerfListener();
-			this.getServer().getPluginManager().registerEvent(Event.Type.ENDERMAN_PICKUP, el, Event.Priority.Highest, this);
-			this.getServer().getPluginManager().registerEvent(Event.Type.ENDERMAN_PLACE, el, Event.Priority.Highest, this);
-
-			//finished loading endernerf
-		}
+	
 
 		
 
