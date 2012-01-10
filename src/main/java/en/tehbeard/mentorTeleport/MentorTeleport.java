@@ -1,5 +1,7 @@
 package en.tehbeard.mentorTeleport;
 
+import net.escapecraft.escapePlug.component.BukkitCommand;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -12,6 +14,7 @@ import org.bukkit.plugin.Plugin;
  * @author James
  *
  */
+@BukkitCommand(command = { "mentortp" })
 public class MentorTeleport implements CommandExecutor {
 
 	private Plugin plugin;

@@ -2,6 +2,8 @@ package en.tehbeard.mentorTeleport;
 
 import java.util.HashMap;
 
+import net.escapecraft.escapePlug.component.BukkitCommand;
+
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -15,6 +17,7 @@ import org.bukkit.plugin.Plugin;
  * @author James
  *
  */
+@BukkitCommand(command = { "mentorback" })
 public class MentorBack implements CommandExecutor {
 
 	protected static HashMap<String,Location> prevLoc = new HashMap<String,Location>(); 

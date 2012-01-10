@@ -32,11 +32,12 @@ import en.tehbeard.kitPlugin.command.KitAdminCommand;
 import en.tehbeard.kitPlugin.command.KitCommand;
 import en.tehbeard.mentorTeleport.MentorBack;
 import en.tehbeard.mentorTeleport.MentorTeleport;
+import en.tehbeard.mentorTeleport.MentorTpComponent;
 import en.tehbeard.pigjouster.PigJouster;
 import en.tehbeard.pigjouster.PigListener;
 import en.tehbeard.pigjouster.PigPlayerListener;
 import en.tehbeard.reserve.ReserveListComponent;
-import en.tehbeard.reserve.ReserveListener;
+
 
 public class EscapePlug extends JavaPlugin {
 
@@ -117,11 +118,11 @@ public class EscapePlug extends JavaPlugin {
 
 		//Starting reserve list
 		startComponent(ReserveListComponent.class);
-		
-		/*if(getConfig().getBoolean("plugin.reserve.enabled", true)){
-			enableComponent(new ReserveListComponent());
-		}*/
 
+		//start loading MentorTeleport
+		startComponent(MentorTpComponent.class);
+		
+		
 		//start loading AntiSlime
 		if(getConfig().getBoolean("plugin.antislime.enabled", true)){
 			log.info("[EscapePlug] loading AntiSlime");
@@ -133,15 +134,7 @@ public class EscapePlug extends JavaPlugin {
 		}
 		//finished loading AntiSlime
 
-		//start loading MentorTeleport
-		if(getConfig().getBoolean("plugin.mentortp.enabled", true)){
-			log.info("[EscapePlug] loading MentorTP");
-			getCommand("mentortp").setExecutor(new MentorTeleport(this));
-			getCommand("mentorback").setExecutor(new MentorBack(this));
-			//finished loading MentorTeleport
-		} else {
-			log.info("[EscapePlug] skipping MentorTP");
-		}
+
 
 		//start loading PigJouster
 		if(getConfig().getBoolean("plugin.pigjoust.enabled", true)){
