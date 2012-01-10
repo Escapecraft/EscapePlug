@@ -9,6 +9,7 @@ import java.util.Set;
 import java.util.logging.Logger;
 
 
+import me.tehbeard.endernerf.EnderNerfComponent;
 import net.escapecraft.escapePlug.component.AbstractComponent;
 import net.escapecraft.escapePlug.component.BukkitCommand;
 import net.escapecraft.escapePlug.component.BukkitEvent;
@@ -24,12 +25,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import de.hydrox.antiSlime.SlimeDamageListener;
 import de.hydrox.bukkit.timezone.TimezoneComponent;
 import de.hydrox.lockdown.LockdownComponent;
-import de.hydrox.lockdown.LockdownListener;
-import en.tehbeard.endernerf.EndernerfListener;
 import en.tehbeard.gamemode.GameModeToggleComponent;
 import en.tehbeard.kitPlugin.EscapeKitComponent;
-import en.tehbeard.kitPlugin.command.KitAdminCommand;
-import en.tehbeard.kitPlugin.command.KitCommand;
 
 import en.tehbeard.mentorTeleport.MentorTeleportComponent;
 
@@ -137,6 +134,8 @@ public class EscapePlug extends JavaPlugin {
 		//start loading hatMe
 		startComponent(HatmeComponent.class);
 		
+		//start loading endernerf
+		startComponent(EnderNerfComponent.class);
 		
 		//start loading AntiSlime
 		if(getConfig().getBoolean("plugin.antislime.enabled", true)){
