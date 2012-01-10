@@ -2,6 +2,7 @@ package net.escapecraft.escapePlug;
 
 import java.io.File;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -9,9 +10,12 @@ import java.util.logging.Logger;
 
 
 import net.escapecraft.escapePlug.component.AbstractComponent;
+import net.escapecraft.escapePlug.component.BukkitCommand;
 import net.escapecraft.escapePlug.component.BukkitEvent;
+import net.escapecraft.escapePlug.component.ComponentDescriptor;
 import net.serubin.hatme.HatmeCommand;
 
+import org.bukkit.command.CommandExecutor;
 import org.bukkit.event.Event;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityListener;
@@ -38,27 +42,71 @@ public class EscapePlug extends JavaPlugin {
 
 	private static final Logger log = Logger.getLogger("Minecraft");
 	public static EscapePlug self = null;
-	
+
+	//keeps a record of all active Components
 	private Set<AbstractComponent> activeComponents = new HashSet<AbstractComponent>();
 
+
+	private void startComponent(Class<? extends AbstractComponent> component){
+		for(Annotation a: component.getAnnotations()){
+			if(a instanceof ComponentDescriptor){
+				ComponentDescriptor cd = (ComponentDescriptor)a;
+				if(getConfig().getBoolean("plugin." +cd.slug() + ".enabled", true)){
+					try {
+						printCon("Enabling " + cd.name() + " " + cd.version());
+						enableComponent(component.newInstance());
+					} catch (Exception e) {
+						printCon("COULD NOT START");
+						e.printStackTrace();
+					} 
+				}
+			}
+		}
+
+	}
+	
 	
 	public void enableComponent(AbstractComponent component){
 		if(component.enable(this)){
 			activeComponents.add(component);
 		}
 	}
-	
-	
+
+
+	/**
+	 * Register events of a listener
+	 * @param listener
+	 */
 	public void registerEvents(Listener listener){
-		for(Annotation a: listener.getClass().getAnnotations()){
-			
-			if(a instanceof BukkitEvent){
-				BukkitEvent bv = (BukkitEvent)a;
-				this.getServer().getPluginManager().registerEvent(bv.type(), listener,bv.priority(), this);
+		for(Method m: listener.getClass().getMethods()){
+			for(Annotation a: m.getAnnotations()){
+
+				if(a instanceof BukkitEvent){
+					BukkitEvent bv = (BukkitEvent)a;
+					printCon("registering event hook " + bv.type().toString());
+					this.getServer().getPluginManager().registerEvent(bv.type(), listener,bv.priority(), this);
+				}
 			}
 		}
 	}
 	
+	/**
+	 * Register a command executor
+	 * @param executor
+	 */
+	public void registerCommands(CommandExecutor executor){
+		for(Annotation a: executor.getClass().getAnnotations()){
+
+			if(a instanceof BukkitCommand){
+				BukkitCommand bc = (BukkitCommand)a;
+				for(String comm : bc.command()){
+					printCon("Registering command /" +comm);
+					getCommand(comm).setExecutor(executor);
+			}
+		}
+	}
+	}
+
 	public void onEnable() {
 		self = this;
 		log.info("[EscapePlug] loading EscapePlug");
@@ -68,9 +116,11 @@ public class EscapePlug extends JavaPlugin {
 		saveConfig();
 
 		//Starting reserve list
-		if(getConfig().getBoolean("plugin.reserve.enabled", true)){
+		startComponent(ReserveListComponent.class);
+		
+		/*if(getConfig().getBoolean("plugin.reserve.enabled", true)){
 			enableComponent(new ReserveListComponent());
-		}
+		}*/
 
 		//start loading AntiSlime
 		if(getConfig().getBoolean("plugin.antislime.enabled", true)){
@@ -172,7 +222,7 @@ public class EscapePlug extends JavaPlugin {
 			KitPluginDataManager.boot(this);
 			getCommand("kit").setExecutor(new KitCommand());
 			getCommand("kit-admin").setExecutor(new KitAdminCommand());
-			
+
 			//try conversion
 			File file = new File(getDataFolder(),"kits.txt");
 			if(file.exists()){
@@ -187,7 +237,7 @@ public class EscapePlug extends JavaPlugin {
 		log.info("[EscapePlug] EscapePlug unloaded");
 	}
 
-	public static void printCon(String line){
+	public void printCon(String line){
 		log.info("[EscapePlug] "+line);
 	}
 }
