@@ -1,7 +1,11 @@
 package de.hydrox.lockdown;
 
+import net.escapecraft.escapePlug.component.BukkitEvent;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.event.Event.Priority;
+import org.bukkit.event.Event.Type;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerListener;
 import org.bukkit.event.player.PlayerLoginEvent;
@@ -18,6 +22,7 @@ public class LockdownListener extends PlayerListener {
 		NOTIFICATIONMSG = plugin.getConfig().getString("plugin.lockdown.notificationmsg");
 	}
 
+	@BukkitEvent(type=Type.PLAYER_LOGIN,priority=Priority.Highest)
 	public void onPlayerLogin(PlayerLoginEvent event){
 		if(!isLockdownActive) {
 			return;
@@ -34,6 +39,7 @@ public class LockdownListener extends PlayerListener {
 		}
 	}
 
+	@BukkitEvent(type=Type.PLAYER_JOIN,priority=Priority.Highest)
 	public void onPlayerJoin(PlayerJoinEvent event) {
 		if(!isLockdownActive) {
 			return;

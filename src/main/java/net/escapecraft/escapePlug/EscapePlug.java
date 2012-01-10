@@ -23,7 +23,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import de.hydrox.antiSlime.SlimeDamageListener;
 import de.hydrox.bukkit.timezone.TimezoneCommands;
-import de.hydrox.lockdown.LockdownCommand;
+import de.hydrox.lockdown.LockdownComponent;
 import de.hydrox.lockdown.LockdownListener;
 import en.tehbeard.endernerf.EndernerfListener;
 import en.tehbeard.gamemode.GameModeToggleComponent;
@@ -127,6 +127,9 @@ public class EscapePlug extends JavaPlugin {
 		//start EscapeKit
 		startComponent(EscapeKitComponent.class);
 	
+		//start loading lockdown
+		startComponent(LockdownComponent.class);
+		
 		//start loading AntiSlime
 		if(getConfig().getBoolean("plugin.antislime.enabled", true)){
 			log.info("[EscapePlug] loading AntiSlime");
@@ -180,15 +183,7 @@ public class EscapePlug extends JavaPlugin {
 			//finished loading endernerf
 		}
 
-		//start loading lockdown
-		if(getConfig().getBoolean("plugin.lockdown.enabled", true)){
-			log.info("[EscapePlug] loading Emergency Lockdown");
-			LockdownListener lockdownListener = new LockdownListener(this);
-			getCommand("lockdown").setExecutor(new LockdownCommand(lockdownListener));
-			this.getServer().getPluginManager().registerEvent(Event.Type.PLAYER_LOGIN, lockdownListener, Event.Priority.Highest, this);
-			this.getServer().getPluginManager().registerEvent(Event.Type.PLAYER_JOIN, lockdownListener, Event.Priority.Highest, this);
-			//finished loading lockdown
-		}
+		
 
 		//start loading hatMe
 		if(getConfig().getBoolean("plugin.hatme.enabled", true)){

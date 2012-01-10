@@ -21,6 +21,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
+import org.yaml.snakeyaml.Yaml;
 
 
 import en.tehbeard.kitPlugin.command.KitAdminCommand;
@@ -35,14 +36,17 @@ import en.tehbeard.kitPlugin.command.KitCommand;
 @ComponentDescriptor(name="EscapeKit",slug="kitplugin",version="1.0")
 public class EscapeKitComponent extends AbstractComponent{
 
-	private YamlConfiguration config = null;
-
+	private YamlConfiguration kitConfig = null;
+	private YamlConfiguration contextConfig = null;
 	
 	private Map<String,Kit> kits;
-	private File dbFile;
+	private File dbKitsFile;
 
 
 	private EscapePlug plugin;
+
+
+	private File dbContextFile;
 
 	
 	
@@ -53,10 +57,10 @@ public class EscapeKitComponent extends AbstractComponent{
 		kits = new HashMap<String,Kit>();
 		//load config
 
-		config = YamlConfiguration.loadConfiguration(dbFile);
+		kitConfig = YamlConfiguration.loadConfiguration(dbKitsFile);
 
 		//load kits
-		ConfigurationSection kitSection = config.getConfigurationSection("kits");
+		ConfigurationSection kitSection = kitConfig.getConfigurationSection("kits");
 		if(kitSection!=null){
 			Set<String> keySet = kitSection.getKeys(false);
 			if(keySet!=null){
@@ -93,12 +97,12 @@ public class EscapeKitComponent extends AbstractComponent{
 		}
 		
 		//load contexts
-		ConfigurationSection contextSection = config.getConfigurationSection("contexts");
-		if(contextSection!=null){
-			Set<String> keySet = contextSection.getKeys(false);
+		contextConfig = YamlConfiguration.loadConfiguration(dbContextFile); 
+		if(contextConfig!=null){
+			Set<String> keySet = contextConfig.getKeys(false);
 			if(keySet!=null){
 				for(String playerName : keySet){
-					ConfigurationSection player = contextSection.getConfigurationSection(playerName);
+					ConfigurationSection player = contextConfig.getConfigurationSection(playerName);
 					
 					if(player!=null){
 						Set<String> kitSet = player.getKeys(false);
@@ -120,7 +124,7 @@ public class EscapeKitComponent extends AbstractComponent{
 	 */
 	public void saveData(){
 		for(Kit kit : kits.values()){ 
-			config.set("kits." + kit.getName() + ".timer",kit.getCooldown());
+			kitConfig.set("kits." + kit.getName() + ".timer",kit.getCooldown());
 			List<String> lis = new LinkedList<String>();
 			String rec;
 			for(ItemStack is: kit.getItems()){
@@ -135,18 +139,19 @@ public class EscapeKitComponent extends AbstractComponent{
 
 				lis.add(rec);
 			}
-			config.set("kits." + kit.getName() + ".items",lis);
+			kitConfig.set("kits." + kit.getName() + ".items",lis);
 		}
 		//save contexts
 		for(Entry<String, Set<KitContext>> ks: KitContext.getAllContexts().entrySet()){
 			//contexts.PLAYER.KIT:time
 			for(KitContext context: ks.getValue()){
-				config.set("contexts." + ks.getKey() + "." + context.getName(),""+context.time());
+				contextConfig.set("contexts." + ks.getKey() + "." + context.getName(),""+context.time());
 			}
 		}
 
 		try {
-			config.save(dbFile);
+			kitConfig.save(dbKitsFile);
+			contextConfig.save(dbContextFile);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -244,10 +249,10 @@ public class EscapeKitComponent extends AbstractComponent{
 	@Override
 	public boolean enable(EscapePlug plugin) {
 		this.plugin = plugin;
-		dbFile = new File(plugin.getDataFolder(),"kits.yml");
+		dbKitsFile = new File(plugin.getDataFolder(),"kits.yml");
+		dbContextFile = new File(plugin.getDataFolder(),"kits-players.yml");
 		loadData();
 		
-		dbFile = new File(plugin.getDataFolder(),"kits.yml");
 
 		plugin.registerCommands(new KitCommand(this));
 		plugin.registerCommands(new KitAdminCommand(this));
@@ -259,7 +264,6 @@ public class EscapeKitComponent extends AbstractComponent{
 		}
 
 		
-		//register serialization classes
 
 		loadData();
 
@@ -271,7 +275,7 @@ public class EscapeKitComponent extends AbstractComponent{
 	public void tidyUp() {
 		// TODO Auto-generated method stub
 		plugin.printCon("Saving kit data");
-		
+		saveData();
 	}
 
 	@Override
