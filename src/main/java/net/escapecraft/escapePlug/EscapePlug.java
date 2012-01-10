@@ -6,11 +6,8 @@ import java.util.logging.Logger;
 
 import net.serubin.hatme.HatmeCommand;
 
-import org.bukkit.Material;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.Event;
 import org.bukkit.event.entity.EntityListener;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import de.hydrox.antiSlime.SlimeDamageListener;
@@ -19,7 +16,6 @@ import de.hydrox.lockdown.LockdownCommand;
 import de.hydrox.lockdown.LockdownListener;
 import en.tehbeard.endernerf.EndernerfListener;
 import en.tehbeard.gamemode.GameModeToggle;
-import en.tehbeard.kitPlugin.Kit;
 import en.tehbeard.kitPlugin.KitPluginDataManager;
 import en.tehbeard.kitPlugin.command.KitAdminCommand;
 import en.tehbeard.kitPlugin.command.KitCommand;
