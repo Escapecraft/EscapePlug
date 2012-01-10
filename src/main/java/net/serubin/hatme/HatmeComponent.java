@@ -1,5 +1,9 @@
 package net.serubin.hatme;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.LinkedList;
 import java.util.List;
 
 import net.escapecraft.escapePlug.EscapePlug;
@@ -12,6 +16,9 @@ import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -21,19 +28,15 @@ import org.bukkit.inventory.PlayerInventory;
 public class HatmeComponent extends AbstractComponent implements CommandExecutor {
 
 	private String notAllowedMsg;
-	private boolean rbAllow;
+	private boolean rbUseList;
 	private List<Integer> rbBlocks;
-	private List<Integer> allowID;
+	//private List<Integer> allowID;
 	private boolean rbOp;
 
-	public HatmeComponent(List<Integer> rbBlocks, boolean rbAllow,
-			String notAllowedMsg, boolean rbOp) {
-		// TODO Auto-generated constructor stub
-		this.rbBlocks = rbBlocks;
-		this.rbAllow = rbAllow;
-		this.notAllowedMsg = notAllowedMsg;
-		this.rbOp = rbOp;
-	}
+	private YamlConfiguration config;
+	private File configFile;
+	private EscapePlug plugin;
+	
 
 	public boolean onCommand(CommandSender sender, Command cmd,
 			String commandLabel, String[] args) {
@@ -48,10 +51,10 @@ public class HatmeComponent extends AbstractComponent implements CommandExecutor
 		if (commandLabel.equalsIgnoreCase("hat")) {
 			if (checkPermissionBasic(player)) {
 				if (args.length == 0) {
-					allowID = rbBlocks;
-					if (rbAllow != false) {
+					
+					if (rbUseList) {
 						// if restrict is true
-						if ((!allowID.contains(itemHandId))
+						if ((!rbBlocks.contains(itemHandId))
 								&& (itemHandId != 0)) {
 							// checks for allowed blocks
 							player.sendMessage(ChatColor.RED + notAllowedMsg);
@@ -68,12 +71,12 @@ public class HatmeComponent extends AbstractComponent implements CommandExecutor
 				}
 				if (args.length == 1) {
 					if (checkPermissionGive(player, args)) {
-						allowID = rbBlocks;
-						if (rbAllow != false) {
+						
+						if (rbUseList) {
 							// if restrict is true
 							if (!checkPermissionNoRestrict(player)) {
 								// if op or has perm no restrict
-								if ((!allowID.contains(Integer
+								if ((!rbBlocks.contains(Integer
 										.parseInt(args[0])))
 										&& (Integer.parseInt(args[0]) != 0)) {
 									// checks for allowed blocks
@@ -234,14 +237,11 @@ public class HatmeComponent extends AbstractComponent implements CommandExecutor
 
 	@Override
 	public boolean enable(EscapePlug plugin) {
+		this.plugin = plugin;
+		configFile = new File(plugin.getDataFolder(),"hatme.yml");
+		config = YamlConfiguration.loadConfiguration(configFile );
 		
-		
-
-		//get Config
-		rbBlocks = plugin.getConfig().getIntegerList("plugin.hatme.allowed");
-		rbAllow = plugin.getConfig().getBoolean("plugin.hatme.enable");
-		notAllowedMsg = plugin.getConfig().getString("plugin.hatme.notAllowedMsg");
-		rbOp = plugin.getConfig().getBoolean("plugin.hatme.opnorestrict");
+		readConfig();
 		
 
 		//construct command and assign to /hat and /unhat
@@ -251,7 +251,77 @@ public class HatmeComponent extends AbstractComponent implements CommandExecutor
 		
 		return true;
 	}
+	
+	private void readConfig(){
+		//get Config
+		rbBlocks = config.getIntegerList("hatme.allowed");
+		rbUseList = config.getBoolean("hatme.enableRestrict");
+		notAllowedMsg = config.getString("hatme.notAllowedMsg");
+		rbOp = config.getBoolean("hatme.opnorestrict");
+	}
 
+	private void initialConfig(){
+		//generate initial config data
+		YamlConfiguration temp = new YamlConfiguration();
+		temp.set("hatme.enableRestrict", true);
+        temp.set("hatme.opnorestrict", true);
+		temp.set("hatme.notAllowedMsg","Invalid Item");
+        List<Integer> list = new LinkedList<Integer>();
+        Integer[] ints = { 0, 1
+, 2
+, 3
+, 4
+, 5
+, 12
+, 13
+        , 14
+        , 15
+        , 17
+        , 18
+        , 20
+        , 22
+        , 23
+        , 24
+        , 25
+        , 35
+        , 41
+        , 42
+        , 44
+        , 45
+        , 46
+        , 47
+        , 48
+        , 49
+        , 52
+        , 54
+        , 57
+        , 58
+        , 80
+        , 81
+        , 82
+        , 87
+        , 88
+        , 89
+        , 91
+        , 98
+        , 103
+        , 112};
+
+		 for(int i :ints){
+			 list.add(i);
+		 }
+		 temp.set("hatme.allowed", list);
+		 
+		 //set as defaults and save
+		 config.setDefaults(temp);
+		 config.options().copyDefaults(true);
+		 try {
+			config.save(configFile);
+		} catch (IOException e) {
+			plugin.printCon("Could not read hatme config!");
+			e.printStackTrace();
+		}
+	}
 	@Override
 	public void tidyUp() {
 		// TODO Auto-generated method stub
@@ -260,7 +330,20 @@ public class HatmeComponent extends AbstractComponent implements CommandExecutor
 
 	@Override
 	public void reloadConfig() {
-		// TODO Auto-generated method stub
+		try {
+			config.load(configFile);
+			readConfig();
+		} catch (FileNotFoundException e) {
+			plugin.printCon("Could not find hatme config!");
+			e.printStackTrace();
+		} catch (IOException e) {
+			plugin.printCon("Could not read hatme config!");
+			e.printStackTrace();
+		} catch (InvalidConfigurationException e) {
+			plugin.printCon("Config file is broken!");
+			e.printStackTrace();
+		}
+
 		
 	}
 
