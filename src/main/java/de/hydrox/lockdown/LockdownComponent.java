@@ -1,19 +1,25 @@
 package de.hydrox.lockdown;
 
+import net.escapecraft.escapePlug.EscapePlug;
+import net.escapecraft.escapePlug.component.AbstractComponent;
+import net.escapecraft.escapePlug.component.BukkitCommand;
+import net.escapecraft.escapePlug.component.ComponentDescriptor;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.tulonsae.mc.util.Log;
 
-public class LockdownCommand implements CommandExecutor {
+@ComponentDescriptor(name="Emergency lockdown",slug="lockdown",version="1.0")
+@BukkitCommand(command = { "lockdown" })
+public class LockdownComponent extends AbstractComponent implements CommandExecutor {
 
 	LockdownListener listener = null;
 	
-	public LockdownCommand(LockdownListener listener) {
-		this.listener = listener;
-	}
+	
 	public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
 		if (!(sender.hasPermission("escapeplug.lockdown.change"))) {
 			sender.sendMessage(ChatColor.RED + "You don't have permission to change lockdown.");
@@ -43,5 +49,17 @@ public class LockdownCommand implements CommandExecutor {
 		}
 		return false;
 	}
-
+	@Override
+	public boolean enable(Log log,EscapePlug plugin) {
+		listener = new LockdownListener(plugin);
+		plugin.registerEvents(listener);
+		plugin.registerCommands(this);
+		
+		//finished loading lockdown
+		return true;
+	}
+	@Override
+	public void tidyUp() {}
+	@Override
+	public void reloadConfig() {}
 }
