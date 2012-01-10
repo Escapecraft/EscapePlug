@@ -1,6 +1,6 @@
 package net.escapecraft.escapePlug.component;
 
-import java.util.Map;
+import java.util.Set;
 
 import org.bukkit.command.CommandExecutor;
 
@@ -13,11 +13,21 @@ import net.escapecraft.escapePlug.EscapePlug;
  */
 public abstract class AbstractComponent {
 
-	public abstract void enable(EscapePlug plugin);
+	/**
+	 * Called upon being enabled
+	 * @param plugin instance of EscapePlug
+	 */
+	public abstract boolean enable(EscapePlug plugin);
 	
+	/**
+	 * Called during onDisable() 
+	 */
 	public abstract void tidyUp();
 	
+	/**
+	 * Called to tell the plugin to recheck it's config
+	 */
 	public abstract void reloadConfig();
 	
-	public abstract Map<String,CommandExecutor> getCommands();
+	
 }

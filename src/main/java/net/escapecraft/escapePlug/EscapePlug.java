@@ -1,12 +1,19 @@
 package net.escapecraft.escapePlug;
 
 import java.io.File;
+import java.lang.annotation.Annotation;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Logger;
 
+
+import net.escapecraft.escapePlug.component.AbstractComponent;
+import net.escapecraft.escapePlug.component.BukkitEvent;
 import net.serubin.hatme.HatmeCommand;
 
 import org.bukkit.event.Event;
+import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityListener;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -24,14 +31,34 @@ import en.tehbeard.mentorTeleport.MentorTeleport;
 import en.tehbeard.pigjouster.PigJouster;
 import en.tehbeard.pigjouster.PigListener;
 import en.tehbeard.pigjouster.PigPlayerListener;
+import en.tehbeard.reserve.ReserveListComponent;
 import en.tehbeard.reserve.ReserveListener;
 
 public class EscapePlug extends JavaPlugin {
 
 	private static final Logger log = Logger.getLogger("Minecraft");
 	public static EscapePlug self = null;
-	//Hatme config variables
+	
+	private Set<AbstractComponent> activeComponents = new HashSet<AbstractComponent>();
 
+	
+	public void enableComponent(AbstractComponent component){
+		if(component.enable(this)){
+			activeComponents.add(component);
+		}
+	}
+	
+	
+	public void registerEvents(Listener listener){
+		for(Annotation a: listener.getClass().getAnnotations()){
+			
+			if(a instanceof BukkitEvent){
+				BukkitEvent bv = (BukkitEvent)a;
+				this.getServer().getPluginManager().registerEvent(bv.type(), listener,bv.priority(), this);
+			}
+		}
+	}
+	
 	public void onEnable() {
 		self = this;
 		log.info("[EscapePlug] loading EscapePlug");
@@ -42,8 +69,7 @@ public class EscapePlug extends JavaPlugin {
 
 		//Starting reserve list
 		if(getConfig().getBoolean("plugin.reserve.enabled", true)){
-			ReserveListener rl = new ReserveListener();
-			this.getServer().getPluginManager().registerEvent(Event.Type.PLAYER_LOGIN, rl, Event.Priority.Highest, this);
+			enableComponent(new ReserveListComponent());
 		}
 
 		//start loading AntiSlime

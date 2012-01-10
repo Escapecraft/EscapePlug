@@ -1,5 +1,8 @@
 package net.escapecraft.escapePlug.component;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+
 import org.bukkit.event.Event;
 
 
@@ -8,6 +11,7 @@ import org.bukkit.event.Event;
  * @author james
  *
  */
+@Retention(RetentionPolicy.RUNTIME)
 public @interface BukkitEvent {
 Event.Type type();
 Event.Priority priority();
