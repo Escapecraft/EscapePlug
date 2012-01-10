@@ -2,6 +2,11 @@ package net.serubin.hatme;
 
 import java.util.List;
 
+import net.escapecraft.escapePlug.EscapePlug;
+import net.escapecraft.escapePlug.component.AbstractComponent;
+import net.escapecraft.escapePlug.component.BukkitCommand;
+import net.escapecraft.escapePlug.component.ComponentDescriptor;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -11,7 +16,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
-public class HatmeCommand implements CommandExecutor {
+@ComponentDescriptor(name="HatMe",slug="hatme",version="7.4-ECV")
+@BukkitCommand(command={"hat","unhat"})
+public class HatmeCommand extends AbstractComponent implements CommandExecutor {
 
 	private String notAllowedMsg;
 	private boolean rbAllow;
@@ -223,6 +230,38 @@ public class HatmeCommand implements CommandExecutor {
 			return true;
 		}
 		return true;
+	}
+
+	@Override
+	public boolean enable(EscapePlug plugin) {
+		
+		log.info("[EscapePlug] loading hatMe");
+
+		//get Config
+		rbBlocks = plugin.getConfig().getIntegerList("plugin.hatme.allowed");
+		rbAllow = plugin.getConfig().getBoolean("plugin.hatme.enable");
+		notAllowedMsg = plugin.getConfig().getString("plugin.hatme.notAllowedMsg");
+		rbOp = plugin.getConfig().getBoolean("plugin.hatme.opnorestrict");
+		
+
+		//construct command and assign to /hat and /unhat
+		plugin.registerCommands(this);
+		
+		
+		
+		return true;
+	}
+
+	@Override
+	public void tidyUp() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void reloadConfig() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
