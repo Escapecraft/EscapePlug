@@ -1,46 +1,148 @@
 package net.escapecraft.escapePlug;
 
-import java.util.List;
-import java.util.logging.Logger;
 
-import net.serubin.hatme.HatmeCommand;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
+import java.util.HashSet;
 
+import java.util.Set;
+import java.util.logging.Level;
+
+
+import me.tehbeard.endernerf.EnderNerfComponent;
+import net.escapecraft.escapePlug.component.AbstractComponent;
+import net.escapecraft.escapePlug.component.BukkitCommand;
+import net.escapecraft.escapePlug.component.BukkitEvent;
+import net.escapecraft.escapePlug.component.ComponentDescriptor;
+import net.serubin.hatme.HatmeComponent;
+
+import org.bukkit.command.CommandExecutor;
 import org.bukkit.event.Event;
-import org.bukkit.event.entity.EntityListener;
+import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.tulonsae.mc.util.Log;
 
 import de.hydrox.antiSlime.SlimeDamageListener;
-import de.hydrox.bukkit.timezone.TimezoneCommands;
-import de.hydrox.lockdown.LockdownCommand;
-import de.hydrox.lockdown.LockdownListener;
-import en.tehbeard.endernerf.EndernerfListener;
-import en.tehbeard.gamemode.GameModeToggle;
-import en.tehbeard.mentorTeleport.MentorBack;
-import en.tehbeard.mentorTeleport.MentorTeleport;
+import de.hydrox.bukkit.timezone.TimezoneComponent;
+import de.hydrox.lockdown.LockdownComponent;
+import en.tehbeard.gamemode.GameModeToggleComponent;
+import en.tehbeard.kitPlugin.EscapeKitComponent;
+
+import en.tehbeard.mentorTeleport.MentorTeleportComponent;
+
 import en.tehbeard.pigjouster.PigJouster;
 import en.tehbeard.pigjouster.PigListener;
 import en.tehbeard.pigjouster.PigPlayerListener;
-import en.tehbeard.reserve.ReserveListener;
+import en.tehbeard.reserve.ReserveListComponent;
+
 
 public class EscapePlug extends JavaPlugin {
 
-	private static final Logger log = Logger.getLogger("Minecraft");
-	public static EscapePlug self = null;
-	//Hatme config variables
-	
+	private static final Log log = new Log("EscapePlug");
+
+	//keeps a record of all active Components
+	private Set<AbstractComponent> activeComponents = new HashSet<AbstractComponent>();
+
+
+	private void startComponent(Class<? extends AbstractComponent> component){
+		for(Annotation a: component.getAnnotations()){
+			if(a instanceof ComponentDescriptor){
+				ComponentDescriptor cd = (ComponentDescriptor)a;
+				if(getConfig().getBoolean("plugin." +cd.slug() + ".enabled", true)){
+					try {
+						log.info("Enabling " + cd.name() + " " + cd.version());
+						Log compLog = new Log("EscapePlug",cd.name());
+						enableComponent(compLog,component.newInstance());
+					} catch (Exception e) {
+						log.info("COULD NOT START");
+						e.printStackTrace();
+					} 
+				}
+			}
+		}
+
+	}
+
+
+	private void enableComponent(Log log,AbstractComponent component){
+		if(component.enable(log,this)){
+			activeComponents.add(component);
+		}
+	}
+
+
+	/**
+	 * Register events of a listener
+	 * @param listener
+	 */
+	public void registerEvents(Listener listener){
+		for(Method m: listener.getClass().getMethods()){
+			for(Annotation a: m.getAnnotations()){
+
+				if(a instanceof BukkitEvent){
+					BukkitEvent bv = (BukkitEvent)a;
+					log.config("registering event hook " + bv.type().toString());
+					this.getServer().getPluginManager().registerEvent(bv.type(), listener,bv.priority(), this);
+				}
+			}
+		}
+	}
+
+	/**
+	 * Register a command executor
+	 * @param executor
+	 */
+	public void registerCommands(CommandExecutor executor){
+		for(Annotation a: executor.getClass().getAnnotations()){
+
+			if(a instanceof BukkitCommand){
+				BukkitCommand bc = (BukkitCommand)a;
+				for(String comm : bc.command()){
+					log.config("Registering command /" +comm);
+					getCommand(comm).setExecutor(executor);
+				}
+			}
+		}
+	}
+
 	public void onEnable() {
-		self = this;
+
 		log.info("[EscapePlug] loading EscapePlug");
 
+		
 		//load/creates/fixes config
 		getConfig().options().copyDefaults(true);
 		saveConfig();
 
-		//Starting reserve list
-		if(getConfig().getBoolean("plugin.reserve.enabled", true)){
-			ReserveListener rl = new ReserveListener();
-			this.getServer().getPluginManager().registerEvent(Event.Type.PLAYER_LOGIN, rl, Event.Priority.Highest, this);
+		if(getConfig().getBoolean("plugin.debugmode",false)){
+			Log.setLogLevel(Level.CONFIG);
+			log.info("DEBUG MODE ENABLED");
 		}
+		
+		//Starting reserve list
+		startComponent(ReserveListComponent.class);
+
+		//start loading MentorTeleport
+		startComponent(MentorTeleportComponent.class);
+
+		//start loading togglemode
+		startComponent(GameModeToggleComponent.class);
+
+		//start EscapeKit
+		startComponent(EscapeKitComponent.class);
+
+		//start loading lockdown
+		startComponent(LockdownComponent.class);
+
+		//start loading Timezone
+		startComponent(TimezoneComponent.class);
+
+
+		//start loading hatMe
+		startComponent(HatmeComponent.class);
+
+		//start loading endernerf
+		startComponent(EnderNerfComponent.class);
 
 		//start loading AntiSlime
 		if(getConfig().getBoolean("plugin.antislime.enabled", true)){
@@ -53,15 +155,7 @@ public class EscapePlug extends JavaPlugin {
 		}
 		//finished loading AntiSlime
 
-		//start loading MentorTeleport
-		if(getConfig().getBoolean("plugin.mentortp.enabled", true)){
-			log.info("[EscapePlug] loading MentorTP");
-			getCommand("mentortp").setExecutor(new MentorTeleport(this));
-			getCommand("mentorback").setExecutor(new MentorBack(this));
-			//finished loading MentorTeleport
-		} else {
-			log.info("[EscapePlug] skipping MentorTP");
-		}
+
 
 		//start loading PigJouster
 		if(getConfig().getBoolean("plugin.pigjoust.enabled", true)){
@@ -81,60 +175,7 @@ public class EscapePlug extends JavaPlugin {
 			log.info("[EscapePlug] skipping PigJouster");
 		}
 
-		//start loading Timezone
-		if(getConfig().getBoolean("plugin.timezone.enabled", true)){
-			log.info("[EscapePlug] loading Timezone");
-			getCommand("timezone").setExecutor(new TimezoneCommands());
-			//finished loading Timezone
-		} else {
-			log.info("[EscapePlug] skipping Timezone");
-		}
 
-
-		//start loading togglemode
-		if(getConfig().getBoolean("plugin.togglemode.enabled", true)){
-			log.info("[EscapePlug] loading ToggleGameMode");
-			getCommand("togglemode").setExecutor(new GameModeToggle());
-			//finished loading togglemode
-		}
-
-		//start loading endernerf
-		if(getConfig().getBoolean("plugin.endernerf.enabled", true)){
-			log.info("[EscapePlug] loading enderNerf");
-			EntityListener el = new EndernerfListener();
-			this.getServer().getPluginManager().registerEvent(Event.Type.ENDERMAN_PICKUP, el, Event.Priority.Highest, this);
-			this.getServer().getPluginManager().registerEvent(Event.Type.ENDERMAN_PLACE, el, Event.Priority.Highest, this);
-		
-			//finished loading endernerf
-		}
-
-		//start loading lockdown
-		if(getConfig().getBoolean("plugin.lockdown.enabled", true)){
-			log.info("[EscapePlug] loading Emergency Lockdown");
-			LockdownListener lockdownListener = new LockdownListener(this);
-			getCommand("lockdown").setExecutor(new LockdownCommand(lockdownListener));
-			this.getServer().getPluginManager().registerEvent(Event.Type.PLAYER_LOGIN, lockdownListener, Event.Priority.Highest, this);
-			this.getServer().getPluginManager().registerEvent(Event.Type.PLAYER_JOIN, lockdownListener, Event.Priority.Highest, this);
-			//finished loading lockdown
-		}
-		
-		//start loading hatMe
-		if(getConfig().getBoolean("plugin.hatme.enabled", true)){
-			log.info("[EscapePlug] loading hatMe");
-			
-			//get Config
-			List<Integer> rbBlocks = getConfig().getIntegerList("plugin.hatme.allowed");
-			boolean rbAllow = getConfig().getBoolean("plugin.hatme.enable");
-			String notAllowedMsg = getConfig().getString("plugin.hatme.notAllowedMsg");
-			boolean rbOp = getConfig().getBoolean("plugin.hatme.opnorestrict");
-			String hatversion = getConfig().getString("plugin.hatme.hatversion");
-
-			//construct command and assign to /hat and /unhat
-			HatmeCommand hatMe = new HatmeCommand(rbBlocks,rbAllow,notAllowedMsg,rbOp);
-			getCommand("hat").setExecutor(hatMe);
-			getCommand("unhat").setExecutor(hatMe);
-			log.info("[EscapePlug] loaded hatMe version " + hatversion);
-		}
 
 
 
@@ -142,11 +183,11 @@ public class EscapePlug extends JavaPlugin {
 	}
 
 	public void onDisable() {
-		self=null;
+		for(AbstractComponent comp: activeComponents){
+			comp.tidyUp();
+		}
 		log.info("[EscapePlug] EscapePlug unloaded");
 	}
 
-	public static void printCon(String line){
-		log.info("[EscapePlug] "+line);
-	}
+
 }

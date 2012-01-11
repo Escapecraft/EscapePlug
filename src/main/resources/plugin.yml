@@ -2,6 +2,10 @@ name: EscapePlug
 main: net.escapecraft.escapePlug.EscapePlug
 version: 0.2.0-SNAPSHOT
 commands:
+    ec-reload:
+        description: Reload escapeplug config
+        usage: /<command>
+        permission: escapeplug.reload
     pig-active:
         description: Activate pig punching
         usage: /<command>
@@ -39,11 +43,21 @@ commands:
       aliases: [unhat, unhatme, unhm]
       description: Command to take your "hat" off.
       usage: /<command> - takes item off head
-
+    kit:
+      description: kit related commands
+      usage: /command kitname
+    kit-admin:
+      description: admin kit related commands
+      usage: |
+          /command make name [timer(Seconds)] - make a kit from contents of your inventory
+          /command del name - delete a kit
+      
+      permission: escapeplug.kit.admin 
 permissions:
   escapeplug.*:
     description: Supernode for EscapePlug commands.
     children:
+      escapeplug.reload: true
       escapeplug.pigjoust: true
       escapeplug.mentor.teleport: true
       escapeplug.mentor.teleport.notarget: true
@@ -51,6 +65,7 @@ permissions:
       escapeplug.lockdown: true
       escapeplug.notify: true
       escapeplug.hatme: true
+      escapeplug.kit.*: true
   escapeplug.lockdown:
     description: gives full permission on Lockdown-mode.
     children:
@@ -81,6 +96,8 @@ permissions:
     default: op
   escapeplug.gamemode:
     default: op
+  escapeplug.reload:
+    default: op
   escapeplug.hatme.hat:
     description: Allows player to use given item as a hat
     default: op
@@ -89,4 +106,24 @@ permissions:
     default: op
   escapeplug.hatme.norestrict:
     description: Player Overwrites the block-restriction
+    default: op
+  escapeplug.kit.*:
+    description: gives all the kit related permissions
+    default: op
+    children:
+      escapeplug.kit.kits.*: true
+      escapeplug.kit.kits.*.nocooldown: true    
+      escapeplug.kit.admin: true
+      escapeplug.kit.give: true
+  escapeplug.kit.kits.*:
+    description: Player can use any kit
+    default: op
+  escapeplug.kit.admin:
+    description: Player can use add, delete kits
+    default: op
+  escapeplug.kit.give:
+    description: Player give any other player a kit
+    default: op
+  escapeplug.kit.kits.*.noCooldown:
+    description: cooldown does not apply to any kit
     default: op

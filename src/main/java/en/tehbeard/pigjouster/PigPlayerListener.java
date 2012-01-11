@@ -10,16 +10,7 @@ import org.bukkit.event.player.PlayerPreLoginEvent;
 
 public class PigPlayerListener extends PlayerListener {
 
-//TEST
-	public void onPlayerPreLogin(PlayerPreLoginEvent event){
-		EscapePlug.printCon("PRELOGIN FIRED");
-		event.allow();
-	}
-	
-	public void onPlayerJoin(PlayerJoinEvent event){
-		EscapePlug.printCon("join fired");
-	}
-	
+//
 	
 	
 	public void onPlayerInteractEntity(PlayerInteractEntityEvent event){
