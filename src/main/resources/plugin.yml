@@ -2,6 +2,10 @@ name: EscapePlug
 main: net.escapecraft.escapePlug.EscapePlug
 version: 0.2.0-SNAPSHOT
 commands:
+    ec-reload:
+        description: Reload escapeplug config
+        usage: /<command>
+        permission: escapeplug.reload
     pig-active:
         description: Activate pig punching
         usage: /<command>
@@ -53,6 +57,7 @@ permissions:
   escapeplug.*:
     description: Supernode for EscapePlug commands.
     children:
+      escapeplug.reload: true
       escapeplug.pigjoust: true
       escapeplug.mentor.teleport: true
       escapeplug.mentor.teleport.notarget: true
@@ -90,6 +95,8 @@ permissions:
   escapeplug.pigjoust:
     default: op
   escapeplug.gamemode:
+    default: op
+  escapeplug.reload:
     default: op
   escapeplug.hatme.hat:
     description: Allows player to use given item as a hat
