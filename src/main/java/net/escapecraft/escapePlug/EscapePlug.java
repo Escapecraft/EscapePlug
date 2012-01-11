@@ -19,7 +19,6 @@ import de.hydrox.antiSlime.SlimeDamageListener;
 import de.hydrox.blockalert.AbstractListener;
 import de.hydrox.blockalert.AlertListener;
 import de.hydrox.blockalert.AlertListenerHawkEye;
-import de.hydrox.blockalert.ModeratorListner;
 import de.hydrox.bukkit.timezone.TimezoneCommands;
 import de.hydrox.lockdown.LockdownCommand;
 import de.hydrox.lockdown.LockdownListener;
@@ -162,13 +161,13 @@ public class EscapePlug extends JavaPlugin {
 			Map<String, List<Integer>> notifyBlockPlace = new HashMap<String, List<Integer>>();
 			Set<String> worlds = getConfig().getConfigurationSection("plugin.blockalert.worlds.break.").getKeys(false);
 			for (String world : worlds) {
-				Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_PURPLE + "World " + world);
+				Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_PURPLE + "Load Break Alerts for World " + world);
 				List<Integer> blockBreakList = getConfig().getIntegerList("plugin.blockalert.worlds.break." + world);
 				notifyBlockBreak.put(world, blockBreakList);
 			}
 			worlds = getConfig().getConfigurationSection("plugin.blockalert.worlds.place.").getKeys(false);
 			for (String world : worlds) {
-				Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_PURPLE + "World " + world);
+				Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_PURPLE + "Load Placement Alerts for World " + world);
 				List<Integer> blockPlaceList = getConfig().getIntegerList("plugin.blockalert.worlds.place." + world);
 				notifyBlockPlace.put(world, blockPlaceList);
 			}
@@ -179,9 +178,6 @@ public class EscapePlug extends JavaPlugin {
 			} else {
 				alertListener = new AlertListener(notifyBlockBreak, notifyBlockPlace);
 			}
-			ModeratorListner modListener = new ModeratorListner(alertListener);
-			this.getServer().getPluginManager().registerEvent(Event.Type.PLAYER_JOIN, modListener, Event.Priority.Monitor, this);
-			this.getServer().getPluginManager().registerEvent(Event.Type.PLAYER_QUIT, modListener, Event.Priority.Monitor, this);
 			this.getServer().getPluginManager().registerEvent(Event.Type.BLOCK_BREAK, alertListener, Event.Priority.Monitor, this);
 			this.getServer().getPluginManager().registerEvent(Event.Type.BLOCK_PLACE, alertListener, Event.Priority.Monitor, this);
 			//finished loading blockalert

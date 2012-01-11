@@ -1,6 +1,5 @@
 package de.hydrox.blockalert;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -10,7 +9,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockListener;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.util.Vector;
 
@@ -20,56 +18,15 @@ import uk.co.oliwali.HawkEye.callbacks.BaseCallback;
 import uk.co.oliwali.HawkEye.database.SearchQuery.SearchDir;
 import uk.co.oliwali.HawkEye.database.SearchQuery.SearchError;
 import uk.co.oliwali.HawkEye.entry.DataEntry;
-import uk.co.oliwali.HawkEye.util.BlockUtil;
 import uk.co.oliwali.HawkEye.util.HawkEyeAPI;
 
 public class AlertListenerHawkEye extends AbstractListener {
 	
-	private List<Player> moderators = new ArrayList<Player>();
-	private Map<String, List<Integer>> blockBreak = null;
-	private Map<String, List<Integer>> blockPlace = null;
-
 	public AlertListenerHawkEye(Map<String, List<Integer>> blockBreak, Map<String, List<Integer>> blockPlace) {
-		Player[] players = Bukkit.getOnlinePlayers();
 		this.blockBreak = blockBreak;
 		this.blockPlace = blockPlace;
-		
-		for (Player player : players) {
-			if (player.hasPermission("escapeplug.blockalert.notify")) {
-				moderators.add(player);
-			}
-		}
 	}
 	
-	public boolean notifyBlockBreak(BlockBreakEvent event) {
-		int id = event.getBlock().getTypeId();
-		String world = event.getBlock().getLocation().getWorld().getName();
-		Player player = event.getPlayer();
-		if (blockBreak.containsKey(world) && blockBreak.get(world).contains(id) && !player.hasPermission("escapeplug.blockalert.ignore." + id)) {
-			return true;
-		}
-		return false;
-	}
-	
-	public boolean notifyBlockPlace(BlockPlaceEvent event) {
-		int id = event.getBlock().getTypeId();
-		String world = event.getBlock().getLocation().getWorld().getName();
-		Player player = event.getPlayer();
-		if (blockPlace.containsKey(world) && blockPlace.get(world).contains(id) && !player.hasPermission("escapeplug.blockalert.ignore." + id)) {
-			return true;
-		}
-		return false;
-	}
-	
-	
-	public void addModerator(Player mod) {
-		moderators.add(mod);
-	}
-	
-	public void removeModerator(Player mod) {
-		moderators.remove(mod);
-	}
-
 	@Override
 	public void onBlockBreak(BlockBreakEvent event) {
 		if (event.isCancelled() || !notifyBlockBreak(event)) {
@@ -93,11 +50,10 @@ public class AlertListenerHawkEye extends AbstractListener {
 		if (event.isCancelled() || !notifyBlockPlace(event)) {
 			return;
 		}
-		String msg = ChatColor.DARK_RED + "BlockPlace: " + event.getPlayer().getName() + " placed " + event.getBlock().getType();
+		String msg = ChatColor.GRAY + "EP: " + ChatColor.LIGHT_PURPLE + event.getPlayer().getName() + ChatColor.GOLD +" (use) " + ChatColor.WHITE + event.getBlock().getType() + " (#" + event.getBlock().getTypeId() + ").";
 		
-		for (Player moderator : moderators) {
-			moderator.sendMessage(msg);
-		}
+		notifyMods(msg);
+		Bukkit.getConsoleSender().sendMessage(msg);
 	}
 	
 	class SimpleSearch extends BaseCallback {
@@ -111,23 +67,24 @@ public class AlertListenerHawkEye extends AbstractListener {
 
         public void execute() {
         	String msg = null;
+        	String owner = null;
         	if (results.size()>0) {
             	DataEntry entry = results.get(0);
-            	msg = ChatColor.DARK_RED + "BlockBreak: " + player.getName() + " broke " + block + " placed by " + entry.getPlayer() + ".";
+            	owner = entry.getPlayer();
+            	if (player.getName().equals(owner)) {
+            		return;
+            	}
         	} else {
-        		msg = ChatColor.DARK_RED + "BlockBreak: " + player.getName() + " broke " + block + " placed by UNKNOWN.";
+        		owner = "UNKNOWN";
         	}
-        	for (Player moderator : moderators) {
-				moderator.sendMessage(msg);
-			}
+    		msg = ChatColor.GRAY + "EP: " + ChatColor.LIGHT_PURPLE + player.getName() + ChatColor.GOLD +" (break) " + ChatColor.WHITE + block + " (#" + block.getId() + ") placed by " + ChatColor.LIGHT_PURPLE + owner;
+    		notifyMods(msg);
 			Bukkit.getConsoleSender().sendMessage(msg);
         }
         
         public void error(SearchError error, String message) {
         	String msg = "[EscapePlug] Debug: Search failed.";
-        	for (Player moderator : moderators) {
-				moderator.sendMessage(msg);
-			}
+    		notifyMods(msg);
 			Bukkit.getConsoleSender().sendMessage(msg);
         }
 
