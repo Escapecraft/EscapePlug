@@ -12,10 +12,10 @@ public class ReserveListener extends PlayerListener {
 	public void onPlayerLogin(PlayerLoginEvent event){
 		EscapePlug.printCon("LOGIN FIRED");
 		if(event.getResult()!=Result.KICK_WHITELIST){
-			if(event.getPlayer().hasPermission("escapeplug.reserve.allow")){
+			if(event.getPlayer().hasPermission("escapeplug.reserve.allow")) {
 				EscapePlug.printCon("Should allow");
 			}
-			if((Bukkit.getOnlinePlayers().length >= Bukkit.getMaxPlayers()) && event.getPlayer().hasPermission("escapeplug.reserve.allow")==false){
+			if((Bukkit.getOnlinePlayers().length >= Bukkit.getMaxPlayers()) && !event.getPlayer().hasPermission("escapeplug.reserve.allow")) {
 				EscapePlug.printCon("ATTEMPTING DENIAL!");
 				event.setKickMessage("server is fullup :(");
 				event.setResult(PlayerLoginEvent.Result.KICK_FULL);

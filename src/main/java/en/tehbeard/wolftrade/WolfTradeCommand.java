@@ -9,45 +9,47 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Wolf;
 
 import java.util.HashMap;
+import java.util.Map;
 public class WolfTradeCommand implements CommandExecutor {
 
-	public static HashMap<String,session> wolfSession = null; 
+	public static Map<String,session> wolfSession = null; 
 	WolfTradeCommand(){
 		wolfSession = new HashMap<String,session>(); 
 	}
 	
 	public boolean onCommand(CommandSender sender, Command cmd, String cmdlbl,
 			String[] args) {
-		if(sender instanceof Player == false){
+		if(!(sender instanceof Player)){
 			return false;
 		}
-		if(cmdlbl.equals("wolftrade")){
-			if(sender.hasPermission("escapeplug.wolftrade.tradeown")){
-				if(args.length == 1){
-					if(!wolfSession.containsKey(((Player)sender).getName())){
-						wolfSession.put(((Player)sender).getName(),new  session());
-					}
-					session s = wolfSession.get(((Player)sender).getName());
-					s.setName(args[0]);
-					sender.sendMessage("New owner set to:" + args[0] + ". right click a wolf.");
-				} else {sender.sendMessage("no player selected");}
-			} else {sender.sendMessage("You can't trade wolfs");}
+		if(!sender.hasPermission("escapeplug.wolftrade.tradeown")) {
+			sender.sendMessage("You can't trade wolfs");
+			return true;
 		}
 
-		if(cmdlbl.equals("wolftradeconfirm")){
-			if(sender.hasPermission("escapeplug.wolftrade.tradeown")){
-				if(!wolfSession.containsKey(((Player)sender).getName())){
-					sender.sendMessage("no inprogress wolf trade found.");
-					if(
-					wolfSession.get(((Player)sender).getName()).getName() !=null &&
-					wolfSession.get(((Player)sender).getName()).getWolf() !=null){
-						
-					wolfSession.get(((Player)sender).getName()).getWolf().setOwner(EscapePlug.self.getServer().getPlayer(
-							wolfSession.get(((Player)sender).getName()).getName()		
-					));
-					}
-					return true;
+		if(cmdlbl.equals("wolftrade")) {
+			if(args.length == 1){
+				if(!wolfSession.containsKey(((Player)sender).getName())) {
+					wolfSession.put(((Player)sender).getName(),new  session());
 				}
+				session s = wolfSession.get(((Player)sender).getName());
+				s.setName(args[0]);
+				sender.sendMessage("New owner set to:" + args[0] + ". right click a wolf.");
+			} else {
+				sender.sendMessage("no player selected");
+			}
+		}
+
+		if(cmdlbl.equals("wolftradeconfirm")) {
+			if(!wolfSession.containsKey(((Player)sender).getName())) {
+				sender.sendMessage("no inprogress wolf trade found.");
+				if(
+				wolfSession.get(((Player)sender).getName()).getName() !=null &&
+				wolfSession.get(((Player)sender).getName()).getWolf() !=null) {
+					wolfSession.get(((Player)sender).getName()).getWolf().setOwner(EscapePlug.self.getServer().getPlayer(
+							wolfSession.get(((Player)sender).getName()).getName()));
+				}
+				return true;
 			}
 		}
 

@@ -63,4 +63,6 @@ plugin:
         enabled: true
         noticifationmsg: "!!!SERVER IS IN LOCKDOWN-MODE!!!"
         rejectmsg: "Server Full"
+    who:
+        enabled: true
 

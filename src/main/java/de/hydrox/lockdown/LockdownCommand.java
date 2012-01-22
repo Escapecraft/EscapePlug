@@ -9,7 +9,7 @@ import org.bukkit.entity.Player;
 
 public class LockdownCommand implements CommandExecutor {
 
-	LockdownListener listener = null;
+	private LockdownListener listener = null;
 	
 	public LockdownCommand(LockdownListener listener) {
 		this.listener = listener;
@@ -21,7 +21,7 @@ public class LockdownCommand implements CommandExecutor {
 		}
 		if (args.length >= 1) {
 			if (args[0].equalsIgnoreCase("enable")) {
-				this.listener.isLockdownActive = true;
+				this.listener.activate();
 				Player[] players = Bukkit.getOnlinePlayers();
 				for (Player player : players) {
 					if(player.hasPermission("escapeplug.lockdown.notify")) {
@@ -31,7 +31,7 @@ public class LockdownCommand implements CommandExecutor {
 				return true;
 			}
 			if (args[0].equalsIgnoreCase("disable")) {
-				this.listener.isLockdownActive = false;
+				this.listener.deactivate();
 				Player[] players = Bukkit.getOnlinePlayers();
 				for (Player player : players) {
 					if(player.hasPermission("escapeplug.lockdown.notify")) {
