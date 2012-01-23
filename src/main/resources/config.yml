@@ -64,3 +64,5 @@ plugin:
         noticifationmsg: "!!!SERVER IS IN LOCKDOWN-MODE!!!"
         rejectmsg: "Server Full"
 
+    kitplugin:
+        enabled: false

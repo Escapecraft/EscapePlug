@@ -1,12 +1,16 @@
 package net.escapecraft.escapePlug;
 
+import java.io.File;
 import java.util.List;
 import java.util.logging.Logger;
 
 import net.serubin.hatme.HatmeCommand;
 
+import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.Event;
 import org.bukkit.event.entity.EntityListener;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import de.hydrox.antiSlime.SlimeDamageListener;
@@ -15,6 +19,10 @@ import de.hydrox.lockdown.LockdownCommand;
 import de.hydrox.lockdown.LockdownListener;
 import en.tehbeard.endernerf.EndernerfListener;
 import en.tehbeard.gamemode.GameModeToggle;
+import en.tehbeard.kitPlugin.Kit;
+import en.tehbeard.kitPlugin.KitPluginDataManager;
+import en.tehbeard.kitPlugin.command.KitAdminCommand;
+import en.tehbeard.kitPlugin.command.KitCommand;
 import en.tehbeard.mentorTeleport.MentorBack;
 import en.tehbeard.mentorTeleport.MentorTeleport;
 import en.tehbeard.pigjouster.PigJouster;
@@ -27,7 +35,7 @@ public class EscapePlug extends JavaPlugin {
 	private static final Logger log = Logger.getLogger("Minecraft");
 	public static EscapePlug self = null;
 	//Hatme config variables
-	
+
 	public void onEnable() {
 		self = this;
 		log.info("[EscapePlug] loading EscapePlug");
@@ -104,7 +112,7 @@ public class EscapePlug extends JavaPlugin {
 			EntityListener el = new EndernerfListener();
 			this.getServer().getPluginManager().registerEvent(Event.Type.ENDERMAN_PICKUP, el, Event.Priority.Highest, this);
 			this.getServer().getPluginManager().registerEvent(Event.Type.ENDERMAN_PLACE, el, Event.Priority.Highest, this);
-		
+
 			//finished loading endernerf
 		}
 
@@ -117,11 +125,11 @@ public class EscapePlug extends JavaPlugin {
 			this.getServer().getPluginManager().registerEvent(Event.Type.PLAYER_JOIN, lockdownListener, Event.Priority.Highest, this);
 			//finished loading lockdown
 		}
-		
+
 		//start loading hatMe
 		if(getConfig().getBoolean("plugin.hatme.enabled", true)){
 			log.info("[EscapePlug] loading hatMe");
-			
+
 			//get Config
 			List<Integer> rbBlocks = getConfig().getIntegerList("plugin.hatme.allowed");
 			boolean rbAllow = getConfig().getBoolean("plugin.hatme.enable");
@@ -136,8 +144,19 @@ public class EscapePlug extends JavaPlugin {
 			log.info("[EscapePlug] loaded hatMe version " + hatversion);
 		}
 
+		if(getConfig().getBoolean("plugin.kitplugin.enabled", true)){
+			log.info("[EscapePlug] Loading EscapeKit");
 
-
+			KitPluginDataManager.boot(this);
+			getCommand("kit").setExecutor(new KitCommand());
+			getCommand("kit-admin").setExecutor(new KitAdminCommand());
+			
+			//try conversion
+			File file = new File(getDataFolder(),"kits.txt");
+			if(file.exists()){
+				KitPluginDataManager.getInstance().convertKitDb(file);
+			}
+		}
 		log.info("[EscapePlug] EscapePlug loaded");
 	}
 
