@@ -18,9 +18,12 @@ public class ComponentManager{
 
 	private EscapePlug plugin;
 	private Log log;
-	public ComponentManager(EscapePlug plugin,Log log){
-		this.plugin = plugin;
+	public ComponentManager(Log log){
+		
 		this.log = log;
+	}
+	public void setPlugin(EscapePlug plugin){
+		this.plugin = plugin;
 	}
 
 	private Set<AbstractComponent> activeComponents = new HashSet<AbstractComponent>();

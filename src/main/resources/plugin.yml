@@ -45,7 +45,12 @@ commands:
         usage:  |
             /<command> - Lists online Players
             /<command> <name> - Gives Information about a Player
-
+    kit:
+        description: get a kit
+        usage: /kit [kitname]
+    kit-admin:
+        description: make and delete kits
+        usage: /kit-admin
 permissions:
   escapeplug.*:
     description: Supernode for EscapePlug commands.

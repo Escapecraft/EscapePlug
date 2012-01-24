@@ -22,6 +22,7 @@ import de.hydrox.mobcontrol.MobControlListener;
 import de.hydrox.who.WhoCommand;
 import en.tehbeard.endernerf.EndernerfListener;
 import en.tehbeard.gamemode.GameModeToggle;
+import en.tehbeard.kitPlugin.EscapeKitComponent;
 import en.tehbeard.mentorTeleport.MentorBack;
 import en.tehbeard.mentorTeleport.MentorTeleport;
 import en.tehbeard.pigjouster.PigJouster;
@@ -32,7 +33,7 @@ import en.tehbeard.reserve.ReserveListener;
 public class EscapePlug extends JavaPlugin {
 
 	private static final Logger log = Logger.getLogger("Minecraft");
-	private ComponentManager componentManager;
+	private static final ComponentManager componentManager = new ComponentManager(new Log("EscapePlug"));
 	private DroxPermsAPI droxPermsAPI = null;
 	private boolean beardStatLoaded = false;
 
@@ -41,8 +42,11 @@ public class EscapePlug extends JavaPlugin {
 	public void onEnable() {
 		self = this;
 		
+		
 		//start the component manager
-		componentManager = new ComponentManager(this, new Log("EscapePlug"));
+		componentManager.setPlugin(this);
+		componentManager.addComponent(EscapeKitComponent.class);
+		componentManager.startupComponents();
 		
 		log.info("[EscapePlug] loading EscapePlug");
 
@@ -183,5 +187,9 @@ public class EscapePlug extends JavaPlugin {
 
 	public static void printCon(String line) {
 		log.info("[EscapePlug] " + line);
+	}
+	
+	public ComponentManager getComponentManager(){
+		return componentManager;
 	}
 }
