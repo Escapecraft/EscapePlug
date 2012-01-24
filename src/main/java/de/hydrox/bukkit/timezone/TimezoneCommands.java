@@ -35,15 +35,15 @@ public class TimezoneCommands implements CommandExecutor {
 			return true;
 		}
 		if (args.length >= 1) {
-			if (args[0].toLowerCase().equals("list")) {
+			if (args[0].equalsIgnoreCase("list")) {
 				listTimezones(sender);
 				return true;
 			}
-			if (args[0].toLowerCase().equals("help")) {
+			if (args[0].equalsIgnoreCase("help")) {
 				displayHelp(sender);
 				return true;
 			}
-			if (args[0].toLowerCase().equals("convert")) {
+			if (args[0].equalsIgnoreCase("convert")) {
 				String parsedString = null;
 				try {
 					parsedString = parseDate(args);

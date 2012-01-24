@@ -25,6 +25,16 @@
       <optional>false</optional>
     </dependency>
     <dependency>
+        <groupId>de.hydrox.bukkit</groupId>
+        <artifactId>DroxPerms</artifactId>
+        <version>0.2.0</version>
+    </dependency>
+    <dependency>
+        <groupId>me.tehbeard</groupId>
+        <artifactId>BeardStat</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </dependency>
+    <dependency>
         <groupId>uk.co.oliwali</groupId>
         <artifactId>HawkEye</artifactId>
         <version>1.0.5b</version>
