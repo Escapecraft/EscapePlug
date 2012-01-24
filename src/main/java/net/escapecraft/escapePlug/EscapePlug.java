@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import me.tehbeard.BeardStat.BeardStat;
-import me.tehbeard.BeardStat.containers.PlayerStatManager;
 import net.serubin.hatme.HatmeCommand;
 
 import org.bukkit.event.Event;
@@ -17,6 +16,7 @@ import de.hydrox.bukkit.DroxPerms.DroxPermsAPI;
 import de.hydrox.bukkit.timezone.TimezoneCommands;
 import de.hydrox.lockdown.LockdownCommand;
 import de.hydrox.lockdown.LockdownListener;
+import de.hydrox.mobcontrol.MobControlListener;
 import de.hydrox.who.WhoCommand;
 import en.tehbeard.endernerf.EndernerfListener;
 import en.tehbeard.gamemode.GameModeToggle;
@@ -155,6 +155,16 @@ public class EscapePlug extends JavaPlugin {
 			log.info("[EscapePlug] loading Who");
 			getCommand("who").setExecutor(new WhoCommand(droxPermsAPI, beardStatLoaded));
 			//finished loading who
+		}
+
+		//start loading mobcontrol
+		if (getConfig().getBoolean("plugin.mobcontrol.enabled", true)) {
+			log.info("[EscapePlug] loading MobControl");
+			List<String> worlds = getConfig().getStringList("plugin.mobcontrol.worlds");
+			List<String> mobs = getConfig().getStringList("plugin.mobcontrol.mobs");
+			MobControlListener mobControlListener = new MobControlListener(worlds, mobs);
+			this.getServer().getPluginManager().registerEvent(Event.Type.CREATURE_SPAWN, mobControlListener, Event.Priority.Normal, this);
+			//finished loading mobcontrol
 		}
 
 		log.info("[EscapePlug] EscapePlug loaded");
