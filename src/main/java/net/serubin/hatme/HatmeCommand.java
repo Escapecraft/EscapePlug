@@ -42,7 +42,7 @@ public class HatmeCommand implements CommandExecutor {
 			if (checkPermissionBasic(player)) {
 				if (args.length == 0) {
 					allowID = rbBlocks;
-					if (rbAllow != false) {
+					if (rbAllow) {
 						// if restrict is true
 						if ((!allowID.contains(itemHandId))
 								&& (itemHandId != 0)) {
@@ -62,7 +62,7 @@ public class HatmeCommand implements CommandExecutor {
 				if (args.length == 1) {
 					if (checkPermissionGive(player, args)) {
 						allowID = rbBlocks;
-						if (rbAllow != false) {
+						if (rbAllow) {
 							// if restrict is true
 							if (!checkPermissionNoRestrict(player)) {
 								// if op or has perm no restrict
@@ -141,28 +141,34 @@ public class HatmeCommand implements CommandExecutor {
 	private boolean checkPermissionBasic(Player player) {
 		if (player.hasPermission("escapeplug.hatme.hat")
 				|| player.hasPermission("escapeplug.hatme.hat."
-						+ player.getItemInHand().getTypeId()))
+						+ player.getItemInHand().getTypeId())) {
 			return true;
-		if (rbOp = true && player.isOp())
+		}
+		if (rbOp && player.isOp()) {
 			return true;
+		}
 		return false;
 	}
 
 	private boolean checkPermissionGive(Player player, String[] args) {
 		if (player.hasPermission("escapeplug.hatme.give")
 				|| player.hasPermission("escapeplug.hatme.give."
-						+ Integer.parseInt(args[0])))
+						+ Integer.parseInt(args[0]))) {
 			return true;
-		if (rbOp = true && player.isOp())
+		}
+		if (rbOp && player.isOp()) {
 			return true;
+		}
 		return false;
 	}
 
 	private boolean checkPermissionNoRestrict(Player player) {
-		if (player.hasPermission("escapeplug.hatme.norestrict"))
+		if (player.hasPermission("escapeplug.hatme.norestrict")) {
 			return true;
-		if (rbOp = true && player.isOp())
+		}
+		if (rbOp && player.isOp()) {
 			return true;
+		}
 		return false;
 	}
 

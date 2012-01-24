@@ -15,11 +15,9 @@ public class PigListener extends EntityListener {
 	public
 	void onEntityDamage(EntityDamageEvent event){
 		//check if its a protected pig.
-		if(event.getEntity() instanceof Pig){
-			if(PigJouster.isPig((Pig)event.getEntity())){
-				//cancel event if its a jousting pig.
-				event.setCancelled(true);
-			}
+		if(event.getEntity() instanceof Pig && PigJouster.isPig((Pig)event.getEntity())){
+			//cancel event if its a jousting pig.
+			event.setCancelled(true);
 		}
 		
 	}
