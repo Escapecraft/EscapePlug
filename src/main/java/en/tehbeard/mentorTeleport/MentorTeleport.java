@@ -31,33 +31,31 @@ public class MentorTeleport implements CommandExecutor {
 			return true;
 		}
 		if(sender instanceof Player){
-			if(commandLabel.equals("mentortp")){
-				if(args.length == 1){
-					if(plugin.getServer().getPlayer(args[0])!=null){
-						Player p = plugin.getServer().getPlayer(args[0]);
-						if(!p.hasPermission("escapeplug.mentor.teleport.notarget")){
-							sender.sendMessage("Sending you to " + p.getName());
-							MentorBack.prevLoc.put(((Player)sender).getName(), ((Player)sender).getLocation());
-							((Player)sender).teleport(p);
-							return true;
-						}
-						else
-						{
-							sender.sendMessage("You are not allowed to teleport to this player.");
-							return true;
-						}
+			if(commandLabel.equals("mentortp") && args.length == 1){
+				if(plugin.getServer().getPlayer(args[0])!=null){
+					Player p = plugin.getServer().getPlayer(args[0]);
+					if(!p.hasPermission("escapeplug.mentor.teleport.notarget")){
+						sender.sendMessage("Sending you to " + p.getName());
+						MentorBack.prevLoc.put(((Player)sender).getName(), ((Player)sender).getLocation());
+						((Player)sender).teleport(p);
+						return true;
 					}
 					else
 					{
-						sender.sendMessage("Cannot find player");
+						sender.sendMessage("You are not allowed to teleport to this player.");
 						return true;
 					}
 				}
 				else
 				{
-					sender.sendMessage("No player selected");
+					sender.sendMessage("Cannot find player");
 					return true;
 				}
+			}
+			else
+			{
+				sender.sendMessage("No player selected");
+				return true;
 			}
 		}
 
