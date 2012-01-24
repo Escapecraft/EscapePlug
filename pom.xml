@@ -16,14 +16,34 @@
   </repositories>
 
   <dependencies>
-  	<dependency>
-  		<groupId>org.bukkit</groupId>
-  		<artifactId>bukkit</artifactId>
-  		<version>1.0.0-R1-SNAPSHOT</version>
-  		<type>jar</type>
-  		<scope>compile</scope>
-  		<optional>false</optional>
-  	</dependency>
+
+    <dependency>
+      <groupId>org.bukkit</groupId>
+      <artifactId>bukkit</artifactId>
+      <version>1.0.0-R1-SNAPSHOT</version>
+      <type>jar</type>
+      <scope>compile</scope>
+      <optional>false</optional>
+    </dependency>
+    <dependency>
+        <groupId>de.hydrox.bukkit</groupId>
+        <artifactId>DroxPerms</artifactId>
+        <version>0.3.0-SNAPSHOT</version>
+      <type>jar</type>
+      <scope>compile</scope>
+      <optional>false</optional>
+
+    </dependency>
+    <dependency>
+        <groupId>me.tehbeard</groupId>
+        <artifactId>BeardStat</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+      <type>jar</type>
+      <scope>compile</scope>
+      <optional>false</optional>
+
+    </dependency>
+>>>>>>> Stashed changes
   </dependencies>
 
   <properties>
