@@ -8,14 +8,14 @@ import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.plugin.Plugin;
 
 public class LockdownListener extends PlayerListener {
-	private String REJECTMSG = "";
-	private String NOTIFICATIONMSG = "";
+	private String rejectMsg;
+	private String notificationMsg;
 
-	public boolean isLockdownActive = false;
+	private boolean isLockdownActive = false;
 
 	public LockdownListener(Plugin plugin) {
-		REJECTMSG = plugin.getConfig().getString("plugin.lockdown.rejectmsg");
-		NOTIFICATIONMSG = plugin.getConfig().getString("plugin.lockdown.notificationmsg");
+		rejectMsg = plugin.getConfig().getString("plugin.lockdown.rejectmsg");
+		notificationMsg = plugin.getConfig().getString("plugin.lockdown.notificationmsg");
 	}
 
 	public void onPlayerLogin(PlayerLoginEvent event){
@@ -29,7 +29,7 @@ public class LockdownListener extends PlayerListener {
 		}
 		else {
 			Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Blocking login due to Lockdown");
-			event.setKickMessage(REJECTMSG);
+			event.setKickMessage(rejectMsg);
 			event.setResult(PlayerLoginEvent.Result.KICK_WHITELIST);
 		}
 	}
@@ -39,7 +39,15 @@ public class LockdownListener extends PlayerListener {
 			return;
 		}
 		if(event.getPlayer().hasPermission("escapeplug.lockdown.notify")){
-			event.getPlayer().sendMessage(ChatColor.RED + NOTIFICATIONMSG);
+			event.getPlayer().sendMessage(ChatColor.RED + notificationMsg);
 		}
+	}
+	
+	public void activate() {
+		isLockdownActive = true;
+	}
+
+	public void deactivate() {
+		isLockdownActive = false;
 	}
 }

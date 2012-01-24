@@ -59,8 +59,14 @@ plugin:
         opnorestrict: true
         notAllowedMsg: Invalid Item
         hatversion: 7.4-ECV
+    mobcontrol:
+        enabled: true
+        worlds: [testworld]
+        mobs: [Snowman]
     lockdown:
         enabled: true
         noticifationmsg: "!!!SERVER IS IN LOCKDOWN-MODE!!!"
         rejectmsg: "Server Full"
+    who:
+        enabled: true
 

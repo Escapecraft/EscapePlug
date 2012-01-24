@@ -1,13 +1,13 @@
 package en.tehbeard.mentorTeleport;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 
 
 /**
@@ -17,11 +17,8 @@ import org.bukkit.plugin.Plugin;
  */
 public class MentorBack implements CommandExecutor {
 
-	protected static HashMap<String,Location> prevLoc = new HashMap<String,Location>(); 
-	private Plugin plugin;
-	public MentorBack(Plugin plugin){
-		this.plugin = plugin;
-	}
+	protected static Map<String,Location> prevLoc = new HashMap<String,Location>(); 
+
 	/**
 	 * Handle mentor commands
 	 * @param commandLabel

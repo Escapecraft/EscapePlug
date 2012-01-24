@@ -1,6 +1,7 @@
 name: EscapePlug
 main: net.escapecraft.escapePlug.EscapePlug
-version: 0.1.0
+version: 0.2.0-SNAPSHOT
+softdepend: [DroxPerms, BeardStat]
 commands:
     pig-active:
         description: Activate pig punching
@@ -32,13 +33,18 @@ commands:
             /<command> disable - Disables Lockdown-Mode
         permission: escapeplug.lockdown.change
     hat:
-      aliases: [hat, hatme, hm]
-      description: Command that puts the item on your head.
-      usage: /<command> [item id]- puts item on head [puts item on head from item id]
+        aliases: [hat, hatme, hm]
+        description: Command that puts the item on your head.
+        usage: /<command> [item id]- puts item on head [puts item on head from item id]
     unhat:
-      aliases: [unhat, unhatme, unhm]
-      description: Command to take your "hat" off.
-      usage: /<command> - takes item off head
+        aliases: [unhat, unhatme, unhm]
+        description: Command to take your "hat" off.
+        usage: /<command> - takes item off head
+    who:
+        description: Gives Information about the online Players.
+        usage:  |
+            /<command> - Lists online Players
+            /<command> <name> - Gives Information about a Player
 
 permissions:
   escapeplug.*:
@@ -51,6 +57,7 @@ permissions:
       escapeplug.lockdown: true
       escapeplug.notify: true
       escapeplug.hatme: true
+      escapeplug.who: true
   escapeplug.lockdown:
     description: gives full permission on Lockdown-mode.
     children:
@@ -62,6 +69,11 @@ permissions:
       escapeplug.hatme.hat: true
       escapeplug.hatme.give: true
       escapeplug.hatme.norestrict: true
+  escapeplug.who:
+    description: gives full permission on Who.
+    children:
+      escapeplug.who.list: true
+      escapeplug.who.player: true
   escapeplug.lockdown.allow:
     description: Allows players to join while Lockdown-mode.
     default: op
@@ -89,4 +101,10 @@ permissions:
     default: op
   escapeplug.hatme.norestrict:
     description: Player Overwrites the block-restriction
+    default: op
+  escapeplug.who.list:
+    description: Shows the Player-list
+    default: op
+  escapeplug.who.player:
+    description: Shows details on specific Players
     default: op

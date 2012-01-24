@@ -6,7 +6,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerListener;
 
-public class wolfTradeListener extends PlayerListener {
+public class WolfTradeListener extends PlayerListener {
 
 	@Override
 	public void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
