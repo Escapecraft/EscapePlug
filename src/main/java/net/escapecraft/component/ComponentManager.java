@@ -43,12 +43,12 @@ public class ComponentManager{
 	 * Start an individual component
 	 * @param slug
 	 */
-	public void startComponent(String slug){
+	public void startComponent(String slug,boolean override){
 		Class<? extends AbstractComponent> component = components.get(slug);
 		if(component !=null){
 			ComponentDescriptor cd = component.getAnnotation(ComponentDescriptor.class);
 			if(cd!=null){
-				if(plugin.getConfig().getBoolean("plugin." +cd.slug() + ".enabled", true)){
+				if(plugin.getConfig().getBoolean("plugin." +cd.slug() + ".enabled", true) || override){
 					try {
 						log.info("Enabling " + cd.name() + " " + cd.version());
 						Log compLog = new Log("EscapePlug",cd.name());
@@ -67,7 +67,7 @@ public class ComponentManager{
 	 */
 	public void startupComponents(){
 		for(String slug:components.keySet()){
-			startComponent(slug);
+			startComponent(slug,false);
 		}
 	}
 
