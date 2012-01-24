@@ -23,7 +23,7 @@ public abstract class AbstractComponent {
 	public abstract void tidyUp();
 	
 	/**
-	 * Called to tell the plugin to recheck it's config
+	 * Called to tell the plugin to re-check it's config
 	 */
 	public abstract void reloadConfig();
 	
