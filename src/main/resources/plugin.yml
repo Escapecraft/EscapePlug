@@ -49,9 +49,9 @@ commands:
         description: get a kit
         usage: /kit [kitname]
     kit-admin:
-        description: make and delete kits
-        usage: /kit-admin
-        permission:escapeplug.kit.admin
+      description: make and delete kits
+      usage: /kit-admin
+      permission: escapeplug.kit.admin
 permissions:
   escapeplug.*:
     description: Supernode for EscapePlug commands.
