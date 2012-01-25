@@ -9,6 +9,7 @@ import java.util.Set;
 
 import net.escapecraft.escapePlug.EscapePlug;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.event.Listener;
 import org.tulonsae.mc.util.Log;
@@ -107,15 +108,7 @@ public class ComponentManager{
 	 * @param listener
 	 */
 	public void registerEvents(Listener listener){
-		for(Method m: listener.getClass().getMethods()){
-			for(Annotation a: m.getAnnotations()){
-
-				if(a instanceof BukkitEvent){
-					BukkitEvent bv = (BukkitEvent)a;
-					plugin.getServer().getPluginManager().registerEvent(bv.type(), listener,bv.priority(), plugin);
-				}
-			}
-		}
+		Bukkit.getPluginManager().registerEvents(listener, plugin);
 	}
 
 	/**
