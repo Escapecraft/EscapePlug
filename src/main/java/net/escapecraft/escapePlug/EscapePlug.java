@@ -4,11 +4,13 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import me.tehbeard.BeardStat.BeardStat;
+import net.escapecraft.component.ComponentManager;
 import net.serubin.hatme.HatmeCommand;
 
 import org.bukkit.event.Event;
 import org.bukkit.event.entity.EntityListener;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.tulonsae.mc.util.Log;
 
 import de.hydrox.antiSlime.SlimeDamageListener;
 import de.hydrox.bukkit.DroxPerms.DroxPerms;
@@ -30,7 +32,7 @@ import en.tehbeard.reserve.ReserveListener;
 public class EscapePlug extends JavaPlugin {
 
 	private static final Logger log = Logger.getLogger("Minecraft");
-
+	private ComponentManager componentManager;
 	private DroxPermsAPI droxPermsAPI = null;
 	private boolean beardStatLoaded = false;
 
@@ -38,6 +40,10 @@ public class EscapePlug extends JavaPlugin {
 
 	public void onEnable() {
 		self = this;
+		
+		//start the component manager
+		componentManager = new ComponentManager(this, new Log("EscapePlug"));
+		
 		log.info("[EscapePlug] loading EscapePlug");
 
 		//load/creates/fixes config
