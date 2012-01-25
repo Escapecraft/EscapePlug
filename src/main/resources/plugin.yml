@@ -129,4 +129,4 @@ permissions:
     default: op
   escapeplug.kit.kits.*.nocooldown:
     description: removes cooldown for all kits
-    default:op
+    default: op
