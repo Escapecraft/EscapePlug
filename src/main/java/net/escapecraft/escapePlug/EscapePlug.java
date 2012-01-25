@@ -23,8 +23,7 @@ import de.hydrox.who.WhoCommand;
 import en.tehbeard.endernerf.EndernerfListener;
 import en.tehbeard.gamemode.GameModeToggle;
 import en.tehbeard.kitPlugin.EscapeKitComponent;
-import en.tehbeard.mentorTeleport.MentorBack;
-import en.tehbeard.mentorTeleport.MentorTeleport;
+import en.tehbeard.mentorTeleport.MentorTeleportComponent;
 import en.tehbeard.pigjouster.PigJouster;
 import en.tehbeard.pigjouster.PigListener;
 import en.tehbeard.pigjouster.PigPlayerListener;
@@ -46,6 +45,7 @@ public class EscapePlug extends JavaPlugin {
 		//start the component manager
 		componentManager.setPlugin(this);
 		componentManager.addComponent(EscapeKitComponent.class);
+		componentManager.addComponent(MentorTeleportComponent.class);
 		componentManager.startupComponents();
 		
 		log.info("[EscapePlug] loading EscapePlug");
@@ -81,15 +81,7 @@ public class EscapePlug extends JavaPlugin {
 		}
 		//finished loading AntiSlime
 
-		//start loading MentorTeleport
-		if (getConfig().getBoolean("plugin.mentortp.enabled", true)) {
-			log.info("[EscapePlug] loading MentorTP");
-			getCommand("mentortp").setExecutor(new MentorTeleport(this));
-			getCommand("mentorback").setExecutor(new MentorBack());
-			//finished loading MentorTeleport
-		} else {
-			log.info("[EscapePlug] skipping MentorTP");
-		}
+		
 
 		//start loading PigJouster
 		if (getConfig().getBoolean("plugin.pigjoust.enabled", true)) {
