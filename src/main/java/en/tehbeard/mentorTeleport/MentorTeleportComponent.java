@@ -25,11 +25,9 @@ import org.tulonsae.mc.util.Log;
 @ComponentDescriptor(name="Mentor TP",slug="mentortp",version="1.0")
 @BukkitCommand(command={"mentortp","mentorback"})
 public class MentorTeleportComponent  extends AbstractComponent implements CommandExecutor {
-	protected static Map<String,Location> prevLoc = new HashMap<String,Location>(); 
+	private Map<String,Location> prevLoc = new HashMap<String,Location>(); 
 	private Plugin plugin;
-	public MentorTeleportComponent(Plugin plugin){
-		this.plugin = plugin;
-	}
+	
 	/**
 	 * Handle mentor commands
 	 * @param commandLabel
@@ -95,7 +93,7 @@ public class MentorTeleportComponent  extends AbstractComponent implements Comma
 	}
 	@Override
 	public boolean enable(Log log, EscapePlug plugin) {
-
+		this.plugin = plugin;
 		plugin.getComponentManager().registerCommands(this);
 		
 		return true;
