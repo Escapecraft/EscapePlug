@@ -108,8 +108,8 @@ public class Kit {
 	 */
 	public Result giveKit(Player player){
 		return giveKit(player,(
-				player.hasPermission("escapeplug.kit.kits.*.noCooldown")||
-				player.hasPermission("escapeplug.kit.kits." + name + ".noCooldown")
+				player.hasPermission("escapeplug.kit.kits.*.nocooldown")||
+				player.hasPermission("escapeplug.kit.kits." + name + ".nocooldown")
 				));
 	}
 	

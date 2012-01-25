@@ -51,6 +51,7 @@ commands:
     kit-admin:
         description: make and delete kits
         usage: /kit-admin
+        permission:escapeplug.kit.admin
 permissions:
   escapeplug.*:
     description: Supernode for EscapePlug commands.
@@ -113,3 +114,19 @@ permissions:
   escapeplug.who.player:
     description: Shows details on specific Players
     default: op
+  escapeplug.kit:
+    description: provides all kit permissions for an admin
+    default: op
+    children:
+      escapeplug.kit.kits.*: true
+      escapeplug.kit.kits.*.nocooldown: true
+      escapeplug.kit.admin: true
+  escapeplug.kit.admin:
+    description: admin command access
+    default: op
+  escapeplug.kit.kits.*:
+    description: provides access to all kits 
+    default: op
+  escapeplug.kit.kits.*.nocooldown:
+    description: removes cooldown for all kits
+    default:op
