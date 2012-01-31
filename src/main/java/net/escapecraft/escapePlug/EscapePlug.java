@@ -5,8 +5,8 @@ import java.util.logging.Logger;
 
 import me.tehbeard.BeardStat.BeardStat;
 import net.escapecraft.component.ComponentManager;
-import net.serubin.hatme.HatmeCommand;
-
+import net.serubin.hatme.AdminCommand;
+import net.serubin.hatme.HatCommand;
 import org.bukkit.event.Event;
 import org.bukkit.event.entity.EntityListener;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -35,6 +35,7 @@ public class EscapePlug extends JavaPlugin {
 	private ComponentManager componentManager;
 	private DroxPermsAPI droxPermsAPI = null;
 	private boolean beardStatLoaded = false;
+	public Object rbBlocks;
 
 	public static EscapePlug self = null;
 
@@ -150,9 +151,16 @@ public class EscapePlug extends JavaPlugin {
 			String hatversion = getConfig().getString("plugin.hatme.hatversion");
 
 			//construct command and assign to /hat and /unhat
-			HatmeCommand hatMe = new HatmeCommand(rbBlocks, rbAllow, notAllowedMsg, rbOp);
-			getCommand("hat").setExecutor(hatMe);
-			getCommand("unhat").setExecutor(hatMe);
+			HatCommand Hat = new HatCommand(rbBlocks, rbAllow, notAllowedMsg, rbOp);
+			AdminCommand Admin = new AdminCommand(rbBlocks, rbAllow, notAllowedMsg,
+					rbOp);
+			// Permission Perm = new Permission(rbBlocks, rbAllow,
+			// notAllowedMsg, rbOp);
+			// Set command classes
+			getCommand("hat").setExecutor(Hat);
+			getCommand("unhat").setExecutor(Hat);
+			getCommand("hadmin").setExecutor(Admin);
+
 			log.info("[EscapePlug] loaded hatMe version " + hatversion);
 		}
 
