@@ -69,4 +69,5 @@ plugin:
         rejectmsg: "Server Full"
     who:
         enabled: true
-
+    kitplugin:
+        enabled: false
