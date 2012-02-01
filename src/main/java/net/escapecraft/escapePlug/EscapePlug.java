@@ -36,7 +36,7 @@ import en.tehbeard.mentorTeleport.MentorTeleportComponent;
 import en.tehbeard.pigjouster.PigJouster;
 import en.tehbeard.pigjouster.PigListener;
 import en.tehbeard.pigjouster.PigPlayerListener;
-import en.tehbeard.reserve.ReserveListener;
+import en.tehbeard.reserve.ReserveComponent;
 
 public class EscapePlug extends JavaPlugin {
 
@@ -69,24 +69,17 @@ public class EscapePlug extends JavaPlugin {
 			beardStatManager = beardStat.getStatManager();
 		}
 		
-		
-		//start the component manager
-		componentManager = new ComponentManager(this, new Log("EscapePlug"));
-		componentManager.addComponent(MentorTeleportComponent.class);
-		
-		//start components
-		componentManager.startupComponents();
-
 		HawkEye hawkEye = (HawkEye)this.getServer().getPluginManager().getPlugin("HawkEye");
 		if (hawkEye != null) {
 			hawkEyeLoaded = true;
 		}
-
-		//Starting reserve list
-		if (getConfig().getBoolean("plugin.reserve.enabled", true)) {
-			ReserveListener rl = new ReserveListener();
-			this.getServer().getPluginManager().registerEvent(Event.Type.PLAYER_LOGIN, rl, Event.Priority.Highest, this);
-		}
+		
+		//start the component manager
+		componentManager = new ComponentManager(this, new Log("EscapePlug"));
+		componentManager.addComponent(MentorTeleportComponent.class);
+		componentManager.addComponent(ReserveComponent.class);
+		//start components
+		componentManager.startupComponents();
 
 		//start loading AntiSlime
 		if (getConfig().getBoolean("plugin.antislime.enabled", true)) {
