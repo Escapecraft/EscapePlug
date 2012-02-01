@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import me.tehbeard.BeardStat.BeardStat;
+import me.tehbeard.BeardStat.containers.PlayerStatManager;
 import net.escapecraft.component.ComponentManager;
 import net.serubin.hatme.HatmeCommand;
 
@@ -22,8 +23,7 @@ import de.hydrox.mobcontrol.MobControlListener;
 import de.hydrox.who.WhoCommand;
 import en.tehbeard.endernerf.EndernerfListener;
 import en.tehbeard.gamemode.GameModeToggle;
-import en.tehbeard.mentorTeleport.MentorBack;
-import en.tehbeard.mentorTeleport.MentorTeleport;
+import en.tehbeard.mentorTeleport.MentorTeleportComponent;
 import en.tehbeard.pigjouster.PigJouster;
 import en.tehbeard.pigjouster.PigListener;
 import en.tehbeard.pigjouster.PigPlayerListener;
@@ -34,17 +34,16 @@ public class EscapePlug extends JavaPlugin {
 	private static final Logger log = Logger.getLogger("Minecraft");
 	private ComponentManager componentManager;
 	private DroxPermsAPI droxPermsAPI = null;
-	private boolean beardStatLoaded = false;
+	private PlayerStatManager beardStatManager = null;
 
 	public static EscapePlug self = null;
 
 	public void onEnable() {
 		self = this;
 		
-		//start the component manager
-		componentManager = new ComponentManager(this, new Log("EscapePlug"));
 		
 		log.info("[EscapePlug] loading EscapePlug");
+		
 
 		//load/creates/fixes config
 		getConfig().options().copyDefaults(true);
@@ -57,8 +56,16 @@ public class EscapePlug extends JavaPlugin {
 
 		BeardStat beardStat = ((BeardStat) this.getServer().getPluginManager().getPlugin("BeardStat"));
 		if (beardStat != null) {
-			beardStatLoaded = true;
+			beardStatManager = beardStat.getStatManager();
 		}
+		
+		
+		//start the component manager
+		componentManager = new ComponentManager(this, new Log("EscapePlug"));
+		componentManager.addComponent(MentorTeleportComponent.class);
+		
+		//start components
+		componentManager.startupComponents();
 
 		//Starting reserve list
 		if (getConfig().getBoolean("plugin.reserve.enabled", true)) {
@@ -77,15 +84,6 @@ public class EscapePlug extends JavaPlugin {
 		}
 		//finished loading AntiSlime
 
-		//start loading MentorTeleport
-		if (getConfig().getBoolean("plugin.mentortp.enabled", true)) {
-			log.info("[EscapePlug] loading MentorTP");
-			getCommand("mentortp").setExecutor(new MentorTeleport(this));
-			getCommand("mentorback").setExecutor(new MentorBack());
-			//finished loading MentorTeleport
-		} else {
-			log.info("[EscapePlug] skipping MentorTP");
-		}
 
 		//start loading PigJouster
 		if (getConfig().getBoolean("plugin.pigjoust.enabled", true)) {
@@ -159,7 +157,7 @@ public class EscapePlug extends JavaPlugin {
 		//start loading who
 		if (getConfig().getBoolean("plugin.who.enabled", true)) {
 			log.info("[EscapePlug] loading Who");
-			getCommand("who").setExecutor(new WhoCommand(droxPermsAPI, beardStatLoaded));
+			getCommand("who").setExecutor(new WhoCommand(droxPermsAPI, beardStatManager));
 			//finished loading who
 		}
 
@@ -183,5 +181,9 @@ public class EscapePlug extends JavaPlugin {
 
 	public static void printCon(String line) {
 		log.info("[EscapePlug] " + line);
+	}
+	
+	public ComponentManager getComponentManager(){
+		return componentManager;
 	}
 }
