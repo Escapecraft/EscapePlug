@@ -73,6 +73,7 @@ public class AfkBooter {
 
         // movement check thread
         // initial delay of 10 sec, check every 5 sec after that
+        movementTracker = new MovementTracker(this);
         plugin.getServer().getScheduler().scheduleAsyncRepeatingTask(plugin, movementTracker, 200, 100);
 
         // refractor, use a list
