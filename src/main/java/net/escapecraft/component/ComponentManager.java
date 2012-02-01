@@ -1,7 +1,6 @@
 package net.escapecraft.component;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -10,7 +9,6 @@ import java.util.Set;
 import net.escapecraft.escapePlug.EscapePlug;
 
 import org.bukkit.command.CommandExecutor;
-import org.bukkit.event.Listener;
 import org.tulonsae.mc.util.Log;
 
 
@@ -99,21 +97,6 @@ public class ComponentManager{
 		}
 	}
 
-	/**
-	 * Register events of a listener
-	 * @param listener
-	 */
-	public void registerEvents(Listener listener){
-		for(Method m: listener.getClass().getMethods()){
-			for(Annotation a: m.getAnnotations()){
-
-				if(a instanceof BukkitEvent){
-					BukkitEvent bv = (BukkitEvent)a;
-					plugin.getServer().getPluginManager().registerEvent(bv.type(), listener,bv.priority(), plugin);
-				}
-			}
-		}
-	}
 
 	/**
 	 * Register a command executor
@@ -131,4 +114,5 @@ public class ComponentManager{
 		}
 	}
 
+	
 }

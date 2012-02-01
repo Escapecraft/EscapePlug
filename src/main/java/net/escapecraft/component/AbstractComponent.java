@@ -1,5 +1,7 @@
 package net.escapecraft.component;
 
+import net.escapecraft.escapePlug.EscapePlug;
+
 import org.bukkit.plugin.Plugin;
 import org.tulonsae.mc.util.Log;
 
@@ -15,21 +17,17 @@ public abstract class AbstractComponent {
 	 * Called upon being enabled
 	 * @param plugin instance of EscapePlug
 	 */
-	public abstract boolean enable(Log log,Plugin plugin);
+	public abstract boolean enable(Log log,EscapePlug plugin);
 	
 	/**
 	 * Called during onDisable() 
 	 */
-	public abstract void tidyUp();
+	public abstract void disable();
 	
 	/**
 	 * Called to tell the plugin to re-check it's config
 	 */
-	public abstract void reloadConfig();
+	public void reloadConfig(){};
 	
 	
-	/**
-	 * Called when the component needs to be disabled
-	 */
-	public abstract void disable();
 }
