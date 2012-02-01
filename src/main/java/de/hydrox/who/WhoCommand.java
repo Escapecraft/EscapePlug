@@ -18,12 +18,12 @@ public class WhoCommand implements CommandExecutor {
 
 	private DroxPermsAPI perms = null;
 	private PlayerComparator playerCompare = null;
-	private boolean beardStatLoaded = false;
+	private PlayerStatManager beardStatManager = null;
 
-	public WhoCommand(DroxPermsAPI perms, boolean beardStatLoaded) {
+	public WhoCommand(DroxPermsAPI perms, PlayerStatManager beardStatManager) {
 		this.perms = perms;
 		this.playerCompare = new PlayerComparator(perms);
-		this.beardStatLoaded = beardStatLoaded;
+		this.beardStatManager = beardStatManager;
 	}
 
 	public boolean onCommand(CommandSender sender, Command cmd,
@@ -88,8 +88,8 @@ public class WhoCommand implements CommandExecutor {
 					}
 					sender.sendMessage(ChatColor.GOLD + "Shown Name: " + effectivePrefix + player.getName());
 				}
-				if (beardStatLoaded) {
-					long seconds = PlayerStatManager.getPlayerBlob(player.getName()).getStat("stats","playedfor").getValue();
+				if (beardStatManager!=null) {
+					long seconds = beardStatManager.getPlayerBlob(player.getName()).getStat("stats","playedfor").getValue();
 					int weeks   = (int) seconds / 604800;
 					int days = (int)Math.ceil((seconds -604800*weeks) / 86400);
 					int hours = (int)Math.ceil((seconds - (86400 * days + 604800*weeks)) / 3600);
