@@ -8,7 +8,6 @@ import net.escapecraft.component.ComponentManager;
 import net.serubin.hatme.HatmeCommand;
 
 import org.bukkit.event.Event;
-import org.bukkit.event.entity.EntityListener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.tulonsae.mc.util.Log;
 
