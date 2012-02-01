@@ -1,0 +1,2 @@
+            StringBuilder exemptList = new StringBuilder(exemptPlayers);
+            sender.sendMessage("Exempt players: " + exemptList);
