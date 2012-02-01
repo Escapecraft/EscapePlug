@@ -23,8 +23,7 @@ import de.hydrox.mobcontrol.MobControlListener;
 import de.hydrox.who.WhoCommand;
 import en.tehbeard.endernerf.EndernerfListener;
 import en.tehbeard.gamemode.GameModeToggle;
-import en.tehbeard.mentorTeleport.MentorBack;
-import en.tehbeard.mentorTeleport.MentorTeleport;
+import en.tehbeard.mentorTeleport.MentorTeleportComponent;
 import en.tehbeard.pigjouster.PigJouster;
 import en.tehbeard.pigjouster.PigListener;
 import en.tehbeard.pigjouster.PigPlayerListener;
@@ -42,10 +41,9 @@ public class EscapePlug extends JavaPlugin {
 	public void onEnable() {
 		self = this;
 		
-		//start the component manager
-		componentManager = new ComponentManager(this, new Log("EscapePlug"));
 		
 		log.info("[EscapePlug] loading EscapePlug");
+		
 
 		//load/creates/fixes config
 		getConfig().options().copyDefaults(true);
@@ -60,6 +58,14 @@ public class EscapePlug extends JavaPlugin {
 		if (beardStat != null) {
 			beardStatManager = beardStat.getStatManager();
 		}
+		
+		
+		//start the component manager
+		componentManager = new ComponentManager(this, new Log("EscapePlug"));
+		componentManager.addComponent(MentorTeleportComponent.class);
+		
+		//start components
+		componentManager.startupComponents();
 
 		//Starting reserve list
 		if (getConfig().getBoolean("plugin.reserve.enabled", true)) {
@@ -81,8 +87,8 @@ public class EscapePlug extends JavaPlugin {
 		//start loading MentorTeleport
 		if (getConfig().getBoolean("plugin.mentortp.enabled", true)) {
 			log.info("[EscapePlug] loading MentorTP");
-			getCommand("mentortp").setExecutor(new MentorTeleport(this));
-			getCommand("mentorback").setExecutor(new MentorBack());
+			//getCommand("mentortp").setExecutor(new MentorTeleport(this));
+			//getCommand("mentorback").setExecutor(new MentorBack());
 			//finished loading MentorTeleport
 		} else {
 			log.info("[EscapePlug] skipping MentorTP");
@@ -184,5 +190,9 @@ public class EscapePlug extends JavaPlugin {
 
 	public static void printCon(String line) {
 		log.info("[EscapePlug] " + line);
+	}
+	
+	public ComponentManager getComponentManager(){
+		return componentManager;
 	}
 }
