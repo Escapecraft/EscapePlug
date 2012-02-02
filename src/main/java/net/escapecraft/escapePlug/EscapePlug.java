@@ -136,17 +136,22 @@ public class EscapePlug extends JavaPlugin {
 		if (getConfig().getBoolean("plugin.hatme.enabled", true)) {
 			log.info("[EscapePlug] loading hatMe");
 
-			//get Config
-			List<Integer> rbBlocks = getConfig().getIntegerList("plugin.hatme.allowed");
+		List<Integer> rbBlocks = getConfig().getIntegerList("plugin.hatme.allowed");
 			boolean rbAllow = getConfig().getBoolean("plugin.hatme.enable");
 			String notAllowedMsg = getConfig().getString("plugin.hatme.notAllowedMsg");
 			boolean rbOp = getConfig().getBoolean("plugin.hatme.opnorestrict");
 			String hatversion = getConfig().getString("plugin.hatme.hatversion");
 
 			//construct command and assign to /hat and /unhat
-			HatmeCommand hatMe = new HatmeCommand(rbBlocks, rbAllow, notAllowedMsg, rbOp);
-			getCommand("hat").setExecutor(hatMe);
-			getCommand("unhat").setExecutor(hatMe);
+			HatCommand Hat = new HatCommand(rbBlocks, rbAllow, notAllowedMsg, rbOp);
+			AdminCommand Admin = new AdminCommand(rbBlocks, rbAllow, notAllowedMsg,
+					rbOp);
+			// Permission Perm = new Permission(rbBlocks, rbAllow,
+			// notAllowedMsg, rbOp);
+			// Set command classes
+			getCommand("hat").setExecutor(Hat);
+			getCommand("unhat").setExecutor(Hat);
+			getCommand("hadmin").setExecutor(Admin)
 			log.info("[EscapePlug] loaded hatMe version " + hatversion);
 		}
 
