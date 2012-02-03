@@ -14,10 +14,11 @@ import org.bukkit.entity.Player;
 public class AdminCommand implements CommandExecutor {
 
 	EscapePlug plugin;
-
+	List<Integer> rbBlocks;
 	public AdminCommand(List<Integer> rbBlocks, boolean rbAllow,
 			String notAllowedMsg, boolean rbOp) {
 		// TODO Auto-generated constructor stub
+		this.rbBlocks = rbBlocks;
 		this.plugin = plugin;
 	}
 
@@ -34,7 +35,7 @@ public class AdminCommand implements CommandExecutor {
 							player.sendMessage("/hadmin list - lists allowed block list");
 							return true;
 						} else {
-							String blocks = plugin.rbBlocks.toString();
+							String blocks = rbBlocks.toString();
 							player.sendMessage("Allowed Blocks: " + blocks);
 							return true;
 						}
