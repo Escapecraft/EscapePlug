@@ -231,12 +231,10 @@ public class AfkBooter {
             if (player.hasPermission(PERMISSION_EXEMPT) || (exemptPlayers.contains(name.toLowerCase()))) {
                 continue;
             }
-            long lastActivity = lastPlayerActivity.get(name);
-            // java doc says the get returns a null if no mapped items,
-            // however java compiler says a long can't be a null
-            if (lastActivity == 0) {
+            if (lastPlayerActivity.get(name) == null) {
                 continue;
             }
+            long lastActivity = lastPlayerActivity.get(name);
             if (lastActivity < activityWindow) {
                 kickIdlePlayer(player);
             }
