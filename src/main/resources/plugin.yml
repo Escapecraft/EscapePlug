@@ -1,6 +1,6 @@
 name: EscapePlug
 main: net.escapecraft.escapePlug.EscapePlug
-version: 0.2.0-SNAPSHOT
+version: ${project.version}
 softdepend: [DroxPerms, BeardStat]
 commands:
     pig-active:
@@ -45,6 +45,12 @@ commands:
         usage:  |
             /<command> - Lists online Players
             /<command> <name> - Gives Information about a Player
+    afkbooter:
+        description: Kicks afk players after specified idle time.
+        usage: |
+            /<command> list - List the players on the exempt list.
+            /<command> add <name> ... - Add players to the exempt list.
+            /<command> remove <name> ... - Remove players from the exempt list.
 
 permissions:
   escapeplug.*:
@@ -58,6 +64,7 @@ permissions:
       escapeplug.notify: true
       escapeplug.hatme: true
       escapeplug.who: true
+      escapeplug.afkbooter: true
   escapeplug.lockdown:
     description: gives full permission on Lockdown-mode.
     children:
@@ -74,6 +81,17 @@ permissions:
     children:
       escapeplug.who.list: true
       escapeplug.who.player: true
+  escapeplug.afkbooter:
+    description: gives full permission on AfkBooter.
+    children:
+      escapeplug.afkbooter.config: true
+      escapeplug.afkbooter.exempt: true
+  escapeplug.afkbooter.config:
+    description: Allows players to change AfkBooter configuration.
+    default: op
+  escapeplug.afkbooter.exempt:
+    description: Exempts players from being kicked by AfkBooter when idling.
+    default: op
   escapeplug.lockdown.allow:
     description: Allows players to join while Lockdown-mode.
     default: op
