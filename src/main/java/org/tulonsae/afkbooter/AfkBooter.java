@@ -231,10 +231,11 @@ public class AfkBooter {
             if (player.hasPermission(PERMISSION_EXEMPT) || (exemptPlayers.contains(name.toLowerCase()))) {
                 continue;
             }
-            if (lastPlayerActivity.get(name) == null) {
+            Long tmpLong = lastPlayerActivity.get(name);
+            if (tmpLong == null) {
                 continue;
             }
-            long lastActivity = lastPlayerActivity.get(name);
+            long lastActivity = tmpLong.longValue();
             if (lastActivity < activityWindow) {
                 kickIdlePlayer(player);
             }
