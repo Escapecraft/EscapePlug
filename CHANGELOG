@@ -1,4 +1,7 @@
 v0.2.0
+* add AfkBooter
+* updated to bukkit 1.1-R3
+* removed SNAPSHOT from jar name
 * add who
 * add mobcontrol
 
