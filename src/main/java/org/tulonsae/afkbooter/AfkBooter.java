@@ -1,4 +1,4 @@
-package com.runicsystems.bukkit.AfkBooter;
+package org.tulonsae.afkbooter;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentSkipListSet;
@@ -10,9 +10,13 @@ import org.bukkit.entity.Player;
 import net.escapecraft.escapePlug.EscapePlug;
 
 /**
- * AfkBooter plugin by Neromir, modified by morganm, converted to
- * an EscapePlug component with a major rewrite to use latest
- * Bukkit config, event, and permission systems.
+ * AfkBooter component of EscapePlug.
+ *
+ * @author Tulonsae
+ * Based off version of AfkBooter plugin, written by Neromir and
+ * modified by morganm, but massively rewritten by Tulonsae.
+ * Updated to the latest Bukkit api for config, even, and permission
+ * systems.
  */
 public class AfkBooter {
 

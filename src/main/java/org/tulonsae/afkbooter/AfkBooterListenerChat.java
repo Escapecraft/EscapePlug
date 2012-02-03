@@ -1,23 +1,23 @@
-package com.runicsystems.bukkit.AfkBooter;
+package org.tulonsae.afkbooter;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.player.PlayerChatEvent;
 
 /**
- * Handle BlockPlaceEvent.
+ * Handle PlayerChatEvent.
  */
-public class AfkBooterListenerBlockPlace implements Listener {
+public class AfkBooterListenerChat implements Listener {
 
     private AfkBooter afkBooter;
 
-    public AfkBooterListenerBlockPlace(AfkBooter afkBooter) {
+    public AfkBooterListenerChat(AfkBooter afkBooter) {
         this.afkBooter = afkBooter;
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
-    public void playerJoin(BlockPlaceEvent event) {
+    public void playerJoin(PlayerChatEvent event) {
         afkBooter.recordPlayerActivity(event.getPlayer().getName());
     }
 }

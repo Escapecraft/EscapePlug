@@ -1,4 +1,4 @@
-package com.runicsystems.bukkit.AfkBooter;
+package org.tulonsae.afkbooter;
 
 import java.util.ArrayList;
 import java.util.Arrays;

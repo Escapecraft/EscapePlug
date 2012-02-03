@@ -1,4 +1,4 @@
-package com.runicsystems.bukkit.AfkBooter;
+package org.tulonsae.afkbooter;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;

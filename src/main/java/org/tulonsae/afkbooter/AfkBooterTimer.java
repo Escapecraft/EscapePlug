@@ -1,11 +1,14 @@
-package com.runicsystems.bukkit.AfkBooter;
+package org.tulonsae.afkbooter;
 
 import java.util.logging.Level;
 
 import net.escapecraft.escapePlug.EscapePlug;
 
 /**
- * @author neromir
+ * AfkBooter component thread that checks for idle players to kick.
+ *
+ * @author Tulonsae
+ * Original author neromir.
  */
 public class AfkBooterTimer extends Thread
 {

@@ -28,7 +28,7 @@ import en.tehbeard.pigjouster.PigJouster;
 import en.tehbeard.pigjouster.PigListener;
 import en.tehbeard.pigjouster.PigPlayerListener;
 import en.tehbeard.reserve.ReserveComponent;
-import com.runicsystems.bukkit.AfkBooter.AfkBooter;
+import org.tulonsae.afkbooter.AfkBooter;
 
 public class EscapePlug extends JavaPlugin {
 

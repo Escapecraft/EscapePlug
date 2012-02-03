@@ -1,4 +1,4 @@
-package com.runicsystems.bukkit.AfkBooter;
+package org.tulonsae.afkbooter;
 
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -12,7 +12,10 @@ import net.escapecraft.escapePlug.EscapePlug;
  * Uses this method instead of the PlayerMoveEvent.  If player is using a
  * vehicle when checked and ignore-vehicle-movement config setting is true,
  * the move is not counted as activity.
- * @author morganm
+ *
+ * @author Tulonsae
+ * Original author morganm.  Idea is the same, but algorithm rewritten by
+ * Tulonsae.
  */
 public class MovementTracker implements Runnable {
     private final AfkBooter afkBooter;
