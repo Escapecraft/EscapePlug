@@ -6,7 +6,9 @@ import java.util.logging.Logger;
 import me.tehbeard.BeardStat.BeardStat;
 import me.tehbeard.BeardStat.containers.PlayerStatManager;
 import net.escapecraft.component.ComponentManager;
-import net.serubin.hatme.HatmeCommand;
+import net.serubin.hatme.AdminCommand;
+import net.serubin.hatme.HatCommand;
+
 
 import org.bukkit.event.Event;
 import org.bukkit.event.entity.EntityListener;
@@ -151,7 +153,7 @@ public class EscapePlug extends JavaPlugin {
 			// Set command classes
 			getCommand("hat").setExecutor(Hat);
 			getCommand("unhat").setExecutor(Hat);
-			getCommand("hadmin").setExecutor(Admin)
+			getCommand("hadmin").setExecutor(Admin);
 			log.info("[EscapePlug] loaded hatMe version " + hatversion);
 		}
 
