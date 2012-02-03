@@ -30,6 +30,7 @@ import en.tehbeard.pigjouster.PigJouster;
 import en.tehbeard.pigjouster.PigListener;
 import en.tehbeard.pigjouster.PigPlayerListener;
 import en.tehbeard.reserve.ReserveComponent;
+import org.tulonsae.afkbooter.AfkBooter;
 
 public class EscapePlug extends JavaPlugin {
 
@@ -37,6 +38,7 @@ public class EscapePlug extends JavaPlugin {
 	private ComponentManager componentManager;
 	private DroxPermsAPI droxPermsAPI = null;
 	private PlayerStatManager beardStatManager = null;
+        private AfkBooter afkBooter = null;
 
 	public static EscapePlug self = null;
 
@@ -164,6 +166,13 @@ public class EscapePlug extends JavaPlugin {
 			//finished loading who
 		}
 
+                // start loading afkbooter
+		if (getConfig().getBoolean("plugin.afkbooter.enabled", true)) {
+			log.info("[EscapePlug] loading AfkBooter");
+                        afkBooter = new AfkBooter(self);
+			//finished loading afkbooter
+		}
+
 		//start loading mobcontrol
 		if (getConfig().getBoolean("plugin.mobcontrol.enabled", true)) {
 			log.info("[EscapePlug] loading MobControl");
@@ -178,6 +187,11 @@ public class EscapePlug extends JavaPlugin {
 	}
 
 	public void onDisable() {
+                if (afkBooter != null) {
+                        afkBooter.tidyUp();
+			log.info("[EscapePlug] AfkBooter unloaded");
+                }
+
 		self = null;
 		log.info("[EscapePlug] EscapePlug unloaded");
 	}
