@@ -181,7 +181,8 @@ public class EscapePlug extends JavaPlugin {
 
 	public void onDisable() {
                 if (afkBooter != null) {
-                       afkBooter.tidyUp();
+                        afkBooter.tidyUp();
+			log.info("[EscapePlug] AfkBooter unloaded");
                 }
 
 		self = null;

@@ -21,8 +21,9 @@ public class AfkBooter {
 
     private EscapePlug plugin;
     private Logger log;
-    private MovementTracker movementTracker;
     private AfkBooterTimer threadedTimer;
+    private MovementTracker movementTracker;
+    private int taskId;
 
     private long timeoutCheckInterval;
     private long kickTimeout;
@@ -74,7 +75,7 @@ public class AfkBooter {
         // movement check thread
         // initial delay of 10 sec, check every 5 sec after that
         movementTracker = new MovementTracker(this);
-        plugin.getServer().getScheduler().scheduleAsyncRepeatingTask(plugin, movementTracker, 200, 100);
+        taskId = plugin.getServer().getScheduler().scheduleAsyncRepeatingTask(plugin, movementTracker, 200, 100);
 
         // refractor, use a list
         // register join/quit events, always; register the others if configured
@@ -115,6 +116,13 @@ public class AfkBooter {
      * Called during onDisable()
      */
     public void tidyUp() {
+
+        if (threadedTimer != null) {
+            threadedTimer.setAborted(true);
+            threadedTimer = null;
+        }
+
+        plugin.getServer().getScheduler().cancelTask(taskId);
     }
 
     /**
@@ -162,7 +170,7 @@ public class AfkBooter {
      */
     public synchronized void addExemptPlayer(String player, String name) {
         exemptPlayers.add(player);
-        log.info("AfkBooter added player " + player + " to the exempt list by " + name);
+        log.info("AfkBooter: " + name + " added player '" + player + "' to the exempt list.");
 
         plugin.getConfig().set("plugin.afkbooter.exempt-players", exemptPlayers.toString());
 
@@ -176,7 +184,7 @@ public class AfkBooter {
      */
     public synchronized void removeExemptPlayer(String player, String name) {
         exemptPlayers.remove(player);
-        log.info("AfkBooter remove player " + player + " from the exempt list by " + name);
+        log.info("AfkBooter: " + name + " removed player '" + player + "' from the exempt list.");
 
         plugin.getConfig().set("plugin.afkbooter.exempt-players", exemptPlayers.toString());
 
@@ -216,7 +224,7 @@ public class AfkBooter {
             if (player == null) {
                 continue;
             }
-            if (player.hasPermission(PERMISSION_EXEMPT) || (exemptPlayers.contains(name))) {
+            if (player.hasPermission(PERMISSION_EXEMPT) || (exemptPlayers.contains(name.toLowerCase()))) {
                 continue;
             }
             long lastActivity = lastPlayerActivity.get(name);
@@ -236,7 +244,7 @@ public class AfkBooter {
      */
     private synchronized void kickIdlePlayer(Player player) {
         if (player.isOnline()) {
-            log.info("AfkBooter kicking idle player " + player.getName());
+            log.info("AfkBooter kicking idle player '" + player.getName() + "'");
             player.kickPlayer(playerKickMessage);
             // don't broadcast kick message if empty or null
             if ((broadcastKickMessage != null) && (!broadcastKickMessage.isEmpty())) {
@@ -279,10 +287,13 @@ public class AfkBooter {
 
         // get exempt player list
         String exempt = plugin.getConfig().getString("plugin.afkbooter.exempt-players");
+        exempt = exempt.replace('[', ' ');
+        exempt = exempt.replace(']', ' ');
         if (exempt != null) {
             String[] exemptSplit = exempt.split(",");
             if (exemptSplit != null) {
                 for (String name : exemptSplit) {
+                    name = name.trim().toLowerCase();
                     if (name.length() > 0) {
                         exemptPlayers.add(name);
                     }

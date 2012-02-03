@@ -18,7 +18,7 @@ import net.escapecraft.escapePlug.EscapePlug;
  */
 public class AfkBooterCommand implements CommandExecutor {
 
-    private final String PERMISSION_CONFIG = "escapeplug.afkbooter.config";
+    private final String PERMISSION_CONFIG = "escapeplug.afkbooter.change";
 
     private AfkBooter afkBooter;
     private EscapePlug plugin;
@@ -38,7 +38,7 @@ public class AfkBooterCommand implements CommandExecutor {
 
         // check perms
         if (!sender.hasPermission(PERMISSION_CONFIG)) {
-            sender.sendMessage("You do not have permission to list or modify exempt players.");
+            sender.sendMessage(ChatColor.RED + "You do not have permission to list or modify exempt players.");
             return true;
         }
 
@@ -85,14 +85,14 @@ public class AfkBooterCommand implements CommandExecutor {
         ConcurrentSkipListSet exemptPlayers = afkBooter.getExemptPlayers();
 
         for (String name : args) {
-            name = name.trim();
+            name = name.trim().toLowerCase();
             if (exemptPlayers.contains(name)) {
-                sender.sendMessage("Player " + name + " is already on the exempt list.");
+                sender.sendMessage("Player '" + name + "' is already on the exempt list.");
                 continue;
             }
 
             afkBooter.addExemptPlayer(name, sender.getName());
-            sender.sendMessage("Added player " + name + " to the exempt list.");
+            sender.sendMessage("Added player '" + name + "' to the exempt list.");
         }
 
         return true;
@@ -108,14 +108,14 @@ public class AfkBooterCommand implements CommandExecutor {
         ConcurrentSkipListSet exemptPlayers = afkBooter.getExemptPlayers();
 
         for (String name : args) {
-            name = name.trim();
+            name = name.trim().toLowerCase();
             if (!exemptPlayers.contains(name)) {
-                sender.sendMessage("Player " + name + " is not on the exempt list.");
+                sender.sendMessage("Player '" + name + "' is not on the exempt list.");
                 continue;
             }
 
             afkBooter.removeExemptPlayer(name, sender.getName());
-            sender.sendMessage("Removed player " + name + " from the exempt list.");
+            sender.sendMessage("Removed player '" + name + "' from the exempt list.");
         }
 
         return true;
