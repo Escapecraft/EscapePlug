@@ -155,7 +155,7 @@ public class EscapePlug extends JavaPlugin {
 			// Set command classes
 			getCommand("hat").setExecutor(Hat);
 			getCommand("unhat").setExecutor(Hat);
-			getCommand("hadmin").setExecutor(Admin);
+			//getCommand("hadmin").setExecutor(Admin);
 			log.info("[EscapePlug] loaded hatMe version " + hatversion);
 		}
 
