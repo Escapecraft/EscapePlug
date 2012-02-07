@@ -6,7 +6,6 @@ import java.util.logging.Logger;
 import me.tehbeard.BeardStat.BeardStat;
 import me.tehbeard.BeardStat.containers.PlayerStatManager;
 import net.escapecraft.component.ComponentManager;
-import net.serubin.hatme.AdminCommand;
 import net.serubin.hatme.HatCommand;
 
 
@@ -148,14 +147,8 @@ public class EscapePlug extends JavaPlugin {
 
 			//construct command and assign to /hat and /unhat
 			HatCommand Hat = new HatCommand(rbBlocks, rbAllow, notAllowedMsg, rbOp);
-			AdminCommand Admin = new AdminCommand(rbBlocks, rbAllow, notAllowedMsg,
-					rbOp);
-			// Permission Perm = new Permission(rbBlocks, rbAllow,
-			// notAllowedMsg, rbOp);
-			// Set command classes
 			getCommand("hat").setExecutor(Hat);
 			getCommand("unhat").setExecutor(Hat);
-			//getCommand("hadmin").setExecutor(Admin);
 			log.info("[EscapePlug] loaded hatMe version " + hatversion);
 		}
 
