@@ -23,10 +23,6 @@ public class ReserveComponent extends AbstractComponent implements Listener {
 				event.setKickMessage("server is fullup :(");
 				event.setResult(PlayerLoginEvent.Result.KICK_FULL);
 			}
-			else
-			{
-				event.allow();
-			}
 		}
 	}
 
