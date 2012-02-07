@@ -58,7 +58,7 @@ plugin:
         - 112
         opnorestrict: true
         notAllowedMsg: Invalid Item
-        hatversion: 7.4-ECV
+        hatversion: 9.4-ECV
     mobcontrol:
         enabled: true
         worlds: [testworld]
@@ -84,4 +84,21 @@ plugin:
                     - 7
 # TNT
                     - 46
-
+    afkbooter:
+        enabled: true
+        version: ""
+        kick-timeout: 600
+        timeout-check-interval: 60
+        player-count-threshold: 0
+        kick-message: "Kicked for idling."
+        kick-broadcast: "Kicked for idling."
+        exempt-players: ""
+        ignore-vehicle-movement: true
+        event-player-chat: true
+        event-inventory-open: true
+        event-player-command-preprocess: true
+        event-player-drop-item: true
+        event-block-place: true
+        event-block-break: true
+        event-player-interact: true
+        event-player-interact-entity: true

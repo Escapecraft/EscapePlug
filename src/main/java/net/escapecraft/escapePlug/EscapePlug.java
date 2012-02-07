@@ -9,7 +9,8 @@ import java.util.logging.Logger;
 import me.tehbeard.BeardStat.BeardStat;
 import me.tehbeard.BeardStat.containers.PlayerStatManager;
 import net.escapecraft.component.ComponentManager;
-import net.serubin.hatme.HatmeCommand;
+import net.serubin.hatme.HatCommand;
+
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -37,6 +38,7 @@ import en.tehbeard.pigjouster.PigJouster;
 import en.tehbeard.pigjouster.PigListener;
 import en.tehbeard.pigjouster.PigPlayerListener;
 import en.tehbeard.reserve.ReserveComponent;
+import org.tulonsae.afkbooter.AfkBooter;
 
 public class EscapePlug extends JavaPlugin {
 
@@ -44,6 +46,8 @@ public class EscapePlug extends JavaPlugin {
 	private ComponentManager componentManager;
 	private DroxPermsAPI droxPermsAPI = null;
 	private PlayerStatManager beardStatManager = null;
+	private AfkBooter afkBooter = null;
+
 	private boolean hawkEyeLoaded = false;
 
 	public static EscapePlug self = null;
@@ -148,17 +152,16 @@ public class EscapePlug extends JavaPlugin {
 		if (getConfig().getBoolean("plugin.hatme.enabled", true)) {
 			log.info("[EscapePlug] loading hatMe");
 
-			//get Config
-			List<Integer> rbBlocks = getConfig().getIntegerList("plugin.hatme.allowed");
+		List<Integer> rbBlocks = getConfig().getIntegerList("plugin.hatme.allowed");
 			boolean rbAllow = getConfig().getBoolean("plugin.hatme.enable");
 			String notAllowedMsg = getConfig().getString("plugin.hatme.notAllowedMsg");
 			boolean rbOp = getConfig().getBoolean("plugin.hatme.opnorestrict");
 			String hatversion = getConfig().getString("plugin.hatme.hatversion");
 
 			//construct command and assign to /hat and /unhat
-			HatmeCommand hatMe = new HatmeCommand(rbBlocks, rbAllow, notAllowedMsg, rbOp);
-			getCommand("hat").setExecutor(hatMe);
-			getCommand("unhat").setExecutor(hatMe);
+			HatCommand Hat = new HatCommand(rbBlocks, rbAllow, notAllowedMsg, rbOp);
+			getCommand("hat").setExecutor(Hat);
+			getCommand("unhat").setExecutor(Hat);
 			log.info("[EscapePlug] loaded hatMe version " + hatversion);
 		}
 
@@ -167,6 +170,13 @@ public class EscapePlug extends JavaPlugin {
 			log.info("[EscapePlug] loading Who");
 			getCommand("who").setExecutor(new WhoCommand(droxPermsAPI, beardStatManager));
 			//finished loading who
+		}
+
+                // start loading afkbooter
+		if (getConfig().getBoolean("plugin.afkbooter.enabled", true)) {
+			log.info("[EscapePlug] loading AfkBooter");
+                        afkBooter = new AfkBooter(self);
+			//finished loading afkbooter
 		}
 
 		//start loading mobcontrol
@@ -211,6 +221,11 @@ public class EscapePlug extends JavaPlugin {
 	}
 
 	public void onDisable() {
+                if (afkBooter != null) {
+                        afkBooter.tidyUp();
+			log.info("[EscapePlug] AfkBooter unloaded");
+                }
+
 		self = null;
 		log.info("[EscapePlug] EscapePlug unloaded");
 	}
