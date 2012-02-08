@@ -3,6 +3,10 @@ package de.hydrox.who;
 import java.util.Arrays;
 
 import me.tehbeard.BeardStat.containers.PlayerStatManager;
+import net.escapecraft.component.AbstractComponent;
+import net.escapecraft.component.BukkitCommand;
+import net.escapecraft.component.ComponentDescriptor;
+import net.escapecraft.escapePlug.EscapePlug;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -11,16 +15,19 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.tulonsae.mc.util.Log;
 
 import de.hydrox.bukkit.DroxPerms.DroxPermsAPI;
 
-public class WhoCommand implements CommandExecutor {
+@ComponentDescriptor(name="who command",slug="who",version="1.00")
+@BukkitCommand(command="who")
+public class WhoCommandComponent extends AbstractComponent implements CommandExecutor {
 
 	private DroxPermsAPI perms = null;
 	private PlayerComparator playerCompare = null;
 	private PlayerStatManager beardStatManager = null;
 
-	public WhoCommand(DroxPermsAPI perms, PlayerStatManager beardStatManager) {
+	public WhoCommandComponent(DroxPermsAPI perms, PlayerStatManager beardStatManager) {
 		this.perms = perms;
 		this.playerCompare = new PlayerComparator(perms);
 		this.beardStatManager = beardStatManager;
@@ -115,5 +122,17 @@ public class WhoCommand implements CommandExecutor {
 		}
 		return true;
 	}
+
+    @Override
+    public boolean enable(Log log, EscapePlug plugin) {
+        plugin.getComponentManager().registerCommands(this);
+        return true;
+    }
+
+    @Override
+    public void disable() {
+        // TODO Auto-generated method stub
+        
+    }
 
 }

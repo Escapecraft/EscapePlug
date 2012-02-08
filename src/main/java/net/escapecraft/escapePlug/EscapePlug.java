@@ -20,7 +20,7 @@ import de.hydrox.bukkit.DroxPerms.DroxPermsAPI;
 import de.hydrox.bukkit.timezone.TimezoneComponent;
 import de.hydrox.lockdown.LockdownComponent;
 import de.hydrox.mobcontrol.MobControlListener;
-import de.hydrox.who.WhoCommand;
+import de.hydrox.who.WhoCommandComponent;
 
 import en.tehbeard.endernerf.EndernerfComponent;
 import en.tehbeard.gamemode.GameModeToggleComponent;
@@ -71,6 +71,7 @@ public class EscapePlug extends JavaPlugin {
 		componentManager.addComponent(LockdownComponent.class);
 		componentManager.addComponent(EndernerfComponent.class);
 		componentManager.addComponent(PigJousterComponent.class);
+		componentManager.addComponent(WhoCommandComponent.class);
 		//start components
 		componentManager.startupComponents();
 
@@ -111,12 +112,7 @@ public class EscapePlug extends JavaPlugin {
 			log.info("[EscapePlug] loaded hatMe version " + hatversion);
 		}
 
-		//start loading who
-		if (getConfig().getBoolean("plugin.who.enabled", true)) {
-			log.info("[EscapePlug] loading Who");
-			getCommand("who").setExecutor(new WhoCommand(droxPermsAPI, beardStatManager));
-			//finished loading who
-		}
+		
 
                 // start loading afkbooter
 		if (getConfig().getBoolean("plugin.afkbooter.enabled", true)) {
