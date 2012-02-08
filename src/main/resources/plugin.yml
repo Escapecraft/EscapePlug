@@ -1,6 +1,7 @@
 name: EscapePlug
 main: net.escapecraft.escapePlug.EscapePlug
-version: 0.1.0
+version: ${project.version}
+softdepend: [DroxPerms, BeardStat]
 commands:
     pig-active:
         description: Activate pig punching
@@ -32,13 +33,24 @@ commands:
             /<command> disable - Disables Lockdown-Mode
         permission: escapeplug.lockdown.change
     hat:
-      aliases: [hat, hatme, hm]
-      description: Command that puts the item on your head.
-      usage: /<command> [item id]- puts item on head [puts item on head from item id]
+        aliases: [hat, hatme, hm]
+        description: Command that puts the item on your head.
+        usage: /<command> - puts item on head
     unhat:
-      aliases: [unhat, unhatme, unhm]
-      description: Command to take your "hat" off.
-      usage: /<command> - takes item off head
+        aliases: [unhat, unhatme, unhm]
+        description: Command to take your "hat" off.
+        usage: /<command> - takes item off head
+    who:
+        description: Gives Information about the online Players.
+        usage:  |
+            /<command> - Lists online Players
+            /<command> <name> - Gives Information about a Player
+    afkbooter:
+        description: Kicks afk players after specified idle time.
+        usage: |
+            /<command> list - List the players on the exempt list.
+            /<command> add <name> ... - Add players to the exempt list.
+            /<command> remove <name> ... - Remove players from the exempt list.
 
 permissions:
   escapeplug.*:
@@ -51,6 +63,8 @@ permissions:
       escapeplug.lockdown: true
       escapeplug.notify: true
       escapeplug.hatme: true
+      escapeplug.who: true
+      escapeplug.afkbooter: true
   escapeplug.lockdown:
     description: gives full permission on Lockdown-mode.
     children:
@@ -60,8 +74,25 @@ permissions:
     description: gives full permission on Hatme.
     children:
       escapeplug.hatme.hat: true
-      escapeplug.hatme.give: true
+      escapeplug.hatme.hat.give: true
+      escapeplug.hatme.hat.all: true
       escapeplug.hatme.norestrict: true
+  escapeplug.who:
+    description: gives full permission on Who.
+    children:
+      escapeplug.who.list: true
+      escapeplug.who.player: true
+  escapeplug.afkbooter:
+    description: gives full permission on AfkBooter.
+    children:
+      escapeplug.afkbooter.config: true
+      escapeplug.afkbooter.exempt: true
+  escapeplug.afkbooter.config:
+    description: Allows players to change AfkBooter configuration.
+    default: op
+  escapeplug.afkbooter.exempt:
+    description: Exempts players from being kicked by AfkBooter when idling.
+    default: op
   escapeplug.lockdown.allow:
     description: Allows players to join while Lockdown-mode.
     default: op
@@ -87,6 +118,15 @@ permissions:
   escapeplug.hatme.give:
     description: Allows player to use item in hand as a hat
     default: op
+  escapeplug.hatme.hat.all:
+    description: Allows player to use given item as a hat
+    default: op
   escapeplug.hatme.norestrict:
     description: Player Overwrites the block-restriction
+    default: op
+  escapeplug.who.list:
+    description: Shows the Player-list
+    default: op
+  escapeplug.who.player:
+    description: Shows details on specific Players
     default: op

@@ -1,3 +1,11 @@
+v0.2.0
+* add -a option to hatme
+* add AfkBooter
+* update to bukkit 1.1-R3
+* remove SNAPSHOT from jar name
+* add who
+* add mobcontrol
+
 v0.1.0
 * add antiSlime
 * add timezone
