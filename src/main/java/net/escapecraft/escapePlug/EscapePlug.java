@@ -24,7 +24,7 @@ import de.hydrox.lockdown.LockdownComponent;
 import de.hydrox.mobcontrol.MobControlListener;
 import de.hydrox.who.WhoCommand;
 
-import en.tehbeard.endernerf.EndernerfListener;
+import en.tehbeard.endernerf.EndernerfComponent;
 import en.tehbeard.gamemode.GameModeToggleComponent;
 import en.tehbeard.mentorTeleport.MentorTeleportComponent;
 import en.tehbeard.pigjouster.PigJouster;
@@ -73,6 +73,7 @@ public class EscapePlug extends JavaPlugin {
 		componentManager.addComponent(GameModeToggleComponent.class);
 		componentManager.addComponent(TimezoneComponent.class);
 		componentManager.addComponent(LockdownComponent.class);
+		componentManager.addComponent(EndernerfComponent.class);
 
 		//start components
 		componentManager.startupComponents();
@@ -110,15 +111,6 @@ public class EscapePlug extends JavaPlugin {
 
 		
 
-		//start loading endernerf
-		if (getConfig().getBoolean("plugin.endernerf.enabled", true)) {
-			log.info("[EscapePlug] loading enderNerf");
-			EntityListener el = new EndernerfListener();
-			this.getServer().getPluginManager().registerEvent(Event.Type.ENDERMAN_PICKUP, el, Event.Priority.Highest, this);
-			this.getServer().getPluginManager().registerEvent(Event.Type.ENDERMAN_PLACE, el, Event.Priority.Highest, this);
-
-			//finished loading endernerf
-		}
 
 
 		//start loading hatMe
