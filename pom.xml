@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>net.escapecraft</groupId>
   <artifactId>EscapePlug</artifactId>
-  <version>0.3.0</version>
+  <version>0.2.0</version>
   <packaging>jar</packaging>
   <name>EscapePlug</name>
   <url></url>
@@ -32,7 +32,7 @@
     <dependency>
         <groupId>me.tehbeard</groupId>
         <artifactId>BeardStat</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>0.4</version>
     </dependency>
   </dependencies>
 

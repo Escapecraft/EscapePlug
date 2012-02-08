@@ -16,7 +16,6 @@ plugin:
 #hatme config
         enable: true
         allowed: 
-        - 0
         - 1
         - 2
         - 3
@@ -58,7 +57,7 @@ plugin:
         - 112
         opnorestrict: true
         notAllowedMsg: Invalid Item
-        hatversion: 7.4-ECV
+        hatversion: 9.6-ECV
     mobcontrol:
         enabled: true
         worlds: [testworld]

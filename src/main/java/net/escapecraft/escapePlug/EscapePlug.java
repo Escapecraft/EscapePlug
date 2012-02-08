@@ -5,10 +5,9 @@ import java.util.logging.Logger;
 
 import me.tehbeard.BeardStat.BeardStat;
 import me.tehbeard.BeardStat.containers.PlayerStatManager;
-import net.escapecraft.component.ComponentManager;
-import net.serubin.hatme.AdminCommand;
-import net.serubin.hatme.HatCommand;
 
+import net.escapecraft.component.ComponentManager;
+import net.serubin.hatme.HatCommand;
 
 import org.bukkit.event.Event;
 import org.bukkit.event.entity.EntityListener;
@@ -22,6 +21,7 @@ import de.hydrox.bukkit.timezone.TimezoneCommands;
 import de.hydrox.lockdown.LockdownComponent;
 import de.hydrox.mobcontrol.MobControlListener;
 import de.hydrox.who.WhoCommand;
+
 import en.tehbeard.endernerf.EndernerfListener;
 import en.tehbeard.gamemode.GameModeToggle;
 import en.tehbeard.mentorTeleport.MentorTeleportComponent;
@@ -29,6 +29,7 @@ import en.tehbeard.pigjouster.PigJouster;
 import en.tehbeard.pigjouster.PigListener;
 import en.tehbeard.pigjouster.PigPlayerListener;
 import en.tehbeard.reserve.ReserveComponent;
+
 import org.tulonsae.afkbooter.AfkBooter;
 
 public class EscapePlug extends JavaPlugin {
@@ -145,14 +146,8 @@ public class EscapePlug extends JavaPlugin {
 
 			//construct command and assign to /hat and /unhat
 			HatCommand Hat = new HatCommand(rbBlocks, rbAllow, notAllowedMsg, rbOp);
-			AdminCommand Admin = new AdminCommand(rbBlocks, rbAllow, notAllowedMsg,
-					rbOp);
-			// Permission Perm = new Permission(rbBlocks, rbAllow,
-			// notAllowedMsg, rbOp);
-			// Set command classes
 			getCommand("hat").setExecutor(Hat);
 			getCommand("unhat").setExecutor(Hat);
-			getCommand("hadmin").setExecutor(Admin);
 			log.info("[EscapePlug] loaded hatMe version " + hatversion);
 		}
 
