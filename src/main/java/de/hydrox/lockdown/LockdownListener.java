@@ -2,12 +2,15 @@ package de.hydrox.lockdown;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerListener;
+
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.plugin.Plugin;
 
-public class LockdownListener extends PlayerListener {
+public class LockdownListener implements Listener {
 	private String rejectMsg;
 	private String notificationMsg;
 
@@ -17,7 +20,8 @@ public class LockdownListener extends PlayerListener {
 		rejectMsg = plugin.getConfig().getString("plugin.lockdown.rejectmsg");
 		notificationMsg = plugin.getConfig().getString("plugin.lockdown.notificationmsg");
 	}
-
+	
+	@EventHandler(priority=EventPriority.HIGHEST)
 	public void onPlayerLogin(PlayerLoginEvent event){
 		if(!isLockdownActive) {
 			return;
@@ -34,6 +38,7 @@ public class LockdownListener extends PlayerListener {
 		}
 	}
 
+	@EventHandler(priority=EventPriority.HIGHEST)
 	public void onPlayerJoin(PlayerJoinEvent event) {
 		if(!isLockdownActive) {
 			return;
