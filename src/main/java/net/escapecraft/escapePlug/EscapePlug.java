@@ -5,9 +5,9 @@ import java.util.logging.Logger;
 
 import me.tehbeard.BeardStat.BeardStat;
 import me.tehbeard.BeardStat.containers.PlayerStatManager;
+
 import net.escapecraft.component.ComponentManager;
 import net.serubin.hatme.HatCommand;
-
 
 import org.bukkit.event.Event;
 import org.bukkit.event.entity.EntityListener;
@@ -22,6 +22,7 @@ import de.hydrox.lockdown.LockdownCommand;
 import de.hydrox.lockdown.LockdownListener;
 import de.hydrox.mobcontrol.MobControlListener;
 import de.hydrox.who.WhoCommand;
+
 import en.tehbeard.endernerf.EndernerfListener;
 import en.tehbeard.gamemode.GameModeToggle;
 import en.tehbeard.mentorTeleport.MentorTeleportComponent;
@@ -29,6 +30,7 @@ import en.tehbeard.pigjouster.PigJouster;
 import en.tehbeard.pigjouster.PigListener;
 import en.tehbeard.pigjouster.PigPlayerListener;
 import en.tehbeard.reserve.ReserveComponent;
+
 import org.tulonsae.afkbooter.AfkBooter;
 
 public class EscapePlug extends JavaPlugin {

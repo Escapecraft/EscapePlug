@@ -244,9 +244,10 @@ public class HatCommand implements CommandExecutor {
 						inventory.setItemInHand(null);
 						player.sendMessage(ChatColor.YELLOW
 								+ "You now have a hat!");
+						inventory.setItem(empty, itemHead);
 						return true;
 					}// removes item from helmet
-					inventory.setItem(empty, itemHead); // Sets item from
+ // Sets item from
 														// helmet
 														// to first open
 														// slot
