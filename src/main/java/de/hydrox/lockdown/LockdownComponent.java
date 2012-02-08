@@ -54,6 +54,7 @@ public class LockdownComponent extends AbstractComponent implements CommandExecu
     public boolean enable(Log log, EscapePlug plugin) {
         listener = new LockdownListener(plugin);
         Bukkit.getPluginManager().registerEvents(listener , plugin);
+        plugin.getComponentManager().registerCommands(this);
         return true;
     }
     @Override
