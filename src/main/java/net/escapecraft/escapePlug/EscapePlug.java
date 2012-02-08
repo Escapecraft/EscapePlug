@@ -24,7 +24,7 @@ import de.hydrox.mobcontrol.MobControlListener;
 import de.hydrox.who.WhoCommand;
 
 import en.tehbeard.endernerf.EndernerfListener;
-import en.tehbeard.gamemode.GameModeToggle;
+import en.tehbeard.gamemode.GameModeToggleComponent;
 import en.tehbeard.mentorTeleport.MentorTeleportComponent;
 import en.tehbeard.pigjouster.PigJouster;
 import en.tehbeard.pigjouster.PigListener;
@@ -69,6 +69,7 @@ public class EscapePlug extends JavaPlugin {
 		componentManager = new ComponentManager(this, new Log("EscapePlug"));
 		componentManager.addComponent(MentorTeleportComponent.class);
 		componentManager.addComponent(ReserveComponent.class);
+		componentManager.addComponent(GameModeToggleComponent.class);
 		//start components
 		componentManager.startupComponents();
 
@@ -110,12 +111,7 @@ public class EscapePlug extends JavaPlugin {
 			log.info("[EscapePlug] skipping Timezone");
 		}
 
-		//start loading togglemode
-		if (getConfig().getBoolean("plugin.togglemode.enabled", true)) {
-			log.info("[EscapePlug] loading ToggleGameMode");
-			getCommand("togglemode").setExecutor(new GameModeToggle());
-			//finished loading togglemode
-		}
+		
 
 		//start loading endernerf
 		if (getConfig().getBoolean("plugin.endernerf.enabled", true)) {
