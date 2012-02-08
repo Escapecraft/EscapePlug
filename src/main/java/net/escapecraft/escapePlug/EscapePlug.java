@@ -162,8 +162,9 @@ public class EscapePlug extends JavaPlugin {
                         afkBooter.tidyUp();
 			log.info("[EscapePlug] AfkBooter unloaded");
                 }
-
+        getComponentManager().disableComponents();
 		self = null;
+		
 		log.info("[EscapePlug] EscapePlug unloaded");
 	}
 
