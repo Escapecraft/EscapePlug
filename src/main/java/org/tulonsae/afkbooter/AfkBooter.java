@@ -20,7 +20,7 @@ import net.escapecraft.escapePlug.EscapePlug;
  */
 public class AfkBooter {
 
-    private static final String VERSION = "1.1";
+    private static final String VERSION = "1.1.1";
     private static final String PERMISSION_EXEMPT = "escapeplug.afkbooter.exempt";
 
     private EscapePlug plugin;
