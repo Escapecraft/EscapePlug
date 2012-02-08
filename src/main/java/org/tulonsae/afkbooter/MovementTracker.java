@@ -50,15 +50,21 @@ public class MovementTracker implements Runnable {
             if (player == null) {
                 lastLoc.remove(name);
             } else {
+                // workaround for bukkit issue
+                String prevWorld = lastLoc.get(name).getWorld().getName();
+                String curWorld = player.getLocation().getWorld().getName();
+                if (prevWorld.equals(curWorld)) {
+                    if (player.getLocation().distance(lastLoc.get(name)) < 1) {
+                        continue;
+                    }
+                }
                 // if distance between player's current location and stored
                 // location is less than 1, this move is not active; if active
                 // and ignore vehicle movement is set and player in vehicle,
                 // then update location, but don't count this move as active
-                if (player.getLocation().distance(lastLoc.get(name)) >= 1) {
-                    addPlayer(player);
-                    if (!isIgnoreVehicleMovement || !player.isInsideVehicle()) {
-                        afkBooter.recordPlayerActivity(name);
-                    }
+                addPlayer(player);
+                if (!isIgnoreVehicleMovement || !player.isInsideVehicle()) {
+                    afkBooter.recordPlayerActivity(name);
                 }
             }
         }

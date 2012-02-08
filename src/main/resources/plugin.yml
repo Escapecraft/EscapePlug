@@ -33,9 +33,9 @@ commands:
             /<command> disable - Disables Lockdown-Mode
         permission: escapeplug.lockdown.change
     hat:
-       aliases: [hat, hatme, hm]
-       description: Command that puts the item on your head.
-       usage: /<command> - puts item on head
+        aliases: [hat, hatme, hm]
+        description: Command that puts the item on your head.
+        usage: /<command> - puts item on head
     unhat:
        aliases: [unhat, unhatme, unhm]
        description: Command to take your "hat" off.
