@@ -14,7 +14,7 @@ import org.bukkit.event.entity.EntityListener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.tulonsae.mc.util.Log;
 
-import de.hydrox.antiSlime.SlimeDamageListener;
+import de.hydrox.antiSlime.AntiSlimeComponent;
 import de.hydrox.bukkit.DroxPerms.DroxPerms;
 import de.hydrox.bukkit.DroxPerms.DroxPermsAPI;
 import de.hydrox.bukkit.timezone.TimezoneComponent;
@@ -72,28 +72,9 @@ public class EscapePlug extends JavaPlugin {
 		componentManager.addComponent(EndernerfComponent.class);
 		componentManager.addComponent(PigJousterComponent.class);
 		componentManager.addComponent(WhoCommandComponent.class);
+		componentManager.addComponent(AntiSlimeComponent.class);
 		//start components
 		componentManager.startupComponents();
-
-		
-
-		//start loading AntiSlime
-		if (getConfig().getBoolean("plugin.antislime.enabled", true)) {
-			log.info("[EscapePlug] loading AntiSlime");
-			SlimeDamageListener slimeDamageListener = new SlimeDamageListener();
-			this.getServer().getPluginManager().registerEvent(Event.Type.ENTITY_TARGET, slimeDamageListener, Event.Priority.Normal, this);
-			this.getServer().getPluginManager().registerEvent(Event.Type.ENTITY_DAMAGE, slimeDamageListener, Event.Priority.Normal, this);
-		} else {
-			log.info("[EscapePlug] skipping AntiSlime");
-		}
-		//finished loading AntiSlime
-
-
-		
-
-		
-
-
 
 		//start loading hatMe
 		if (getConfig().getBoolean("plugin.hatme.enabled", true)) {
