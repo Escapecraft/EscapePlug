@@ -17,9 +17,7 @@ import org.tulonsae.mc.util.Log;
 import de.hydrox.antiSlime.SlimeDamageListener;
 import de.hydrox.bukkit.DroxPerms.DroxPerms;
 import de.hydrox.bukkit.DroxPerms.DroxPermsAPI;
-
 import de.hydrox.bukkit.timezone.TimezoneComponent;
-import de.hydrox.lockdown.LockdownListener;
 import de.hydrox.lockdown.LockdownComponent;
 import de.hydrox.mobcontrol.MobControlListener;
 import de.hydrox.who.WhoCommand;
@@ -27,9 +25,7 @@ import de.hydrox.who.WhoCommand;
 import en.tehbeard.endernerf.EndernerfComponent;
 import en.tehbeard.gamemode.GameModeToggleComponent;
 import en.tehbeard.mentorTeleport.MentorTeleportComponent;
-import en.tehbeard.pigjouster.PigJouster;
-import en.tehbeard.pigjouster.PigListener;
-import en.tehbeard.pigjouster.PigPlayerListener;
+import en.tehbeard.pigjouster.PigJousterComponent;
 import en.tehbeard.reserve.ReserveComponent;
 
 import org.tulonsae.afkbooter.AfkBooter;
@@ -74,7 +70,7 @@ public class EscapePlug extends JavaPlugin {
 		componentManager.addComponent(TimezoneComponent.class);
 		componentManager.addComponent(LockdownComponent.class);
 		componentManager.addComponent(EndernerfComponent.class);
-
+		componentManager.addComponent(PigJousterComponent.class);
 		//start components
 		componentManager.startupComponents();
 
@@ -91,21 +87,6 @@ public class EscapePlug extends JavaPlugin {
 		}
 		//finished loading AntiSlime
 
-
-		//start loading PigJouster
-		if (getConfig().getBoolean("plugin.pigjoust.enabled", true)) {
-			log.info("[EscapePlug] loading PigJouster");
-			getCommand("pig-active").setExecutor(new PigJouster());
-			getCommand("pig-deactive").setExecutor(new PigJouster());
-			PigListener pigListener = new PigListener();
-			PigPlayerListener pigPlayerListener = new PigPlayerListener();
-
-			this.getServer().getPluginManager().registerEvent(Event.Type.ENTITY_DAMAGE, pigListener, Event.Priority.Normal, this);
-			this.getServer().getPluginManager().registerEvent(Event.Type.PLAYER_INTERACT_ENTITY, pigPlayerListener, Event.Priority.Normal, this);
-			//finished loading PigJouster
-		} else {
-			log.info("[EscapePlug] skipping PigJouster");
-		}
 
 		
 
@@ -172,6 +153,10 @@ public class EscapePlug extends JavaPlugin {
 		log.info("[EscapePlug] " + line);
 	}
 	
+	/**
+	 * Return the component manager
+	 * @return
+	 */
 	public ComponentManager getComponentManager(){
 		return componentManager;
 	}
