@@ -37,9 +37,9 @@ commands:
         description: Command that puts the item on your head.
         usage: /<command> - puts item on head
     unhat:
-       aliases: [unhat, unhatme, unhm]
-       description: Command to take your "hat" off.
-       usage: /<command> - takes item off head
+        aliases: [unhat, unhatme, unhm]
+        description: Command to take your "hat" off.
+        usage: /<command> - takes item off head
     who:
         description: Gives Information about the online Players.
         usage:  |
