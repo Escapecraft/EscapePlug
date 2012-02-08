@@ -17,7 +17,7 @@ import org.tulonsae.mc.util.Log;
 import de.hydrox.antiSlime.SlimeDamageListener;
 import de.hydrox.bukkit.DroxPerms.DroxPerms;
 import de.hydrox.bukkit.DroxPerms.DroxPermsAPI;
-import de.hydrox.bukkit.timezone.TimezoneCommands;
+import de.hydrox.bukkit.timezone.TimezoneComponent;
 import de.hydrox.lockdown.LockdownCommand;
 import de.hydrox.lockdown.LockdownListener;
 import de.hydrox.mobcontrol.MobControlListener;
@@ -70,6 +70,7 @@ public class EscapePlug extends JavaPlugin {
 		componentManager.addComponent(MentorTeleportComponent.class);
 		componentManager.addComponent(ReserveComponent.class);
 		componentManager.addComponent(GameModeToggleComponent.class);
+		componentManager.addComponent(TimezoneComponent.class);
 		//start components
 		componentManager.startupComponents();
 
@@ -102,14 +103,7 @@ public class EscapePlug extends JavaPlugin {
 			log.info("[EscapePlug] skipping PigJouster");
 		}
 
-		//start loading Timezone
-		if (getConfig().getBoolean("plugin.timezone.enabled", true)) {
-			log.info("[EscapePlug] loading Timezone");
-			getCommand("timezone").setExecutor(new TimezoneCommands());
-			//finished loading Timezone
-		} else {
-			log.info("[EscapePlug] skipping Timezone");
-		}
+		
 
 		
 
