@@ -127,12 +127,6 @@ public class EscapePlug extends JavaPlugin {
 			//finished loading endernerf
 		}
 
-		//start loading lockdown
-		/*if (getConfig().getBoolean("plugin.lockdown.enabled", true)) {
-			log.info("[EscapePlug] loading Emergency Lockdown");
-
-			//finished loading lockdown
-		}*/
 
 		//start loading hatMe
 		if (getConfig().getBoolean("plugin.hatme.enabled", true)) {
