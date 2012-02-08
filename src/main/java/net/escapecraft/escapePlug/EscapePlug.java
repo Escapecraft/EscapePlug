@@ -19,8 +19,7 @@ import de.hydrox.antiSlime.SlimeDamageListener;
 import de.hydrox.bukkit.DroxPerms.DroxPerms;
 import de.hydrox.bukkit.DroxPerms.DroxPermsAPI;
 import de.hydrox.bukkit.timezone.TimezoneCommands;
-import de.hydrox.lockdown.LockdownCommand;
-import de.hydrox.lockdown.LockdownListener;
+import de.hydrox.lockdown.LockdownComponent;
 import de.hydrox.mobcontrol.MobControlListener;
 import de.hydrox.who.WhoCommand;
 import en.tehbeard.endernerf.EndernerfListener;
@@ -68,6 +67,7 @@ public class EscapePlug extends JavaPlugin {
 		componentManager = new ComponentManager(this, new Log("EscapePlug"));
 		componentManager.addComponent(MentorTeleportComponent.class);
 		componentManager.addComponent(ReserveComponent.class);
+		componentManager.addComponent(LockdownComponent.class);
 		//start components
 		componentManager.startupComponents();
 
@@ -127,14 +127,11 @@ public class EscapePlug extends JavaPlugin {
 		}
 
 		//start loading lockdown
-		if (getConfig().getBoolean("plugin.lockdown.enabled", true)) {
+		/*if (getConfig().getBoolean("plugin.lockdown.enabled", true)) {
 			log.info("[EscapePlug] loading Emergency Lockdown");
-			LockdownListener lockdownListener = new LockdownListener(this);
-			getCommand("lockdown").setExecutor(new LockdownCommand(lockdownListener));
-			this.getServer().getPluginManager().registerEvent(Event.Type.PLAYER_LOGIN, lockdownListener, Event.Priority.Highest, this);
-			this.getServer().getPluginManager().registerEvent(Event.Type.PLAYER_JOIN, lockdownListener, Event.Priority.Highest, this);
+
 			//finished loading lockdown
-		}
+		}*/
 
 		//start loading hatMe
 		if (getConfig().getBoolean("plugin.hatme.enabled", true)) {
