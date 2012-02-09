@@ -31,9 +31,9 @@ public class AfkBooterListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void playerQuit(PlayerQuitEvent event) {
+        afkBooter.stopTrackingPlayer(event.getPlayer().getName());
         if (afkBooter.getMovementTrackerFlag()) {
-            afkBooter.stopTrackingPlayer(event.getPlayer().getName());
+            movementTracker.removePlayer(event.getPlayer().getName());
         }
-        movementTracker.removePlayer(event.getPlayer().getName());
     }
 }
