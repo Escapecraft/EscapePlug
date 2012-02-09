@@ -1,3 +1,9 @@
+v0.2.1
+* hot fix for AfkBooter
+  - added config option for move tracking
+  - turned off move tracking by default
+  - increased time for move tracking to 1 min delay and 30 sec check
+
 v0.2.0
 * add -a option to hatme
 * add AfkBooter

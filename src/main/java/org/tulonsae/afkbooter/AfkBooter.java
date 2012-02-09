@@ -20,7 +20,7 @@ import net.escapecraft.escapePlug.EscapePlug;
  */
 public class AfkBooter {
 
-    private static final String VERSION = "1.1.1";
+    private static final String VERSION = "1.1.2";
     private static final String PERMISSION_EXEMPT = "escapeplug.afkbooter.exempt";
 
     private EscapePlug plugin;
@@ -39,6 +39,7 @@ public class AfkBooter {
     private String broadcastKickMessage;
 
     // refractor - implement this as type of list
+    private boolean isMoveEventActivity;
     private boolean isChatEventActivity;
     private boolean isCommandEventActivity;
     private boolean isInventoryEventActivity;
@@ -77,9 +78,12 @@ public class AfkBooter {
         threadedTimer.start();
 
         // movement check thread
-        // initial delay of 10 sec, check every 5 sec after that
-        movementTracker = new MovementTracker(this);
-        taskId = plugin.getServer().getScheduler().scheduleAsyncRepeatingTask(plugin, movementTracker, 200, 100);
+        // initial delay of 1 min, check every 30 sec after that
+        // this uses ticks, and there are (ideally0 20 ticks per second
+        if (isMoveEventActivity) {
+            movementTracker = new MovementTracker(this);
+            taskId = plugin.getServer().getScheduler().scheduleAsyncRepeatingTask(plugin, movementTracker, 1200, 600);
+        }
 
         // refractor, use a list
         // register join/quit events, always; register the others if configured
@@ -126,7 +130,9 @@ public class AfkBooter {
             threadedTimer = null;
         }
 
-        plugin.getServer().getScheduler().cancelTask(taskId);
+        if (isMoveEventActivity) {
+            plugin.getServer().getScheduler().cancelTask(taskId);
+        }
     }
 
     /**
@@ -272,6 +278,7 @@ public class AfkBooter {
 
         // which events count as activities
         // note that movement always counts so it's not an option
+        isMoveEventActivity = plugin.getConfig().getBoolean("plugin.afkbooter.event-player-move", true);
         isChatEventActivity = plugin.getConfig().getBoolean("plugin.afkbooter.event-player-chat", true);
         isCommandEventActivity = plugin.getConfig().getBoolean("plugin.afkbooter.event-player-command-preprocess", true);
         isInventoryEventActivity = plugin.getConfig().getBoolean("plugin.afkbooter.event-inventory-open", true);

@@ -78,6 +78,7 @@ plugin:
         kick-broadcast: "Kicked for idling."
         exempt-players: ""
         ignore-vehicle-movement: true
+        event-player-move: false
         event-player-chat: true
         event-inventory-open: true
         event-player-command-preprocess: true
