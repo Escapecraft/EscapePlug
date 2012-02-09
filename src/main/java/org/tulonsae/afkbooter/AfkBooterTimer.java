@@ -1,6 +1,6 @@
 package org.tulonsae.afkbooter;
 
-import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import net.escapecraft.escapePlug.EscapePlug;
 
@@ -14,6 +14,7 @@ public class AfkBooterTimer extends Thread
 {
     private EscapePlug plugin;
     private AfkBooter afkBooter;
+    private Logger log;
     private long timeToSleep;
     private boolean aborted;
 
@@ -23,6 +24,9 @@ public class AfkBooterTimer extends Thread
         this.plugin = afkBooter.getPlugin();
         this.timeToSleep = timeToSleep;
         this.aborted = false;
+        this.log = plugin.getLogger();
+
+        if (afkBooter.getDebugFlag()) log.info("AfkBooter: Debug: created AfkBooterTimer object.");
     }
 
     @Override

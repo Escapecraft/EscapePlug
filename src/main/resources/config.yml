@@ -71,6 +71,7 @@ plugin:
     afkbooter:
         enabled: true
         version: ""
+        debug: false
         kick-timeout: 600
         timeout-check-interval: 60
         player-count-threshold: 0

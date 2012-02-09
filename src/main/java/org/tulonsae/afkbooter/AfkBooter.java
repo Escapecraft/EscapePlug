@@ -34,6 +34,7 @@ public class AfkBooter {
     private int playerCountThreshold;
 
     private boolean isIgnoreVehicleMovement;
+    private boolean isDebug;
 
     private String playerKickMessage;
     private String broadcastKickMessage;
@@ -89,31 +90,40 @@ public class AfkBooter {
         // register join/quit events, always; register the others if configured
         plugin.getServer().getPluginManager().registerEvents(new AfkBooterListener(this), plugin);
         if (isChatEventActivity) {
+             if (isDebug) log.info("AfkBooter: Debug: registered AfkListenerChat");
              plugin.getServer().getPluginManager().registerEvents(new AfkBooterListenerChat(this), plugin);
         }
         if (isCommandEventActivity) {
+             if (isDebug) log.info("AfkBooter: Debug: registered AfkListenerCommand");
              plugin.getServer().getPluginManager().registerEvents(new AfkBooterListenerCommand(this), plugin);
         }
         if (isInventoryEventActivity) {
+             if (isDebug) log.info("AfkBooter: Debug: registered AfkListenerInventory");
              plugin.getServer().getPluginManager().registerEvents(new AfkBooterListenerInventory(this), plugin);
         }
         if (isDropItemEventActivity) {
+             if (isDebug) log.info("AfkBooter: Debug: registered AfkListenerDropItem");
              plugin.getServer().getPluginManager().registerEvents(new AfkBooterListenerDropItem(this), plugin);
         }
         if (isBlockPlaceEventActivity) {
+             if (isDebug) log.info("AfkBooter: Debug: registered AfkListenerBlockPlace");
              plugin.getServer().getPluginManager().registerEvents(new AfkBooterListenerBlockPlace(this), plugin);
         }
         if (isBlockBreakEventActivity) {
+             if (isDebug) log.info("AfkBooter: Debug: registered AfkListenerBlockBreak");
              plugin.getServer().getPluginManager().registerEvents(new AfkBooterListenerBlockBreak(this), plugin);
         }
         if (isInteractEventActivity) {
+             if (isDebug) log.info("AfkBooter: Debug: registered AfkListenerInteract");
              plugin.getServer().getPluginManager().registerEvents(new AfkBooterListenerInteract(this), plugin);
         }
         if (isInteractEntityEventActivity) {
+             if (isDebug) log.info("AfkBooter: Debug: registered AfkListenerInteractEntity");
              plugin.getServer().getPluginManager().registerEvents(new AfkBooterListenerInteractEntity(this), plugin);
         }
 
         // register command
+       if (isDebug) log.info("AfkBooter: Debug: registered AfkBooterCommand");
         AfkBooterCommand afkBooterCommand = new AfkBooterCommand(this);
         plugin.getCommand("afkbooter").setExecutor(afkBooterCommand);
 
@@ -159,10 +169,26 @@ public class AfkBooter {
     }
 
     /**
+     * Get Movement Tracker flag.
+     */ 
+    public boolean getMovementTrackerFlag() {
+        return isMoveEventActivity;
+    }
+
+    /**
+     * Get Debug flag.
+     */ 
+    public boolean getDebugFlag() {
+        return isDebug;
+    }
+
+    /**
      * Record player activity.
      * @param playerName Name of player that did something.
      */
     public synchronized void recordPlayerActivity(String playerName) {
+        if (isDebug) log.info("AfkBooter: Debug: record activity for " + playerName + "."); 
+
         lastPlayerActivity.put(playerName, System.currentTimeMillis());
     } 
 
@@ -170,6 +196,8 @@ public class AfkBooter {
      * Remove player from activity list.
      */
     public synchronized void stopTrackingPlayer(String playerName) {
+        if (isDebug) log.info("AfkBooter: Debug: remove " + playerName + " from activity list."); 
+
         lastPlayerActivity.remove(playerName);
     } 
 
@@ -212,6 +240,8 @@ public class AfkBooter {
      * Kick AFK players.
      */
     public void kickAfkPlayers() {
+
+        if (isDebug) log.info("AfkBooter: Debug: running kickAfkPlayers()."); 
 
         // no one to kick
         if (lastPlayerActivity.size() < 1) {
@@ -276,9 +306,12 @@ public class AfkBooter {
         // if 0, players will always be kicked
         playerCountThreshold = plugin.getConfig().getInt("plugin.afkbooter.player-count-threshold", 0);
 
+        // are we in debug mode?
+        isDebug = plugin.getConfig().getBoolean("plugin.afkbooter.debug", false);
+
         // which events count as activities
         // note that movement always counts so it's not an option
-        isMoveEventActivity = plugin.getConfig().getBoolean("plugin.afkbooter.event-player-move", true);
+        isMoveEventActivity = plugin.getConfig().getBoolean("plugin.afkbooter.event-player-move", false);
         isChatEventActivity = plugin.getConfig().getBoolean("plugin.afkbooter.event-player-chat", true);
         isCommandEventActivity = plugin.getConfig().getBoolean("plugin.afkbooter.event-player-command-preprocess", true);
         isInventoryEventActivity = plugin.getConfig().getBoolean("plugin.afkbooter.event-inventory-open", true);

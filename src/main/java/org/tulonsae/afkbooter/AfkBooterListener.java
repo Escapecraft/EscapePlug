@@ -16,18 +16,24 @@ public class AfkBooterListener implements Listener {
 
     public AfkBooterListener(AfkBooter afkBooter) {
         this.afkBooter = afkBooter;
-        this.movementTracker = afkBooter.getMovementTracker();
+        if (afkBooter.getMovementTrackerFlag()) {
+            this.movementTracker = afkBooter.getMovementTracker();
+        }
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void playerJoin(PlayerJoinEvent event) {
         afkBooter.recordPlayerActivity(event.getPlayer().getName());
-        movementTracker.addPlayer(event.getPlayer());
+        if (afkBooter.getMovementTrackerFlag()) {
+            movementTracker.addPlayer(event.getPlayer());
+        }
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void playerQuit(PlayerQuitEvent event) {
-        afkBooter.stopTrackingPlayer(event.getPlayer().getName());
+        if (afkBooter.getMovementTrackerFlag()) {
+            afkBooter.stopTrackingPlayer(event.getPlayer().getName());
+        }
         movementTracker.removePlayer(event.getPlayer().getName());
     }
 }

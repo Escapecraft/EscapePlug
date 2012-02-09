@@ -1,6 +1,7 @@
 package org.tulonsae.afkbooter;
 
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Logger;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -18,8 +19,10 @@ import net.escapecraft.escapePlug.EscapePlug;
  * Tulonsae.
  */
 public class MovementTracker implements Runnable {
+
     private final AfkBooter afkBooter;
     private EscapePlug plugin;
+    private Logger log;
     private boolean isIgnoreVehicleMovement;
 
     private ConcurrentHashMap<String, Location> lastLoc = new ConcurrentHashMap<String, Location>();
@@ -28,12 +31,15 @@ public class MovementTracker implements Runnable {
         this.afkBooter = afkBooter;
         this.plugin = afkBooter.getPlugin();
         this.isIgnoreVehicleMovement = afkBooter.getVehicleFlag();
+        this.log = plugin.getLogger();
 
         // initialize with current online players
         Player[] players = plugin.getServer().getOnlinePlayers();
         for (Player player : players) {
             addPlayer(player);
         }
+
+        if (afkBooter.getDebugFlag()) log.info("AfkBooter: Debug: created MovementTracker object.");
     }
     
     public synchronized void removePlayer(String playerName) {
