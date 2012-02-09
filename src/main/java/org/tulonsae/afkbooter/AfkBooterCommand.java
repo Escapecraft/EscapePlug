@@ -58,8 +58,24 @@ public class AfkBooterCommand implements CommandExecutor {
             return handleAddExemptPlayerCommand(sender, subCommandArgs);
         else if(subCommand.equals("remove"))
             return handleRemoveExemptPlayerCommand(sender, subCommandArgs);
+        else if(subCommand.equals("debugon"))
+            return handleChangeDebugModeCommand(sender, true);
+        else if(subCommand.equals("debugoff"))
+            return handleChangeDebugModeCommand(sender, false);
 
         return false;
+    }
+
+    private boolean handleChangeDebugModeCommand(CommandSender sender, boolean flag) {
+        afkBooter.changeDebugMode(sender.getName(), flag);
+
+        if (flag) {
+            sender.sendMessage("Turned AfkBooter debug mode on.");
+        } else {
+            sender.sendMessage("Turned AfkBooter debug mode off.");
+        }
+
+        return true;
     }
 
     private boolean handleListExemptCommand(CommandSender sender) {

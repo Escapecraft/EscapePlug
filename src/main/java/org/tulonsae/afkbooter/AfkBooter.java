@@ -183,6 +183,19 @@ public class AfkBooter {
     }
 
     /**
+     * Change Debug mode.
+     * @aparam flag Debug mode to set.
+     */
+    public void changeDebugMode(String name, boolean flag) {
+
+        isDebug = flag;
+        plugin.getConfig().set("plugin.afkbooter.debug", flag);
+        plugin.saveConfig();
+
+        log.info("AfkBooter: " + name + " changed debug mode to " + flag);
+    }
+
+    /**
      * Record player activity.
      * @param playerName Name of player that did something.
      */
