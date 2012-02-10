@@ -12,7 +12,9 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.tulonsae.afkbooter.AfkBooter;
 import org.tulonsae.mc.util.Log;
 
+import uk.co.oliwali.HawkEye.HawkEye;
 import de.hydrox.antiSlime.AntiSlimeComponent;
+import de.hydrox.blockalert.BlockAlertComponent;
 import de.hydrox.bukkit.DroxPerms.DroxPerms;
 import de.hydrox.bukkit.DroxPerms.DroxPermsAPI;
 import de.hydrox.bukkit.timezone.TimezoneComponent;
@@ -30,6 +32,7 @@ public class EscapePlug extends JavaPlugin {
 	private static final Logger log = Logger.getLogger("Minecraft");
 	private ComponentManager componentManager;
 	private DroxPermsAPI droxPermsAPI = null;
+	private boolean hawkEyeLoaded = false;
 	
 	public DroxPermsAPI getDroxPermsAPI() {
         return droxPermsAPI;
@@ -65,6 +68,10 @@ public class EscapePlug extends JavaPlugin {
 			beardStatManager = beardStat.getStatManager();
 		}
 		
+		HawkEye hawkEye = (HawkEye)this.getServer().getPluginManager().getPlugin("HawkEye");
+		if (hawkEye != null) {
+			hawkEyeLoaded = true;
+		}
 		
 		//start the component manager
 		componentManager = new ComponentManager(this, new Log("EscapePlug"));
@@ -78,6 +85,7 @@ public class EscapePlug extends JavaPlugin {
 		componentManager.addComponent(WhoCommandComponent.class);
 		componentManager.addComponent(AntiSlimeComponent.class);
 		componentManager.addComponent(MobControlComponent.class);
+		componentManager.addComponent(BlockAlertComponent.class);
 		//start components
 		componentManager.startupComponents();
 
@@ -131,5 +139,9 @@ public class EscapePlug extends JavaPlugin {
 	 */
 	public ComponentManager getComponentManager(){
 		return componentManager;
+	}
+
+	public boolean isHawkEyeLoaded() {
+	    return hawkEyeLoaded;
 	}
 }

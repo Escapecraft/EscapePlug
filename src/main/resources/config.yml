@@ -68,6 +68,23 @@ plugin:
         rejectmsg: "Server Full"
     who:
         enabled: true
+    blockalert:
+        enabled: true
+        notifyOnCanceledBreak: false
+        notifyOnCanceledPlace: true
+        worlds:
+            break:
+                survival: 
+# Goldblock
+                    - 41
+# Diamondblock
+                    - 57
+            place:
+                survival:
+# Bedrock
+                    - 7
+# TNT
+                    - 46
     afkbooter:
         enabled: true
         version: ""
