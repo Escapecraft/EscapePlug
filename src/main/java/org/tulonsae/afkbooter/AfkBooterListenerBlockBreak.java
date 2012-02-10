@@ -18,6 +18,6 @@ public class AfkBooterListenerBlockBreak implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void playerJoin(BlockBreakEvent event) {
-        afkBooter.recordPlayerActivity(event.getPlayer().getName());
+        afkBooter.getPlayerActivity().recordActivity(event.getPlayer().getName());
     }
 }
