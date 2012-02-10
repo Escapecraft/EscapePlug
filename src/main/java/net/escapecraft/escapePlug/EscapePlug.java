@@ -35,7 +35,16 @@ public class EscapePlug extends JavaPlugin {
 	private static final Logger log = Logger.getLogger("Minecraft");
 	private ComponentManager componentManager;
 	private DroxPermsAPI droxPermsAPI = null;
-	private PlayerStatManager beardStatManager = null;
+	
+	public DroxPermsAPI getDroxPermsAPI() {
+        return droxPermsAPI;
+    }
+
+    public PlayerStatManager getBeardStatManager() {
+        return beardStatManager;
+    }
+
+    private PlayerStatManager beardStatManager = null;
         private AfkBooter afkBooter = null;
 
 	public static EscapePlug self = null;

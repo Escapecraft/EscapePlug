@@ -27,11 +27,7 @@ public class WhoCommandComponent extends AbstractComponent implements CommandExe
 	private PlayerComparator playerCompare = null;
 	private PlayerStatManager beardStatManager = null;
 
-	public WhoCommandComponent(DroxPermsAPI perms, PlayerStatManager beardStatManager) {
-		this.perms = perms;
-		this.playerCompare = new PlayerComparator(perms);
-		this.beardStatManager = beardStatManager;
-	}
+	
 
 	public boolean onCommand(CommandSender sender, Command cmd,
 			String commandLabel, String[] args) {
@@ -125,6 +121,9 @@ public class WhoCommandComponent extends AbstractComponent implements CommandExe
 
     @Override
     public boolean enable(Log log, EscapePlug plugin) {
+        this.perms = plugin.getDroxPermsAPI();
+        this.playerCompare = new PlayerComparator(perms);
+        this.beardStatManager = plugin.getBeardStatManager();
         plugin.getComponentManager().registerCommands(this);
         return true;
     }
