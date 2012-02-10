@@ -1,7 +1,7 @@
 name: EscapePlug
 main: net.escapecraft.escapePlug.EscapePlug
 version: ${project.version}
-softdepend: [DroxPerms, BeardStat]
+softdepend: [DroxPerms, BeardStat, HawkEye]
 commands:
     pig-active:
         description: Activate pig punching
@@ -64,6 +64,7 @@ permissions:
       escapeplug.notify: true
       escapeplug.hatme: true
       escapeplug.who: true
+      escapeplug.blockalert: true
       escapeplug.afkbooter: true
   escapeplug.lockdown:
     description: gives full permission on Lockdown-mode.
@@ -82,6 +83,10 @@ permissions:
     children:
       escapeplug.who.list: true
       escapeplug.who.player: true
+  escapeplug.blockalert:
+    children:
+      escapeplug.blockalert.notify: true
+      escapeplug.blockalert.ignore: true
   escapeplug.afkbooter:
     description: gives full permission on AfkBooter.
     children:
