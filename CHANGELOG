@@ -1,3 +1,9 @@
+v0.2.2
+* hot fix for AfkBooter
+  - refractored debug messages
+  - rewrote implementation to reduce synchronization needs
+  - removed all blocking calls from AfkBooterTimer
+
 v0.2.1
 * hot fix for AfkBooter
   - added config option for move tracking

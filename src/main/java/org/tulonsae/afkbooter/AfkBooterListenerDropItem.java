@@ -19,7 +19,7 @@ public class AfkBooterListenerDropItem implements Listener {
     @EventHandler(priority = EventPriority.MONITOR)
     public void playerJoin(PlayerDropItemEvent event) {
         if (!event.isCancelled()) {
-            afkBooter.recordPlayerActivity(event.getPlayer().getName());
+            afkBooter.getPlayerActivity().recordActivity(event.getPlayer().getName());
         }
     }
 }

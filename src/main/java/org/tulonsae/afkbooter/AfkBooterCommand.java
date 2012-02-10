@@ -80,7 +80,7 @@ public class AfkBooterCommand implements CommandExecutor {
 
     private boolean handleListExemptCommand(CommandSender sender) {
 
-        ConcurrentSkipListSet exemptPlayers = afkBooter.getExemptPlayers();
+        ConcurrentSkipListSet exemptPlayers = afkBooter.getExemptList().getPlayers();
 
         if (exemptPlayers.size() == 0) {
             sender.sendMessage("Exempt players list is empty.");
@@ -98,7 +98,7 @@ public class AfkBooterCommand implements CommandExecutor {
             return true;
         }
 
-        ConcurrentSkipListSet exemptPlayers = afkBooter.getExemptPlayers();
+        ConcurrentSkipListSet exemptPlayers = afkBooter.getExemptList().getPlayers();
 
         for (String name : args) {
             name = name.trim().toLowerCase();
@@ -107,7 +107,7 @@ public class AfkBooterCommand implements CommandExecutor {
                 continue;
             }
 
-            afkBooter.addExemptPlayer(name, sender.getName());
+            afkBooter.getExemptList().addPlayer(name, sender.getName());
             sender.sendMessage("Added player '" + name + "' to the exempt list.");
         }
 
@@ -121,7 +121,7 @@ public class AfkBooterCommand implements CommandExecutor {
             return true;
         }
 
-        ConcurrentSkipListSet exemptPlayers = afkBooter.getExemptPlayers();
+        ConcurrentSkipListSet exemptPlayers = afkBooter.getExemptList().getPlayers();
 
         for (String name : args) {
             name = name.trim().toLowerCase();
@@ -130,7 +130,7 @@ public class AfkBooterCommand implements CommandExecutor {
                 continue;
             }
 
-            afkBooter.removeExemptPlayer(name, sender.getName());
+            afkBooter.getExemptList().removePlayer(name, sender.getName());
             sender.sendMessage("Removed player '" + name + "' from the exempt list.");
         }
 
