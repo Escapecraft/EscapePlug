@@ -5,13 +5,11 @@ import java.util.logging.Logger;
 
 import me.tehbeard.BeardStat.BeardStat;
 import me.tehbeard.BeardStat.containers.PlayerStatManager;
-
 import net.escapecraft.component.ComponentManager;
 import net.serubin.hatme.HatCommand;
 
-import org.bukkit.event.Event;
-import org.bukkit.event.entity.EntityListener;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.tulonsae.afkbooter.AfkBooter;
 import org.tulonsae.mc.util.Log;
 
 import de.hydrox.antiSlime.AntiSlimeComponent;
@@ -19,16 +17,13 @@ import de.hydrox.bukkit.DroxPerms.DroxPerms;
 import de.hydrox.bukkit.DroxPerms.DroxPermsAPI;
 import de.hydrox.bukkit.timezone.TimezoneComponent;
 import de.hydrox.lockdown.LockdownComponent;
-import de.hydrox.mobcontrol.MobControlListener;
+import de.hydrox.mobcontrol.MobControlComponent;
 import de.hydrox.who.WhoCommandComponent;
-
 import en.tehbeard.endernerf.EndernerfComponent;
 import en.tehbeard.gamemode.GameModeToggleComponent;
 import en.tehbeard.mentorTeleport.MentorTeleportComponent;
 import en.tehbeard.pigjouster.PigJousterComponent;
 import en.tehbeard.reserve.ReserveComponent;
-
-import org.tulonsae.afkbooter.AfkBooter;
 
 public class EscapePlug extends JavaPlugin {
 
@@ -82,6 +77,7 @@ public class EscapePlug extends JavaPlugin {
 		componentManager.addComponent(PigJousterComponent.class);
 		componentManager.addComponent(WhoCommandComponent.class);
 		componentManager.addComponent(AntiSlimeComponent.class);
+		componentManager.addComponent(MobControlComponent.class);
 		//start components
 		componentManager.startupComponents();
 
@@ -109,16 +105,6 @@ public class EscapePlug extends JavaPlugin {
 			log.info("[EscapePlug] loading AfkBooter");
                         afkBooter = new AfkBooter(self);
 			//finished loading afkbooter
-		}
-
-		//start loading mobcontrol
-		if (getConfig().getBoolean("plugin.mobcontrol.enabled", true)) {
-			log.info("[EscapePlug] loading MobControl");
-			List<String> worlds = getConfig().getStringList("plugin.mobcontrol.worlds");
-			List<String> mobs = getConfig().getStringList("plugin.mobcontrol.mobs");
-			MobControlListener mobControlListener = new MobControlListener(worlds, mobs);
-			this.getServer().getPluginManager().registerEvent(Event.Type.CREATURE_SPAWN, mobControlListener, Event.Priority.Normal, this);
-			//finished loading mobcontrol
 		}
 
 		log.info("[EscapePlug] EscapePlug loaded");
