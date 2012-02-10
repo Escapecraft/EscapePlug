@@ -42,10 +42,12 @@ public class AlertListenerHawkEye extends AbstractListener {
 		int x = event.getBlock().getLocation().getBlockX();
 		int y = event.getBlock().getLocation().getBlockY();
 		int z = event.getBlock().getLocation().getBlockZ();
+		String [] worlds = {event.getBlock().getLocation().getWorld().getName()};
 		Vector loc = new Vector(x, y, z);
 		BaseCallback callBack = new SimpleSearch(event.getPlayer(), event.getBlock().getType());
 		SearchParser parser = new SearchParser();
 		parser.loc = loc;
+		parser.worlds = worlds;
 		parser.actions = Arrays.asList(DataType.BLOCK_PLACE);
 
 		HawkEyeAPI.performSearch(callBack, parser, SearchDir.DESC);
