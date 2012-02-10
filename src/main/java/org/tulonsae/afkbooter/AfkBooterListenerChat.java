@@ -18,6 +18,6 @@ public class AfkBooterListenerChat implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void playerJoin(PlayerChatEvent event) {
-        afkBooter.recordPlayerActivity(event.getPlayer().getName());
+        afkBooter.getPlayerActivity().recordActivity(event.getPlayer().getName());
     }
 }

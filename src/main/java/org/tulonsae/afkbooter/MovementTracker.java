@@ -18,8 +18,11 @@ import net.escapecraft.escapePlug.EscapePlug;
  * Tulonsae.
  */
 public class MovementTracker implements Runnable {
+
     private final AfkBooter afkBooter;
     private EscapePlug plugin;
+
+    // config settings
     private boolean isIgnoreVehicleMovement;
 
     private ConcurrentHashMap<String, Location> lastLoc = new ConcurrentHashMap<String, Location>();
@@ -27,28 +30,37 @@ public class MovementTracker implements Runnable {
     public MovementTracker(AfkBooter afkBooter) {
         this.afkBooter = afkBooter;
         this.plugin = afkBooter.getPlugin();
-        this.isIgnoreVehicleMovement = afkBooter.getVehicleFlag();
+
+        // load configuration
+        loadConfig();
 
         // initialize with current online players
         Player[] players = plugin.getServer().getOnlinePlayers();
         for (Player player : players) {
             addPlayer(player);
         }
+
+        afkBooter.writeDebugMsg("created MovementTracker object.");
     }
     
-    public synchronized void removePlayer(String playerName) {
+    public void removePlayer(String playerName) {
         lastLoc.remove(playerName);
     }
     
-    public synchronized void addPlayer(Player player) {
-        lastLoc.put(player.getName(), player.getLocation());
+    public void addPlayer(Player player) {
+        Location curLoc = player.getLocation();
+        String name = player.getName();
+
+        if ((curLoc != null) && (name != null)) {
+            lastLoc.put(name, curLoc);
+        }
     }
     
     public void run() {
         for (String name : lastLoc.keySet()) {
             Player player = plugin.getServer().getPlayer(name);
             if (player == null) {
-                lastLoc.remove(name);
+                removePlayer(name);
             } else {
                 // workaround for bukkit issue
                 String prevWorld = lastLoc.get(name).getWorld().getName();
@@ -64,9 +76,21 @@ public class MovementTracker implements Runnable {
                 // then update location, but don't count this move as active
                 addPlayer(player);
                 if (!isIgnoreVehicleMovement || !player.isInsideVehicle()) {
-                    afkBooter.recordPlayerActivity(name);
+                    afkBooter.getPlayerActivity().recordActivity(name);
                 }
             }
         }
+    }
+
+    /**
+     * Get configuration settings from escapeplug config file.
+     */
+    private void loadConfig() {
+
+        // vehicle flag
+        isIgnoreVehicleMovement = plugin.getConfig().getBoolean("plugin.afkbooter.ignore-vehicle-movement", true);
+
+        // save any changes
+        plugin.saveConfig();
     }
 }

@@ -71,6 +71,7 @@ plugin:
     afkbooter:
         enabled: true
         version: ""
+        debug: false
         kick-timeout: 600
         timeout-check-interval: 60
         player-count-threshold: 0
@@ -78,6 +79,7 @@ plugin:
         kick-broadcast: "Kicked for idling."
         exempt-players: ""
         ignore-vehicle-movement: true
+        event-player-move: false
         event-player-chat: true
         event-inventory-open: true
         event-player-command-preprocess: true
