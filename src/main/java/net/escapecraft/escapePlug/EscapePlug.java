@@ -1,9 +1,6 @@
 package net.escapecraft.escapePlug;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 import java.util.logging.Logger;
 
 import me.tehbeard.BeardStat.BeardStat;
@@ -11,8 +8,6 @@ import me.tehbeard.BeardStat.containers.PlayerStatManager;
 import net.escapecraft.component.ComponentManager;
 import net.serubin.hatme.HatCommand;
 
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.event.Event;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.tulonsae.afkbooter.AfkBooter;
@@ -20,9 +15,6 @@ import org.tulonsae.mc.util.Log;
 
 import uk.co.oliwali.HawkEye.HawkEye;
 import de.hydrox.antiSlime.AntiSlimeComponent;
-import de.hydrox.blockalert.AbstractListener;
-import de.hydrox.blockalert.AlertListener;
-import de.hydrox.blockalert.AlertListenerHawkEye;
 import de.hydrox.blockalert.BlockAlertComponent;
 import de.hydrox.bukkit.DroxPerms.DroxPerms;
 import de.hydrox.bukkit.DroxPerms.DroxPermsAPI;
