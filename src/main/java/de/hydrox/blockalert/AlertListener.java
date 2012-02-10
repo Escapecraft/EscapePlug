@@ -5,6 +5,8 @@ import java.util.Map;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 
@@ -15,7 +17,7 @@ public class AlertListener extends AbstractListener{
 		this.blockPlace = blockPlace;
 	}
 	
-	@Override
+	@EventHandler(priority=EventPriority.MONITOR)
 	public void onBlockBreak(BlockBreakEvent event) {
 		if (event.isCancelled() || !notifyBlockBreak(event)) {
 			return;
@@ -26,7 +28,7 @@ public class AlertListener extends AbstractListener{
 		Bukkit.getConsoleSender().sendMessage(msg);
 	}
 	
-	@Override
+	@EventHandler(priority=EventPriority.MONITOR)
 	public void onBlockPlace(BlockPlaceEvent event) {
 		if (event.isCancelled() || !notifyBlockPlace(event)) {
 			return;

@@ -8,6 +8,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.util.Vector;
@@ -27,7 +29,7 @@ public class AlertListenerHawkEye extends AbstractListener {
 		this.blockPlace = blockPlace;
 	}
 	
-	@Override
+	@EventHandler(priority=EventPriority.MONITOR)
 	public void onBlockBreak(BlockBreakEvent event) {
 		if (event.isCancelled() || !notifyBlockBreak(event)) {
 			return;
@@ -45,7 +47,7 @@ public class AlertListenerHawkEye extends AbstractListener {
 		HawkEyeAPI.performSearch(callBack, parser, SearchDir.DESC);
 	}
 	
-	@Override
+	@EventHandler(priority=EventPriority.MONITOR)
 	public void onBlockPlace(BlockPlaceEvent event) {
 		if (event.isCancelled() || !notifyBlockPlace(event)) {
 			return;

@@ -5,11 +5,11 @@ import java.util.Map;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockListener;
 import org.bukkit.event.block.BlockPlaceEvent;
 
-public abstract class AbstractListener extends BlockListener {
+public abstract class AbstractListener implements Listener{
 
 	protected Map<String, List<Integer>> blockBreak;
 	protected Map<String, List<Integer>> blockPlace;

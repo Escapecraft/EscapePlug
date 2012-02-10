@@ -23,6 +23,7 @@ import de.hydrox.antiSlime.AntiSlimeComponent;
 import de.hydrox.blockalert.AbstractListener;
 import de.hydrox.blockalert.AlertListener;
 import de.hydrox.blockalert.AlertListenerHawkEye;
+import de.hydrox.blockalert.BlockAlertComponent;
 import de.hydrox.bukkit.DroxPerms.DroxPerms;
 import de.hydrox.bukkit.DroxPerms.DroxPermsAPI;
 import de.hydrox.bukkit.timezone.TimezoneComponent;
@@ -92,6 +93,7 @@ public class EscapePlug extends JavaPlugin {
 		componentManager.addComponent(PigJousterComponent.class);
 		componentManager.addComponent(WhoCommandComponent.class);
 		componentManager.addComponent(AntiSlimeComponent.class);
+		componentManager.addComponent(BlockAlertComponent.class);
 		//start components
 		componentManager.startupComponents();
 
@@ -131,34 +133,6 @@ public class EscapePlug extends JavaPlugin {
 			//finished loading mobcontrol
 		}
 
-		//start loading blockalert
-		if (getConfig().getBoolean("plugin.blockalert.enabled", true)) {
-			Map<String, List<Integer>> notifyBlockBreak = new HashMap<String, List<Integer>>();
-			Map<String, List<Integer>> notifyBlockPlace = new HashMap<String, List<Integer>>();
-			Set<String> worlds = getConfig().getConfigurationSection("plugin.blockalert.worlds.break.").getKeys(false);
-			for (String world : worlds) {
-				Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_PURPLE + "Load Break Alerts for World " + world);
-				List<Integer> blockBreakList = getConfig().getIntegerList("plugin.blockalert.worlds.break." + world);
-				notifyBlockBreak.put(world, blockBreakList);
-			}
-			worlds = getConfig().getConfigurationSection("plugin.blockalert.worlds.place.").getKeys(false);
-			for (String world : worlds) {
-				Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_PURPLE + "Load Placement Alerts for World " + world);
-				List<Integer> blockPlaceList = getConfig().getIntegerList("plugin.blockalert.worlds.place." + world);
-				notifyBlockPlace.put(world, blockPlaceList);
-			}
-			log.info("[EscapePlug] loading BlockAlert");
-			AbstractListener alertListener = null;
-			if (hawkEyeLoaded) {
-				alertListener = new AlertListenerHawkEye(notifyBlockBreak, notifyBlockPlace);				
-			} else {
-				alertListener = new AlertListener(notifyBlockBreak, notifyBlockPlace);
-			}
-			this.getServer().getPluginManager().registerEvent(Event.Type.BLOCK_BREAK, alertListener, Event.Priority.Monitor, this);
-			this.getServer().getPluginManager().registerEvent(Event.Type.BLOCK_PLACE, alertListener, Event.Priority.Monitor, this);
-			//finished loading blockalert
-		}
-
 		log.info("[EscapePlug] EscapePlug loaded");
 	}
 
@@ -183,5 +157,9 @@ public class EscapePlug extends JavaPlugin {
 	 */
 	public ComponentManager getComponentManager(){
 		return componentManager;
+	}
+
+	public boolean isHawkEyeLoaded() {
+	    return hawkEyeLoaded;
 	}
 }
