@@ -14,22 +14,18 @@ import org.bukkit.event.entity.EntityListener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.tulonsae.mc.util.Log;
 
-import de.hydrox.antiSlime.SlimeDamageListener;
+import de.hydrox.antiSlime.AntiSlimeComponent;
 import de.hydrox.bukkit.DroxPerms.DroxPerms;
 import de.hydrox.bukkit.DroxPerms.DroxPermsAPI;
-
 import de.hydrox.bukkit.timezone.TimezoneComponent;
-import de.hydrox.lockdown.LockdownListener;
 import de.hydrox.lockdown.LockdownComponent;
 import de.hydrox.mobcontrol.MobControlListener;
-import de.hydrox.who.WhoCommand;
+import de.hydrox.who.WhoCommandComponent;
 
-import en.tehbeard.endernerf.EndernerfListener;
+import en.tehbeard.endernerf.EndernerfComponent;
 import en.tehbeard.gamemode.GameModeToggleComponent;
 import en.tehbeard.mentorTeleport.MentorTeleportComponent;
-import en.tehbeard.pigjouster.PigJouster;
-import en.tehbeard.pigjouster.PigListener;
-import en.tehbeard.pigjouster.PigPlayerListener;
+import en.tehbeard.pigjouster.PigJousterComponent;
 import en.tehbeard.reserve.ReserveComponent;
 
 import org.tulonsae.afkbooter.AfkBooter;
@@ -39,7 +35,16 @@ public class EscapePlug extends JavaPlugin {
 	private static final Logger log = Logger.getLogger("Minecraft");
 	private ComponentManager componentManager;
 	private DroxPermsAPI droxPermsAPI = null;
-	private PlayerStatManager beardStatManager = null;
+	
+	public DroxPermsAPI getDroxPermsAPI() {
+        return droxPermsAPI;
+    }
+
+    public PlayerStatManager getBeardStatManager() {
+        return beardStatManager;
+    }
+
+    private PlayerStatManager beardStatManager = null;
         private AfkBooter afkBooter = null;
 
 	public static EscapePlug self = null;
@@ -73,53 +78,12 @@ public class EscapePlug extends JavaPlugin {
 		componentManager.addComponent(GameModeToggleComponent.class);
 		componentManager.addComponent(TimezoneComponent.class);
 		componentManager.addComponent(LockdownComponent.class);
-
+		componentManager.addComponent(EndernerfComponent.class);
+		componentManager.addComponent(PigJousterComponent.class);
+		componentManager.addComponent(WhoCommandComponent.class);
+		componentManager.addComponent(AntiSlimeComponent.class);
 		//start components
 		componentManager.startupComponents();
-
-		
-
-		//start loading AntiSlime
-		if (getConfig().getBoolean("plugin.antislime.enabled", true)) {
-			log.info("[EscapePlug] loading AntiSlime");
-			SlimeDamageListener slimeDamageListener = new SlimeDamageListener();
-			this.getServer().getPluginManager().registerEvent(Event.Type.ENTITY_TARGET, slimeDamageListener, Event.Priority.Normal, this);
-			this.getServer().getPluginManager().registerEvent(Event.Type.ENTITY_DAMAGE, slimeDamageListener, Event.Priority.Normal, this);
-		} else {
-			log.info("[EscapePlug] skipping AntiSlime");
-		}
-		//finished loading AntiSlime
-
-
-		//start loading PigJouster
-		if (getConfig().getBoolean("plugin.pigjoust.enabled", true)) {
-			log.info("[EscapePlug] loading PigJouster");
-			getCommand("pig-active").setExecutor(new PigJouster());
-			getCommand("pig-deactive").setExecutor(new PigJouster());
-			PigListener pigListener = new PigListener();
-			PigPlayerListener pigPlayerListener = new PigPlayerListener();
-
-			this.getServer().getPluginManager().registerEvent(Event.Type.ENTITY_DAMAGE, pigListener, Event.Priority.Normal, this);
-			this.getServer().getPluginManager().registerEvent(Event.Type.PLAYER_INTERACT_ENTITY, pigPlayerListener, Event.Priority.Normal, this);
-			//finished loading PigJouster
-		} else {
-			log.info("[EscapePlug] skipping PigJouster");
-		}
-
-		
-
-		
-
-		//start loading endernerf
-		if (getConfig().getBoolean("plugin.endernerf.enabled", true)) {
-			log.info("[EscapePlug] loading enderNerf");
-			EntityListener el = new EndernerfListener();
-			this.getServer().getPluginManager().registerEvent(Event.Type.ENDERMAN_PICKUP, el, Event.Priority.Highest, this);
-			this.getServer().getPluginManager().registerEvent(Event.Type.ENDERMAN_PLACE, el, Event.Priority.Highest, this);
-
-			//finished loading endernerf
-		}
-
 
 		//start loading hatMe
 		if (getConfig().getBoolean("plugin.hatme.enabled", true)) {
@@ -138,12 +102,7 @@ public class EscapePlug extends JavaPlugin {
 			log.info("[EscapePlug] loaded hatMe version " + hatversion);
 		}
 
-		//start loading who
-		if (getConfig().getBoolean("plugin.who.enabled", true)) {
-			log.info("[EscapePlug] loading Who");
-			getCommand("who").setExecutor(new WhoCommand(droxPermsAPI, beardStatManager));
-			//finished loading who
-		}
+		
 
                 // start loading afkbooter
 		if (getConfig().getBoolean("plugin.afkbooter.enabled", true)) {
@@ -170,8 +129,9 @@ public class EscapePlug extends JavaPlugin {
                         afkBooter.tidyUp();
 			log.info("[EscapePlug] AfkBooter unloaded");
                 }
-
+        getComponentManager().disableComponents();
 		self = null;
+		
 		log.info("[EscapePlug] EscapePlug unloaded");
 	}
 
@@ -179,6 +139,10 @@ public class EscapePlug extends JavaPlugin {
 		log.info("[EscapePlug] " + line);
 	}
 	
+	/**
+	 * Return the component manager
+	 * @return
+	 */
 	public ComponentManager getComponentManager(){
 		return componentManager;
 	}

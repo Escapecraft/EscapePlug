@@ -113,6 +113,13 @@ public class ComponentManager{
 			}
 		}
 	}
+	
+	public void disableComponents(){
+	    log.info("Shutting down");
+	    for(AbstractComponent comp : activeComponents){
+	      comp.disable();
+	    }
+	}
 
 	
 }
