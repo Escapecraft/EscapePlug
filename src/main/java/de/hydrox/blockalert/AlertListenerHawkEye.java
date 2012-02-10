@@ -23,15 +23,19 @@ import uk.co.oliwali.HawkEye.entry.DataEntry;
 import uk.co.oliwali.HawkEye.util.HawkEyeAPI;
 
 public class AlertListenerHawkEye extends AbstractListener {
-	
-	public AlertListenerHawkEye(Map<String, List<Integer>> blockBreak, Map<String, List<Integer>> blockPlace) {
+    boolean notifyOnCanceledBreak = false;
+    boolean notifyOnCanceledPlace = false;
+
+	public AlertListenerHawkEye(Map<String, List<Integer>> blockBreak, Map<String, List<Integer>> blockPlace, boolean notifyOnCanceledBreak, boolean notifyOnCanceledPlace) {
 		this.blockBreak = blockBreak;
 		this.blockPlace = blockPlace;
+		this.notifyOnCanceledBreak = notifyOnCanceledBreak;
+		this.notifyOnCanceledPlace = notifyOnCanceledPlace;
 	}
 	
 	@EventHandler(priority=EventPriority.MONITOR)
 	public void onBlockBreak(BlockBreakEvent event) {
-		if (event.isCancelled() || !notifyBlockBreak(event)) {
+		if ((event.isCancelled() && !notifyOnCanceledBreak) || !notifyBlockBreak(event)) {
 			return;
 		}
 
@@ -49,7 +53,7 @@ public class AlertListenerHawkEye extends AbstractListener {
 	
 	@EventHandler(priority=EventPriority.MONITOR)
 	public void onBlockPlace(BlockPlaceEvent event) {
-		if (event.isCancelled() || !notifyBlockPlace(event)) {
+		if ((event.isCancelled() && !notifyOnCanceledPlace) || !notifyBlockPlace(event)) {
 			return;
 		}
 		String msg = ChatColor.GRAY + "EP: " + ChatColor.LIGHT_PURPLE + event.getPlayer().getName() + ChatColor.GOLD +" (use) " + ChatColor.WHITE + event.getBlock().getType() + " (#" + event.getBlock().getTypeId() + ").";
