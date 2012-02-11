@@ -130,7 +130,6 @@ public class WhoCommandComponent extends AbstractComponent implements CommandExe
 
     @Override
     public void disable() {
-        // TODO Auto-generated method stub
         
     }
 

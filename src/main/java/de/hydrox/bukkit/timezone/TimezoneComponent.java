@@ -114,7 +114,6 @@ public class TimezoneComponent extends AbstractComponent implements CommandExecu
 
     @Override
     public void disable() {
-        // TODO Auto-generated method stub
         
     }
 }
