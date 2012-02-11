@@ -22,7 +22,6 @@ public class EndernerfComponent extends AbstractComponent implements Listener {
 	
 	@EventHandler(priority=EventPriority.HIGHEST)
 	public void onEndermanPlace(EndermanPlaceEvent event) {
-		// TODO Auto-generated method stub
 		event.setCancelled(true);
 	}
 
@@ -34,8 +33,6 @@ public class EndernerfComponent extends AbstractComponent implements Listener {
 
     @Override
     public void disable() {
-        // TODO Auto-generated method stub
-        
     }
 	
 

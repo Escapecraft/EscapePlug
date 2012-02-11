@@ -57,7 +57,6 @@ public class PigJousterComponent extends AbstractComponent implements CommandExe
 			return true;
 		}
 		if(sender instanceof Player){
-			//TODO: ADD PERMISSIONS FOR THESE COMMANDS!
 			if(commandLabel.equals("pig-active")){
 				activepunch.add((Player)sender);
 				return true;
@@ -80,7 +79,6 @@ public class PigJousterComponent extends AbstractComponent implements CommandExe
 
     @Override
     public void disable() {
-        // TODO Auto-generated method stub
         
     }
 }
