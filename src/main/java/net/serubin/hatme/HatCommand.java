@@ -26,7 +26,6 @@ public class HatCommand implements CommandExecutor {
 
 	public HatCommand(List<Integer> rbBlocks, boolean rbAllow,
 			String notAllowedMsg, boolean rbOp) {
-		// TODO Auto-generated constructor stub
 		this.rbBlocks = rbBlocks;
 		this.rbAllow = rbAllow;
 		this.notAllowedMsg = notAllowedMsg;

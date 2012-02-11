@@ -42,7 +42,6 @@ public class GameModeToggleComponent extends AbstractComponent implements Comman
 
     @Override
     public void disable() {
-        // TODO Auto-generated method stub
         
     }
 

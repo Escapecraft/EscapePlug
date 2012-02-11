@@ -10,7 +10,6 @@ public class WolfTradeListener extends PlayerListener {
 
 	@Override
 	public void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
-		// TODO Auto-generated method stub
 		if(event.getRightClicked() instanceof Wolf){
 			if(!WolfTradeCommand.wolfSession.containsKey(event.getPlayer().getName())){
 				return;

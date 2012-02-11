@@ -55,7 +55,6 @@ public class AntiSlimeComponent extends AbstractComponent implements Listener {
 
     @Override
     public void disable() {
-        // TODO Auto-generated method stub
         
     }
 }
