@@ -51,6 +51,8 @@ commands:
             /<command> list - List the players on the exempt list.
             /<command> add <name> ... - Add players to the exempt list.
             /<command> remove <name> ... - Remove players from the exempt list.
+            /<command> debugon - Turn debug mode on (write info to console).
+            /<command> debugoff - Turn debug mode off.
 
 permissions:
   escapeplug.*:
