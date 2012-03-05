@@ -19,10 +19,7 @@
     <dependency>
       <groupId>org.bukkit</groupId>
       <artifactId>bukkit</artifactId>
-      <version>1.1-R4</version>
-      <type>jar</type>
-      <scope>compile</scope>
-      <optional>false</optional>
+      <version>1.2.3-R0.1-SNAPSHOT</version>
     </dependency>
     <dependency>
         <groupId>de.hydrox.bukkit</groupId>
