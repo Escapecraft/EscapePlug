@@ -54,6 +54,13 @@ commands:
             /<command> debugon - Turn debug mode on (write info to console).
             /<command> debugoff - Turn debug mode off.
 
+    vanish:
+        description: General command for the Vanish feature.
+        usage: |
+            /<command> - toggles normal vanish-mode.
+            /<command> full - puts you into full vanish-mode.
+            /<command> list - List vanished players.
+
 permissions:
   escapeplug.*:
     description: Supernode for EscapePlug commands.
@@ -94,6 +101,13 @@ permissions:
     children:
       escapeplug.afkbooter.config: true
       escapeplug.afkbooter.exempt: true
+  escapeplug.vanish:
+    description: gives full permission on Vanish.
+    children:
+      escapecraft.vanish.vanish: true
+      escapecraft.vanish.see: true
+      escapecraft.vanish.vanishfull: true
+      escapecraft.vanish.seefull: true
   escapeplug.afkbooter.config:
     description: Allows players to change AfkBooter configuration.
     default: op
