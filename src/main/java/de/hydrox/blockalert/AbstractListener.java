@@ -29,7 +29,7 @@ public abstract class AbstractListener implements Listener{
 		Player player = event.getPlayer();
 		if (blockBreak.containsKey(world)) {
 			if (blockBreak.get(world).contains(id)) {
-				if (!player.hasPermission("eescapeplug.blockalert.ignore." + id)) {
+				if (!player.hasPermission("escapeplug.blockalert.ignore") && !player.hasPermission("escapeplug.blockalert.ignore." + id)) {
 					return true;
 				}
 			}
@@ -43,7 +43,7 @@ public abstract class AbstractListener implements Listener{
 		Player player = event.getPlayer();
 		if (blockPlace.containsKey(world)) {
 			if (blockPlace.get(world).contains(id)) {
-				if (!player.hasPermission("escapeplug.blockalert.ignore." + id)) {
+				if (!player.hasPermission("escapeplug.blockalert.ignore") && !player.hasPermission("escapeplug.blockalert.ignore." + id)) {
 					return true;
 				}
 			}
