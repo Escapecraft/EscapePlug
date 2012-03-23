@@ -68,7 +68,7 @@ public class VanishComponent extends AbstractComponent implements
 		Player[] players = Bukkit.getOnlinePlayers();
 		for (Player player : players) {
 		    if (!player.hasPermission("escapecraft.vanish.see")) {
-			player.showPlayer(Bukkit.getPlayerExact(name));
+			player.hidePlayer(Bukkit.getPlayerExact(name));
 		    }
 		}
 		sender.sendMessage(ChatColor.GREEN + "You are now vanished.");
@@ -80,6 +80,7 @@ public class VanishComponent extends AbstractComponent implements
 		if (!sender.hasPermission("escapecraft.vanish.vanishfull")) {
 		    sender.sendMessage(ChatColor.RED
 			    + "You shall not fully vanish.");
+		    return true;
 		}
 		String name = sender.getName();
 		vanished.remove(name);
@@ -88,15 +89,17 @@ public class VanishComponent extends AbstractComponent implements
 		Player[] players = Bukkit.getOnlinePlayers();
 		for (Player player : players) {
 		    if (!player.hasPermission("escapecraft.vanish.seefull")) {
-			player.showPlayer(Bukkit.getPlayerExact(name));
+			player.hidePlayer(Bukkit.getPlayerExact(name));
 		    }
 		}
 		sender.sendMessage(ChatColor.GREEN
 			+ "You are now full vanished.");
+		return true;
 	    }
 	    if (args[0].equalsIgnoreCase("list")) {
 		if (!sender.hasPermission("escapecraft.vanish.see")) {
 		    sender.sendMessage(ChatColor.RED + "You shall not see.");
+		    return true;
 		}
 		StringBuffer output = new StringBuffer();
 		output.append("Vanished Players: ");
@@ -112,6 +115,7 @@ public class VanishComponent extends AbstractComponent implements
 		    }
 		    sender.sendMessage(ChatColor.GOLD + output.toString());
 		}
+		return true;
 	    }
 	}
 	return false;
