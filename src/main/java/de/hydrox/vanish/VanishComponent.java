@@ -24,7 +24,7 @@ import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.tulonsae.mc.util.Log;
 
-@ComponentDescriptor(name = "Vanish", slug = "vanish", version = "1.00")
+@ComponentDescriptor(name = "Vanish", slug = "vanish", version = "1.01")
 @BukkitCommand(command = "vanish")
 public class VanishComponent extends AbstractComponent implements
 	CommandExecutor, Listener {
@@ -35,6 +35,7 @@ public class VanishComponent extends AbstractComponent implements
     @Override
     public boolean enable(Log log, EscapePlug plugin) {
 	plugin.getComponentManager().registerCommands(this);
+	Bukkit.getPluginManager().registerEvents(this, plugin);
 	return true;
     }
 
