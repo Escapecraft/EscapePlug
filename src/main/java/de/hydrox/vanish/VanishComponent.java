@@ -49,6 +49,7 @@ public class VanishComponent extends AbstractComponent implements
 	if (args.length == 0) {
 	    if (!sender.hasPermission("escapeplug.vanish.vanish")) {
 		sender.sendMessage(ChatColor.RED + "You shall not vanish.");
+		return true;
 	    }
 	    if (sender instanceof ConsoleCommandSender) {
 		sender.sendMessage("Console can't vanish.");
