@@ -16,7 +16,6 @@ plugin:
 #hatme config
         enable: true
         allowed: 
-        - 0
         - 1
         - 2
         - 3
@@ -58,7 +57,7 @@ plugin:
         - 112
         opnorestrict: true
         notAllowedMsg: Invalid Item
-        hatversion: 9.4-ECV
+        hatversion: 9.6-ECV
     mobcontrol:
         enabled: true
         worlds: [testworld]
@@ -69,9 +68,27 @@ plugin:
         rejectmsg: "Server Full"
     who:
         enabled: true
+    blockalert:
+        enabled: true
+        notifyOnCanceledBreak: false
+        notifyOnCanceledPlace: true
+        worlds:
+            break:
+                survival: 
+# Goldblock
+                    - 41
+# Diamondblock
+                    - 57
+            place:
+                survival:
+# Bedrock
+                    - 7
+# TNT
+                    - 46
     afkbooter:
         enabled: true
         version: ""
+        debug: false
         kick-timeout: 600
         timeout-check-interval: 60
         player-count-threshold: 0
@@ -79,6 +96,7 @@ plugin:
         kick-broadcast: "Kicked for idling."
         exempt-players: ""
         ignore-vehicle-movement: true
+        event-player-move: false
         event-player-chat: true
         event-inventory-open: true
         event-player-command-preprocess: true
@@ -87,3 +105,5 @@ plugin:
         event-block-break: true
         event-player-interact: true
         event-player-interact-entity: true
+    vanish:
+        enabled: true

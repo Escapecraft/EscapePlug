@@ -1,7 +1,5 @@
 package org.tulonsae.afkbooter;
 
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.logging.Logger;
 
 import org.bukkit.ChatColor;
@@ -20,7 +18,7 @@ import net.escapecraft.escapePlug.EscapePlug;
  */
 public class AfkBooter {
 
-    private static final String VERSION = "1.1.1";
+    private static final String VERSION = "1.1.3";
     private static final String PERMISSION_EXEMPT = "escapeplug.afkbooter.exempt";
 
     private EscapePlug plugin;
@@ -28,17 +26,13 @@ public class AfkBooter {
     private AfkBooterTimer threadedTimer;
     private MovementTracker movementTracker;
     private int taskId;
+    private PlayerActivity playerActivity;
+    private ExemptList exemptList;
 
-    private long timeoutCheckInterval;
-    private long kickTimeout;
-    private int playerCountThreshold;
-
-    private boolean isIgnoreVehicleMovement;
-
-    private String playerKickMessage;
-    private String broadcastKickMessage;
+    private boolean isDebug;
 
     // refractor - implement this as type of list
+    private boolean isMoveEventActivity;
     private boolean isChatEventActivity;
     private boolean isCommandEventActivity;
     private boolean isInventoryEventActivity;
@@ -47,9 +41,6 @@ public class AfkBooter {
     private boolean isBlockBreakEventActivity;
     private boolean isInteractEventActivity;
     private boolean isInteractEntityEventActivity;
-
-    private ConcurrentHashMap<String, Long> lastPlayerActivity = new ConcurrentHashMap<String, Long>();
-    private ConcurrentSkipListSet<String> exemptPlayers = new ConcurrentSkipListSet<String>();
 
     /**
      * Construct this component
@@ -72,44 +63,62 @@ public class AfkBooter {
         // load configuration
         loadConfig();
 
+        // player activity object
+        playerActivity = new PlayerActivity(this);
+
+        // exempt list object
+        exemptList = new ExemptList(this);
+
         // kick check thread
-        threadedTimer = new AfkBooterTimer(this, timeoutCheckInterval);
+        threadedTimer = new AfkBooterTimer(this);
         threadedTimer.start();
 
         // movement check thread
-        // initial delay of 10 sec, check every 5 sec after that
-        movementTracker = new MovementTracker(this);
-        taskId = plugin.getServer().getScheduler().scheduleAsyncRepeatingTask(plugin, movementTracker, 200, 100);
+        // initial delay of 1 min, check every 30 sec after that
+        // this uses ticks, and there are (ideally0 20 ticks per second
+        if (isMoveEventActivity) {
+            movementTracker = new MovementTracker(this);
+            taskId = plugin.getServer().getScheduler().scheduleAsyncRepeatingTask(plugin, movementTracker, 1200, 600);
+        }
 
         // refractor, use a list
         // register join/quit events, always; register the others if configured
         plugin.getServer().getPluginManager().registerEvents(new AfkBooterListener(this), plugin);
         if (isChatEventActivity) {
+             writeDebugMsg("registered AfkListenerChat");
              plugin.getServer().getPluginManager().registerEvents(new AfkBooterListenerChat(this), plugin);
         }
         if (isCommandEventActivity) {
+             writeDebugMsg("registered AfkListenerCommand");
              plugin.getServer().getPluginManager().registerEvents(new AfkBooterListenerCommand(this), plugin);
         }
         if (isInventoryEventActivity) {
+             writeDebugMsg("registered AfkListenerInventory");
              plugin.getServer().getPluginManager().registerEvents(new AfkBooterListenerInventory(this), plugin);
         }
         if (isDropItemEventActivity) {
+             writeDebugMsg("registered AfkListenerDropItem");
              plugin.getServer().getPluginManager().registerEvents(new AfkBooterListenerDropItem(this), plugin);
         }
         if (isBlockPlaceEventActivity) {
+             writeDebugMsg("registered AfkListenerBlockPlace");
              plugin.getServer().getPluginManager().registerEvents(new AfkBooterListenerBlockPlace(this), plugin);
         }
         if (isBlockBreakEventActivity) {
+             writeDebugMsg("registered AfkListenerBlockBreak");
              plugin.getServer().getPluginManager().registerEvents(new AfkBooterListenerBlockBreak(this), plugin);
         }
         if (isInteractEventActivity) {
+             writeDebugMsg("registered AfkListenerInteract");
              plugin.getServer().getPluginManager().registerEvents(new AfkBooterListenerInteract(this), plugin);
         }
         if (isInteractEntityEventActivity) {
+             writeDebugMsg("registered AfkListenerInteractEntity");
              plugin.getServer().getPluginManager().registerEvents(new AfkBooterListenerInteractEntity(this), plugin);
         }
 
         // register command
+        writeDebugMsg("registered AfkBooterCommand");
         AfkBooterCommand afkBooterCommand = new AfkBooterCommand(this);
         plugin.getCommand("afkbooter").setExecutor(afkBooterCommand);
 
@@ -126,7 +135,27 @@ public class AfkBooter {
             threadedTimer = null;
         }
 
-        plugin.getServer().getScheduler().cancelTask(taskId);
+        if (isMoveEventActivity) {
+            plugin.getServer().getScheduler().cancelTask(taskId);
+        }
+    }
+
+    /**
+     * Write info message
+     * @param message Information to write.
+     */
+    public void writeInfoMsg(String message) {
+        log.info("AfkBooter: " + message);
+    }
+
+    /**
+     * Write debug message
+     * @param message Information to write.
+     */
+    public void writeDebugMsg(String message) {
+        if (isDebug) {
+            writeInfoMsg("debug: " + message);
+        }
     }
 
     /**
@@ -146,114 +175,48 @@ public class AfkBooter {
     }
 
     /**
-     * Get Vehicle Movement flag.
+     * Get Movement Tracker flag.
+     * @return whether Movement Tracker flag is true or false.
      */ 
-    public boolean getVehicleFlag() {
-        return isIgnoreVehicleMovement;
+    public boolean getMovementTrackerFlag() {
+        return isMoveEventActivity;
     }
 
     /**
-     * Record player activity.
-     * @param playerName Name of player that did something.
+     * Get PlayerActivity object.
+     * @return player activity object created by this component.
      */
-    public synchronized void recordPlayerActivity(String playerName) {
-        lastPlayerActivity.put(playerName, System.currentTimeMillis());
-    } 
+    public PlayerActivity getPlayerActivity () {
+        return playerActivity;
+    }
 
     /**
-     * Remove player from activity list.
+     * Get ExemptList object.
+     * @return exempt list object created by this component.
      */
-    public synchronized void stopTrackingPlayer(String playerName) {
-        lastPlayerActivity.remove(playerName);
-    } 
+    public ExemptList getExemptList() {
+        return exemptList;
+    }
 
     /**
-     * Add player to the exempt list.
-     * @param player Name of the player to add.
-     * @param name Name of the command sender.
+     * Get Debug flag.
+     * @return whether debug flag is true or false.
+     */ 
+    public boolean getDebugFlag() {
+        return isDebug;
+    }
+
+    /**
+     * Change Debug mode.
+     * @param flag Debug mode to set.
      */
-    public synchronized void addExemptPlayer(String player, String name) {
-        exemptPlayers.add(player);
-        log.info("AfkBooter: " + name + " added player '" + player + "' to the exempt list.");
+    public void changeDebugMode(String name, boolean flag) {
 
-        plugin.getConfig().set("plugin.afkbooter.exempt-players", exemptPlayers.toString());
-
+        isDebug = flag;
+        plugin.getConfig().set("plugin.afkbooter.debug", flag);
         plugin.saveConfig();
-    }
 
-    /**
-     * Remove player from the exempt list.
-     * @param player Name of the player to remove.
-     * @param name Name of the command sender.
-     */
-    public synchronized void removeExemptPlayer(String player, String name) {
-        exemptPlayers.remove(player);
-        log.info("AfkBooter: " + name + " removed player '" + player + "' from the exempt list.");
-
-        plugin.getConfig().set("plugin.afkbooter.exempt-players", exemptPlayers.toString());
-
-        plugin.saveConfig();
-    }
-
-    /**
-     * Get exempt players list.
-     */
-    public ConcurrentSkipListSet<String> getExemptPlayers() {
-        return exemptPlayers;
-    }
-
-    /**
-     * Kick AFK players.
-     */
-    public void kickAfkPlayers() {
-
-        // no one to kick
-        if (lastPlayerActivity.size() < 1) {
-            return;
-        }
-
-        // don't kick if under the player count threshold
-        if (plugin.getServer().getOnlinePlayers().length < playerCountThreshold) {
-            return;
-        }
-
-        // set the activity window to the length of kickTimeout (milliseconds),
-        // players whose last activity is before the window will be kicked
-        // unless exempt
-        long activityWindow = System.currentTimeMillis() - kickTimeout;
-
-        // go thru the last activity list
-        for (String name : lastPlayerActivity.keySet()) {
-            Player player = plugin.getServer().getPlayer(name);
-            if (player == null) {
-                continue;
-            }
-            if (player.hasPermission(PERMISSION_EXEMPT) || (exemptPlayers.contains(name.toLowerCase()))) {
-                continue;
-            }
-            Long tmpLong = lastPlayerActivity.get(name);
-            if (tmpLong == null) {
-                continue;
-            }
-            long lastActivity = tmpLong.longValue();
-            if (lastActivity < activityWindow) {
-                kickIdlePlayer(player);
-            }
-        }
-    }
-
-    /**
-     * Kick an idle player.
-     */
-    private synchronized void kickIdlePlayer(Player player) {
-        if (player.isOnline()) {
-            log.info("AfkBooter kicking idle player '" + player.getName() + "'");
-            player.kickPlayer(playerKickMessage);
-            // don't broadcast kick message if empty or null
-            if ((broadcastKickMessage != null) && (!broadcastKickMessage.isEmpty())) {
-                plugin.getServer().broadcastMessage(ChatColor.YELLOW + player.getName() + " " + broadcastKickMessage);
-            }
-        }
+        writeInfoMsg(name + " changed debug mode to " + flag + ".");
     }
 
     /**
@@ -263,15 +226,11 @@ public class AfkBooter {
 
         plugin.getConfig().set("plugin.afkbooter.version", VERSION);
 
-        // config specifies seconds, but we use milliseconds
-        timeoutCheckInterval = plugin.getConfig().getLong("plugin.afkbooter.timeout-check-interval", 60) * 1000;
-        kickTimeout = plugin.getConfig().getLong("plugin.afkbooter.kick-timeout", 600) * 1000;
-
-        // if 0, players will always be kicked
-        playerCountThreshold = plugin.getConfig().getInt("plugin.afkbooter.player-count-threshold", 0);
+        // get debug mode
+        isDebug = plugin.getConfig().getBoolean("plugin.afkbooter.debug", false);
 
         // which events count as activities
-        // note that movement always counts so it's not an option
+        isMoveEventActivity = plugin.getConfig().getBoolean("plugin.afkbooter.event-player-move", false);
         isChatEventActivity = plugin.getConfig().getBoolean("plugin.afkbooter.event-player-chat", true);
         isCommandEventActivity = plugin.getConfig().getBoolean("plugin.afkbooter.event-player-command-preprocess", true);
         isInventoryEventActivity = plugin.getConfig().getBoolean("plugin.afkbooter.event-inventory-open", true);
@@ -280,29 +239,6 @@ public class AfkBooter {
         isBlockBreakEventActivity = plugin.getConfig().getBoolean("plugin.afkbooter.event-block-break", true);
         isInteractEventActivity = plugin.getConfig().getBoolean("plugin.afkbooter.event-player-interact", true);
         isInteractEntityEventActivity = plugin.getConfig().getBoolean("plugin.afkbooter.event-player-interact-entity", true);
-
-        // vehicle flag
-        isIgnoreVehicleMovement = plugin.getConfig().getBoolean("plugin.afkbooter.ignore-vehicle-movement", true);
-
-        // kick messages
-        playerKickMessage = plugin.getConfig().getString("plugin.afkbooter.kick-message", "Kicked for idling.");
-        broadcastKickMessage = plugin.getConfig().getString("plugin.afkbooter.kick-broadcast");
-
-        // get exempt player list
-        String exempt = plugin.getConfig().getString("plugin.afkbooter.exempt-players");
-        exempt = exempt.replace('[', ' ');
-        exempt = exempt.replace(']', ' ');
-        if (exempt != null) {
-            String[] exemptSplit = exempt.split(",");
-            if (exemptSplit != null) {
-                for (String name : exemptSplit) {
-                    name = name.trim().toLowerCase();
-                    if (name.length() > 0) {
-                        exemptPlayers.add(name);
-                    }
-                }
-            }
-        }
 
         // save any changes, esp the afkbooter version
         plugin.saveConfig();

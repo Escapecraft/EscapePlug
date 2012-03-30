@@ -1,3 +1,18 @@
+v0.3.0
+
+v0.2.2
+* hot fix for AfkBooter
+  - refractored debug messages
+  - rewrote implementation to reduce synchronization needs
+  - removed all blocking calls from AfkBooterTimer
+
+v0.2.1
+* hot fix for AfkBooter
+  - added config option for move tracking
+  - turned off move tracking by default
+  - increased time for move tracking to 1 min delay and 30 sec check
+  - added afkbooter debugon|debugoff command
+
 v0.2.0
 * add -a option to hatme
 * add AfkBooter

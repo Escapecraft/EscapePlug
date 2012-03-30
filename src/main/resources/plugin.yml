@@ -1,7 +1,7 @@
 name: EscapePlug
 main: net.escapecraft.escapePlug.EscapePlug
 version: ${project.version}
-softdepend: [DroxPerms, BeardStat]
+softdepend: [DroxPerms, BeardStat, HawkEye]
 commands:
     pig-active:
         description: Activate pig punching
@@ -37,9 +37,9 @@ commands:
         description: Command that puts the item on your head.
         usage: /<command> - puts item on head
     unhat:
-       aliases: [unhat, unhatme, unhm]
-       description: Command to take your "hat" off.
-       usage: /<command> - takes item off head
+        aliases: [unhat, unhatme, unhm]
+        description: Command to take your "hat" off.
+        usage: /<command> - takes item off head
     who:
         description: Gives Information about the online Players.
         usage:  |
@@ -51,6 +51,15 @@ commands:
             /<command> list - List the players on the exempt list.
             /<command> add <name> ... - Add players to the exempt list.
             /<command> remove <name> ... - Remove players from the exempt list.
+            /<command> debugon - Turn debug mode on (write info to console).
+            /<command> debugoff - Turn debug mode off.
+
+    vanish:
+        description: General command for the Vanish feature.
+        usage: |
+            /<command> - toggles normal vanish-mode.
+            /<command> full - puts you into full vanish-mode.
+            /<command> list - List vanished players.
 
 permissions:
   escapeplug.*:
@@ -64,6 +73,7 @@ permissions:
       escapeplug.notify: true
       escapeplug.hatme: true
       escapeplug.who: true
+      escapeplug.blockalert: true
       escapeplug.afkbooter: true
   escapeplug.lockdown:
     description: gives full permission on Lockdown-mode.
@@ -82,11 +92,22 @@ permissions:
     children:
       escapeplug.who.list: true
       escapeplug.who.player: true
+  escapeplug.blockalert:
+    children:
+      escapeplug.blockalert.notify: true
+      escapeplug.blockalert.ignore: true
   escapeplug.afkbooter:
     description: gives full permission on AfkBooter.
     children:
       escapeplug.afkbooter.config: true
       escapeplug.afkbooter.exempt: true
+  escapeplug.vanish:
+    description: gives full permission on Vanish.
+    children:
+      escapecraft.vanish.vanish: true
+      escapecraft.vanish.see: true
+      escapecraft.vanish.vanishfull: true
+      escapecraft.vanish.seefull: true
   escapeplug.afkbooter.config:
     description: Allows players to change AfkBooter configuration.
     default: op

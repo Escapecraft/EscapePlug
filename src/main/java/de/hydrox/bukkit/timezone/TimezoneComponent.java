@@ -6,11 +6,19 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
 
+import net.escapecraft.component.AbstractComponent;
+import net.escapecraft.component.BukkitCommand;
+import net.escapecraft.component.ComponentDescriptor;
+import net.escapecraft.escapePlug.EscapePlug;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.tulonsae.mc.util.Log;
 
-public class TimezoneCommands implements CommandExecutor {
+@ComponentDescriptor(name="timezone",slug="timezone",version="1.00")
+@BukkitCommand(command="timezone")
+public class TimezoneComponent extends AbstractComponent implements CommandExecutor {
 
 	public boolean onCommand(CommandSender sender, Command command,
 			String label, String[] args) {
@@ -97,4 +105,15 @@ public class TimezoneCommands implements CommandExecutor {
 	private String parseDate(String [] args) {
 		return  args[1] + " " + args[2];
 	}
+
+    @Override
+    public boolean enable(Log log, EscapePlug plugin) {
+        plugin.getComponentManager().registerCommands(this);
+        return true;
+    }
+
+    @Override
+    public void disable() {
+        
+    }
 }

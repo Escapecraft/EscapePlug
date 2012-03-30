@@ -19,7 +19,7 @@ public class AfkBooterListenerInteract implements Listener {
     @EventHandler(priority = EventPriority.MONITOR)
     public void playerJoin(PlayerInteractEvent event) {
         if (!event.isCancelled()) {
-             afkBooter.recordPlayerActivity(event.getPlayer().getName());
+             afkBooter.getPlayerActivity().recordActivity(event.getPlayer().getName());
         }
     }
 }
