@@ -128,12 +128,20 @@ public class VanishComponent extends AbstractComponent implements
 	Player player = event.getPlayer();
 	if (!player.hasPermission("escapeplug.vanish.see")) {
 	    for (String hiddenPlayer : vanished) {
-		player.hidePlayer(Bukkit.getPlayerExact(hiddenPlayer));
+		Player vanishedPlayer = Bukkit.getPlayerExact(hiddenPlayer);
+		if(vanishedPlayer == null) {
+		    continue;
+		}
+		player.hidePlayer(vanishedPlayer);
 	    }
 	}
 	if (!player.hasPermission("escapeplug.vanish.seefull")) {
 	    for (String hiddenPlayer : fullVanish) {
-		player.hidePlayer(Bukkit.getPlayerExact(hiddenPlayer));
+		Player vanishedPlayer = Bukkit.getPlayerExact(hiddenPlayer);
+		if(vanishedPlayer == null) {
+		    continue;
+		}
+		player.hidePlayer(vanishedPlayer);
 	    }
 	}
     }
