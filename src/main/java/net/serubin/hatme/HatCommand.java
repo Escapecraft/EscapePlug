@@ -374,8 +374,8 @@ public class HatCommand implements CommandExecutor {
 
     public boolean checkPermissionBasic(Player player) {
         // check perm
-        if (player.hasPermission("hatme.hat")
-                || player.hasPermission("hatme.hat."
+        if (player.hasPermission("escapeplug.hatme.hat")
+                || player.hasPermission("escapeplug.hatme.hat."
                         + player.getItemInHand().getTypeId()))
             return true;
         if (rbOp = true && player.isOp())
@@ -385,8 +385,8 @@ public class HatCommand implements CommandExecutor {
 
     public boolean checkPermissionGive(Player player, String[] args) {
         // check perm
-        if (player.hasPermission("hatme.hat.give")
-                || player.hasPermission("hatme.hat.give."
+        if (player.hasPermission("escapeplug.hatme.hat.give")
+                || player.hasPermission("escapeplug.hatme.hat.give."
                         + Integer.parseInt(args[0])))
             return true;
         if (rbOp = true && player.isOp())
@@ -396,8 +396,8 @@ public class HatCommand implements CommandExecutor {
 
     public boolean checkPermissionAll(Player player) {
         // check perm
-        if (player.hasPermission("hatme.hat.all")
-                || player.hasPermission("hatme.hat.all."
+        if (player.hasPermission("escapeplug.hatme.hat.all")
+                || player.hasPermission("escapeplug.hatme.hat.all."
                         + player.getItemInHand().getTypeId()))
             return true;
         if (rbOp = true && player.isOp())
@@ -407,7 +407,7 @@ public class HatCommand implements CommandExecutor {
 
     public boolean checkPermissionNoRestrict(Player player) {
         // check perm
-        // if (player.hasPermission("hatme.norestrict"))
+        // if (player.hasPermission("excapeplug.hatme.norestrict"))
         // return true;
         // if (rbOp = true && player.isOp())
         // return true;
