@@ -20,6 +20,7 @@ import de.hydrox.bukkit.DroxPerms.DroxPermsAPI;
 import de.hydrox.bukkit.timezone.TimezoneComponent;
 import de.hydrox.lockdown.LockdownComponent;
 import de.hydrox.mobcontrol.MobControlComponent;
+import de.hydrox.portalblocker.PortalBlockerComponent;
 import de.hydrox.vanish.VanishComponent;
 import de.hydrox.who.WhoCommandComponent;
 import en.tehbeard.endernerf.EndernerfComponent;
@@ -88,6 +89,7 @@ public class EscapePlug extends JavaPlugin {
 		componentManager.addComponent(MobControlComponent.class);
 		componentManager.addComponent(BlockAlertComponent.class);
 		componentManager.addComponent(VanishComponent.class);
+		componentManager.addComponent(PortalBlockerComponent.class);
 		//start components
 		componentManager.startupComponents();
 
