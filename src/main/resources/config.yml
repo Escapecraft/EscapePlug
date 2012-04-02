@@ -107,3 +107,6 @@ plugin:
         event-player-interact-entity: true
     vanish:
         enabled: true
+    portalblocker:
+        enabled: true
+        worlds: []
