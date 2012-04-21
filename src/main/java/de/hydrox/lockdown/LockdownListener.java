@@ -6,6 +6,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerLoginEvent.Result;
 
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.plugin.Plugin;
@@ -27,6 +28,12 @@ public class LockdownListener implements Listener {
 			return;
 		}
 		Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "LOCKDOWNACTIVE");
+		
+		//Ignore lockdown if they are already banned
+		if(event.getResult() != Result.ALLOWED){
+		    return;
+		}
+		
 		if(event.getPlayer().hasPermission("escapeplug.lockdown.allow")){
 			Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "Overriding Lockdown");
 			event.allow();
