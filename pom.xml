@@ -30,14 +30,14 @@
         <systemPath>${project.basedir}/lib/HawkEye.jar</systemPath>
     </dependency>
     <dependency>
-        <groupId>me.tehbeard.BeardStat</groupId>
+        <groupId>me.tehbeard</groupId>
         <artifactId>BeardStat</artifactId>
         <version>0.4-grapefruit</version>
         <scope>system</scope>
         <systemPath>${project.basedir}/lib/BeardStat.jar</systemPath>
     </dependency>
     <dependency>
-        <groupId>de.hydrox.bukkit.DroxPerms</groupId>
+        <groupId>de.hydrox.bukkit</groupId>
         <artifactId>DroxPerms</artifactId>
         <version>0.3.1</version>
         <scope>system</scope>
