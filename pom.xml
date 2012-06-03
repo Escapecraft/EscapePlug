@@ -19,17 +19,8 @@
     <dependency>
       <groupId>org.bukkit</groupId>
       <artifactId>bukkit</artifactId>
-      <version>1.2.4-R1.0</version>
-    </dependency>
-    <dependency>
-        <groupId>de.hydrox.bukkit</groupId>
-        <artifactId>DroxPerms</artifactId>
-        <version>0.4.0-SNAPSHOT</version>
-    </dependency>
-    <dependency>
-        <groupId>me.tehbeard</groupId>
-        <artifactId>BeardStat</artifactId>
-        <version>0.4</version>
+      <version>1.2.5-R3.1-SNAPSHOT</version>
+      <type>jar</type>
     </dependency>
     <dependency>
         <groupId>uk.co.oliwali</groupId>
@@ -37,6 +28,20 @@
         <version>1.0.5b</version>
         <scope>system</scope>
         <systemPath>${project.basedir}/lib/HawkEye.jar</systemPath>
+    </dependency>
+    <dependency>
+        <groupId>me.tehbeard.BeardStat</groupId>
+        <artifactId>BeardStat</artifactId>
+        <version>0.4-grapefruit</version>
+        <scope>system</scope>
+        <systemPath>${project.basedir}/lib/BeardStat.jar</systemPath>
+    </dependency>
+    <dependency>
+        <groupId>de.hydrox.bukkit.DroxPerms</groupId>
+        <artifactId>DroxPerms</artifactId>
+        <version>0.3.1</version>
+        <scope>system</scope>
+        <systemPath>${project.basedir}/lib/DroxPerms.jar</systemPath>
     </dependency>
   </dependencies>
 

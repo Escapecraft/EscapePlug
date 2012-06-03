@@ -1,12 +1,8 @@
 package net.serubin.hatme;
 
-import java.util.HashMap;
 import java.util.List;
-
 import net.escapecraft.escapePlug.EscapePlug;
-
 import org.bukkit.ChatColor;
-import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -186,7 +182,7 @@ public class HatCommand implements CommandExecutor {
 
     public boolean hatOnAll(CommandSender sender) {
         Player player = (Player) sender;
-        if (player.getItemInHand().getTypeId() == 0) {
+        if (player.getItemInHand() == null) {
             player.sendMessage(ChatColor.RED + "Please pick a valid item!");
             return true;
         } else {
@@ -250,7 +246,7 @@ public class HatCommand implements CommandExecutor {
                         inventory.setItemInHand(null);
                         player.sendMessage(ChatColor.YELLOW
                                 + "You now have a hat!");
-                        inventory.setItem(empty, itemHead);
+                        if (itemHead != null) inventory.setItem(empty, itemHead);
                         return true;
                     }// removes item from helmet
                      // Sets item from
@@ -359,7 +355,7 @@ public class HatCommand implements CommandExecutor {
                 player.sendMessage(ChatColor.RED + "You already have a hat!");
             } else {
                 inventory.setHelmet(item);
-                inventory.setItem(empty, itemHead);
+                if (itemHead != null) inventory.setItem(empty, itemHead);
                 player.sendMessage(ChatColor.YELLOW
                         + "You now have been given a hat!");
             }
@@ -407,10 +403,10 @@ public class HatCommand implements CommandExecutor {
 
     public boolean checkPermissionNoRestrict(Player player) {
         // check perm
-        // if (player.hasPermission("hatme.norestrict"))
-        // return true;
-        // if (rbOp = true && player.isOp())
-        // return true;
+        if (player.hasPermission("hatme.norestrict"))
+            return true;
+        if (rbOp = true && player.isOp())
+            return true;
         return false;
     }
 
