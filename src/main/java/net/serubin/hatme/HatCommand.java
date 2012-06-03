@@ -38,7 +38,7 @@ public class HatCommand implements CommandExecutor {
         Player player = (Player) sender;
         ItemStack itemHand = player.getItemInHand();
         PlayerInventory inventory = player.getInventory();
-        int itemHandId = itemHand.getTypeId();
+        int itemHandId = (itemHand != null) ? itemHand.getTypeId() : 0;
         int intArg0;
         // on command hat
         if (commandLabel.equalsIgnoreCase("hat")) {
@@ -206,7 +206,7 @@ public class HatCommand implements CommandExecutor {
             String commandLabel, String[] args) {
         Player player = (Player) sender;
         // checks if hand is air
-        if (player.getItemInHand().getTypeId() == 0) {
+        if (player.getItemInHand() == null) {
             player.sendMessage(ChatColor.RED + "Please pick a valid item!");
             return true;
         } else {
