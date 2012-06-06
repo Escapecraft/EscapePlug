@@ -13,7 +13,24 @@
       <id>bukkit-repo</id>
       <url>http://repo.bukkit.org/content/groups/public</url>
     </repository>
+    <repository>
+      <id>escapecraft-repo</id>
+      <url>http://dev.escapecraft.com/maven</url>
+    </repository>
   </repositories>
+
+  <distributionManagement>
+    <repository>
+      <id>dev-repo</id>
+      <name>dev.escapecraft.com Releases</name>
+      <url>scp://dev.escapecraft.com/var/www/maven</url>
+    </repository>
+    <snapshotRepository>
+      <id>dev-repo-snap</id>
+      <name>dev.escapecraft.com Snapshots</name>
+      <url>scp://dev.escapecraft.com/var/www/maven</url>
+    </snapshotRepository>
+  </distributionManagement>
 
   <dependencies>
     <dependency>
@@ -52,5 +69,12 @@
         <directory>${basedir}/src/main/resources/</directory>
       </resource>
     </resources>
+    <extensions>
+      <extension>
+        <groupId>org.apache.maven.wagon</groupId>
+        <artifactId>wagon-ssh</artifactId>
+        <version>2.2</version>
+      </extension>
+    </extensions>
   </build>
 </project>
