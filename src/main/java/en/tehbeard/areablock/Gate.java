@@ -16,15 +16,22 @@ import me.tehbeard.utils.cuboid.Cuboid;
 public class Gate {
 
     private Cuboid area;
-    private Material material = Material.LAPIS_BLOCK;
+    public final void setArea(Cuboid area) {
+        this.area = area;
+    }
 
-    public Gate(String config){
+    private Material close = Material.LAPIS_BLOCK;
+    private Material open = Material.AIR;
+    public Gate(){
         area = new Cuboid();
-        area.setCuboid(config);
     }
-    public Gate(Cuboid cuboid){
-        area = cuboid;
+    public Gate(String config){
+        close = Material.getMaterial(config.split("\\|")[0]);
+        open  = Material.getMaterial(config.split("\\|")[1]);
+        area = new Cuboid();
+        area.setCuboid(config.split("\\|")[2]);
     }
+
     
     
     private void setArea(Material m){
@@ -39,14 +46,35 @@ public class Gate {
             }   
         }
     }
-    /**
-     * Fill area with the block
-     */
+    
     public void close(){
-        setArea(material);
+        setArea(close);
     }
     
+    
+    public final Cuboid getArea() {
+        return area;
+    }
+
+
+
+    public final void setClose(Material close) {
+        this.close = close;
+    }
+
+
+
+    public final void setOpen(Material open) {
+        this.open = open;
+    }
+
+
+
     public void open(){
-        setArea(Material.AIR);
+        setArea(open);
+    }
+    
+    public String toString(){
+        return close + "|" + open + "|" + area.toString();
     }
 }

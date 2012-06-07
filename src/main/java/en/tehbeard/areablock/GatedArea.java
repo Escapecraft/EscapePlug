@@ -7,6 +7,7 @@ import java.util.Set;
 
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
 import me.tehbeard.utils.cuboid.*;
@@ -29,7 +30,15 @@ public class GatedArea {
     int threshold = 0;
     
     
+    public final List<Gate> getGates() {
+        return gates;
+    }
+
     boolean open = true;
+    
+    public GatedArea(int threshold){
+        this.threshold = threshold;
+    }
     
     public GatedArea(ConfigurationSection section){
         threshold = section.getInt("threshold");
@@ -56,7 +65,7 @@ public class GatedArea {
             }
         }
         
-        return false;
+        return true;
     }
     
     /**
@@ -111,5 +120,23 @@ public class GatedArea {
         return open;
     }
     
-    
+    public ConfigurationSection toConfig(){
+        ConfigurationSection config = new YamlConfiguration();
+        config.set("threshold",threshold);
+        
+        List<String> areas = new ArrayList<String>();
+        for(Cuboid c :detectAreas){
+            areas.add(c.toString());
+        }
+        config.set("areas",areas);
+        
+        List<String> gates = new ArrayList<String>();
+        for(Gate g :this.gates){
+            gates.add(g.toString());
+        }
+        config.set("gates",gates);
+        
+        
+        return config;
+    }
 }

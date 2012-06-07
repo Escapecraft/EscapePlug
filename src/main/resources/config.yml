@@ -1,4 +1,6 @@
 plugin:
+    areablock:
+        enabled: true
     antislime:
         enabled: true
     timezone:

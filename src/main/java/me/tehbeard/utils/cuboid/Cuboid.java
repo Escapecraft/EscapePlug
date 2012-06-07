@@ -11,7 +11,7 @@ import org.bukkit.util.Vector;
  */
 public class Cuboid {
 
-	Vector v1,v2=null;
+	Vector v1,v2 = null;
 	String world = null;
 
 	public String getWorld(){
@@ -93,5 +93,10 @@ public class Cuboid {
 		v2.getBlockX() + ":" +
 		v2.getBlockY() + ":" +
 		v2.getBlockZ();
+	}
+	
+	public int size(){
+	    Vector v3 = v2.clone().subtract(v1.clone());
+	    return (v3.getBlockX()+1) * (v3.getBlockY()+1) *  (v3.getBlockZ()+1);  
 	}
 }

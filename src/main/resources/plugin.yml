@@ -60,7 +60,13 @@ commands:
             /<command> - toggles normal vanish-mode.
             /<command> full - puts you into full vanish-mode.
             /<command> list - List vanished players.
-
+    areablock:
+        description: setup areablocks
+        usage: |
+            /<command> tool - Toggle area selection tool on and off
+            /<command> create name threshold - Create an area
+            /<command> addgate name closedMaterial [openMaterial] - Add a gate to the area name, made of closedMaterial when closed.
+            /<command> addcheck name - Add a cuboid to check to area name 
 permissions:
   escapeplug.*:
     description: Supernode for EscapePlug commands.
