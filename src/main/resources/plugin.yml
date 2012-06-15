@@ -61,12 +61,16 @@ commands:
             /<command> full - puts you into full vanish-mode.
             /<command> list - List vanished players.
     areablock:
+        permission: escapeplug.areablock
         description: setup areablocks
         usage: |
             /<command> tool - Toggle area selection tool on and off
-            /<command> create name threshold - Create an area
-            /<command> addgate name closedMaterial [openMaterial] - Add a gate to the area name, made of closedMaterial when closed.
-            /<command> addcheck name - Add a cuboid to check to area name 
+            /<command> create name threshold - Create an arena
+            /<command> addgate name closedMaterial [openMaterial] - Add a gate to the arena name, made of closedMaterial when closed.
+            /<command> addcheck name - Add a cuboid to check to an arena
+            /<command> info name - info on an arena
+            /<command> removegate  name id - remove a gate
+            /<command> removecheck name id - remove a check area
 permissions:
   escapeplug.*:
     description: Supernode for EscapePlug commands.
@@ -81,6 +85,8 @@ permissions:
       escapeplug.who: true
       escapeplug.blockalert: true
       escapeplug.afkbooter: true
+  
+  
   escapeplug.lockdown:
     description: gives full permission on Lockdown-mode.
     children:
@@ -156,4 +162,7 @@ permissions:
     default: op
   escapeplug.who.player:
     description: Shows details on specific Players
+    default: op
+  escapeplug.areablock:
+    description: Use areablock commands
     default: op

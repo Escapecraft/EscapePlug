@@ -30,46 +30,69 @@ public class AreaBlockCommands implements CommandExecutor, Listener{
             session.putSession(p.getName(),new AreaBlockSession());
         }
         AreaBlockSession plysession = session.getSession(p.getName());
-        
+
         String subcmd = args[0];
         if(args.length < 1){sender.sendMessage("invalid arg length");return false;}
-        
+
         if(subcmd.equalsIgnoreCase("tool")){
             plysession.setToolActive(!plysession.isToolActive());
             sender.sendMessage("tool is now " + (plysession.isToolActive()? "active" : "inactive") );
             return true;
         }
-        
+
         if(args.length < 2){sender.sendMessage("invalid arg length");return false;}
         String areaName = args[1];
-        
+
+        //check for arena
+        if(!component.areaMap.containsKey(areaName)){
+            sender.sendMessage(ChatColor.RED + "No area found with that name");return true;
+        }
+
         if(subcmd.equalsIgnoreCase("addcheck")){
 
-            
+
             //get and check cuboid
-              Cuboid cuboid = plysession.makeCuboid(p.getWorld().getName());
-              if(cuboid == null){
-                  sender.sendMessage(ChatColor.RED + "Cuboid not defined");return true;
-              } 
-              //add gate
-              if(!component.areaMap.containsKey(areaName)){
-                  sender.sendMessage(ChatColor.RED + "No area found with that name");return true;
-              }
-              component.areaMap.get(areaName).getDetectAreas().add(cuboid);
-              component.areas.addEntry(cuboid, component.areaMap.get(areaName));
-              
-              return true;
-          }
-        
-        
-        
-        if(args.length < 3){sender.sendMessage("invalid arg length");return false;}
-        
-        
-        
-        //areablock create name threshold (3)
-        if(subcmd.equalsIgnoreCase("create") && args.length == 3){
+            Cuboid cuboid = plysession.makeCuboid(p.getWorld().getName());
+            if(cuboid == null){
+                sender.sendMessage(ChatColor.RED + "Cuboid not defined");return true;
+            } 
+            //add gate
+
+            component.areaMap.get(areaName).getDetectAreas().add(cuboid);
+            component.areas.addEntry(cuboid, component.areaMap.get(areaName));
+
+            return true;
+        }
+
+        if(subcmd.equalsIgnoreCase("info")){
+            //information
+            GatedArea arena = component.areaMap.get(areaName);
+            sender.sendMessage("threshold: " + arena.threshold);
+            sender.sendMessage("Gates");
+            int i = 0;
+            for(Gate gate : arena.getGates()){
+                sender.sendMessage("" + i +") " + gate.toString());
+                i++;
+            }
             
+            sender.sendMessage("Detection areas");         
+            i = 0;
+            for(Cuboid cuboid : arena.getDetectAreas()){
+                sender.sendMessage("" + i +") " + cuboid.toString());
+                i++;
+            }
+
+            return true;
+        }
+
+
+        if(args.length < 3){sender.sendMessage("invalid arg length");return false;}
+
+
+
+        //areablock create name threshold (3)
+        if(subcmd.equalsIgnoreCase("create")){
+
             int threshold = Integer.parseInt(args[2]);
             if(threshold < 1){threshold = 1;}
             if(component.areaMap.containsKey(areaName)){
@@ -89,20 +112,20 @@ public class AreaBlockCommands implements CommandExecutor, Listener{
             if(cuboid.size() > 256){
                 sender.sendMessage(ChatColor.RED + "Cuboid too large (256 max. " + cuboid.size() + " attempted)");return true;
             }
-            
+
             //set materials
             Material close = Material.getMaterial(args[2]);
             Material open  = Material.AIR;
             if(args.length == 4){
                 open = Material.getMaterial(args[3]);
             }
-            
+
             //create gate
             Gate gate = new Gate();
             gate.setArea(cuboid);
             gate.setOpen(open);
             gate.setClose(close);
-            
+
             //add gate
             if(!component.areaMap.containsKey(areaName)){
                 sender.sendMessage(ChatColor.RED + "No area found with that name");return true;
@@ -110,10 +133,25 @@ public class AreaBlockCommands implements CommandExecutor, Listener{
             component.areaMap.get(areaName).getGates().add(gate);
             return true;
         }
-
         
+        if(subcmd.equalsIgnoreCase("removegate")){
+            GatedArea arena = component.areaMap.get(areaName);
+            int id = Integer.parseInt(args[2]);
+            if(id < 0 || id >=arena.getGates().size() ){sender.sendMessage(ChatColor.RED + "ID INVALID");return true;}
+            arena.getGates().remove(id);
+        }
 
-        
+        if(subcmd.equalsIgnoreCase("removecheck")){
+
+                GatedArea arena = component.areaMap.get(areaName);
+                int id = Integer.parseInt(args[2]);
+                if(id < 0 || id >=arena.getDetectAreas().size() ){sender.sendMessage(ChatColor.RED + "ID INVALID");return true;}
+                arena.getDetectAreas().remove(id);
+
+        }
+
+
+
 
 
         return true;
@@ -128,14 +166,14 @@ public class AreaBlockCommands implements CommandExecutor, Listener{
         AreaBlockSession plysession = session.getSession(event.getPlayer().getName());
         if(!plysession.isToolActive()){return;}
         if(event.getPlayer().getItemInHand().getType()!=Material.BOOK){return;}
-        
+
         event.setCancelled(true);
         switch(event.getAction()){
         case LEFT_CLICK_BLOCK:
             plysession.setP1(event.getClickedBlock().getLocation().toVector());
             event.getPlayer().sendMessage("Size: " + plysession.size());
             break;
-            
+
         case RIGHT_CLICK_BLOCK:
             plysession.setP2(event.getClickedBlock().getLocation().toVector());
             event.getPlayer().sendMessage("Size: " + plysession.size());
@@ -143,7 +181,7 @@ public class AreaBlockCommands implements CommandExecutor, Listener{
 
         }
     }
-    
-    
+
+
 
 }
