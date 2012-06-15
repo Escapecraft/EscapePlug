@@ -1,6 +1,7 @@
 package en.tehbeard.areablock;
 
 import me.tehbeard.utils.cuboid.Cuboid;
+import me.tehbeard.utils.cuboid.CuboidEntry;
 import me.tehbeard.utils.session.SessionStore;
 
 import org.bukkit.ChatColor;
@@ -24,7 +25,7 @@ public class AreaBlockCommands implements CommandExecutor, Listener{
     public boolean onCommand(CommandSender sender, Command cmd, String lbl,
             String[] args) {
         if(!sender.hasPermission("escapeplug.areablock")){return true;}
-
+        if(sender instanceof Player == false){sender.sendMessage(ChatColor.RED + "CANNOT USE FROM CONSOLE");return true;}
         if(args.length==0){return false;}
         
         // TODO Auto-generated method stub
@@ -36,6 +37,14 @@ public class AreaBlockCommands implements CommandExecutor, Listener{
 
         String subcmd = args[0];
         
+        if(subcmd.equalsIgnoreCase("inside")){
+            sender.sendMessage(ChatColor.GOLD + "Areas Found:");
+            for(CuboidEntry<GatedArea> entry : component.areas.getEntries(p)){
+                sender.sendMessage(ChatColor.GOLD + entry.getEntry().getName());
+                
+            }
+            return true;
+        }
         if(subcmd.equalsIgnoreCase("tool")){
             plysession.setToolActive(!plysession.isToolActive());
             sender.sendMessage(ChatColor.GREEN + "tool is now " + (plysession.isToolActive()? ChatColor.GOLD + "active" : ChatColor.RED + "inactive") );
@@ -118,12 +127,13 @@ public class AreaBlockCommands implements CommandExecutor, Listener{
             }
 
             //set materials
-            Material close = Material.getMaterial(args[2]);
+            Material close = Material.getMaterial(args[2].toUpperCase());
+            if(close == null){close = Material.BEDROCK;}
             Material open  = Material.AIR;
             if(args.length == 4){
                 open = Material.getMaterial(args[3]);
             }
-
+            if(open == null){open = Material.AIR;}
             //create gate
             Gate gate = new Gate();
             gate.setArea(cuboid);

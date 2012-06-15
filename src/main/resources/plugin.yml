@@ -71,6 +71,7 @@ commands:
             /<command> info name - info on an arena
             /<command> removegate  name id - remove a gate
             /<command> removecheck name id - remove a check area
+            /<command> inside - list all arenas we are inside
 permissions:
   escapeplug.*:
     description: Supernode for EscapePlug commands.

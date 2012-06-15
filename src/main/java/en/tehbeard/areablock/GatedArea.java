@@ -27,6 +27,8 @@ public class GatedArea {
     
     private List<Gate> gates = new ArrayList<Gate>();
     
+    private String name;
+    
     int threshold = 0;
     
     
@@ -41,6 +43,8 @@ public class GatedArea {
     }
     
     public GatedArea(ConfigurationSection section){
+        this.name = section.getName();
+        
         threshold = section.getInt("threshold");
         for(String s :section.getStringList("areas")){
             Cuboid c = new Cuboid();
@@ -138,5 +142,13 @@ public class GatedArea {
         
         
         return config;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }
