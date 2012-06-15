@@ -23,8 +23,11 @@ public class AreaBlockCommands implements CommandExecutor, Listener{
     }
     public boolean onCommand(CommandSender sender, Command cmd, String lbl,
             String[] args) {
-        // TODO Auto-generated method stub
         if(!sender.hasPermission("escapeplug.areablock")){return true;}
+
+        if(args.length==0){return false;}
+        
+        // TODO Auto-generated method stub
         Player p = (Player)sender;
         if(!session.hasSession(p.getName())){
             session.putSession(p.getName(),new AreaBlockSession());
@@ -32,15 +35,14 @@ public class AreaBlockCommands implements CommandExecutor, Listener{
         AreaBlockSession plysession = session.getSession(p.getName());
 
         String subcmd = args[0];
-        if(args.length < 1){sender.sendMessage("invalid arg length");return false;}
-
+        
         if(subcmd.equalsIgnoreCase("tool")){
             plysession.setToolActive(!plysession.isToolActive());
-            sender.sendMessage("tool is now " + (plysession.isToolActive()? "active" : "inactive") );
+            sender.sendMessage(ChatColor.GREEN + "tool is now " + (plysession.isToolActive()? ChatColor.GOLD + "active" : ChatColor.RED + "inactive") );
             return true;
         }
 
-        if(args.length < 2){sender.sendMessage("invalid arg length");return false;}
+        if(args.length < 2){sender.sendMessage(ChatColor.RED + "invalid arg length");return false;}
         String areaName = args[1];
 
         //check for arena
@@ -60,25 +62,26 @@ public class AreaBlockCommands implements CommandExecutor, Listener{
 
             component.areaMap.get(areaName).getDetectAreas().add(cuboid);
             component.areas.addEntry(cuboid, component.areaMap.get(areaName));
-
+            sender.sendMessage("Detection Area Added");
             return true;
         }
 
         if(subcmd.equalsIgnoreCase("info")){
             //information
             GatedArea arena = component.areaMap.get(areaName);
-            sender.sendMessage("threshold: " + arena.threshold);
-            sender.sendMessage("Gates");
+            if(arena == null){sender.sendMessage(ChatColor.RED+"Area not found");return true;}
+            sender.sendMessage(ChatColor.GOLD + "threshold: " +ChatColor.WHITE+ arena.threshold);
+            sender.sendMessage(ChatColor.GOLD + "Gates:");
             int i = 0;
             for(Gate gate : arena.getGates()){
                 sender.sendMessage("" + i +") " + gate.toString());
                 i++;
             }
             
-            sender.sendMessage("Detection areas");         
+            sender.sendMessage(ChatColor.GOLD + "Detection areas:");         
             i = 0;
             for(Cuboid cuboid : arena.getDetectAreas()){
-                sender.sendMessage("" + i +") " + cuboid.toString());
+                sender.sendMessage(ChatColor.GOLD +""+ i +") " +ChatColor.WHITE + cuboid.toString());
                 i++;
             }
 
@@ -86,7 +89,7 @@ public class AreaBlockCommands implements CommandExecutor, Listener{
         }
 
 
-        if(args.length < 3){sender.sendMessage("invalid arg length");return false;}
+        if(args.length < 3){sender.sendMessage(ChatColor.RED + "invalid arg length");return false;}
 
 
 
@@ -99,6 +102,7 @@ public class AreaBlockCommands implements CommandExecutor, Listener{
                 sender.sendMessage(ChatColor.RED + "Area already exists");return true;
             }
             component.areaMap.put(areaName, new GatedArea(threshold));
+            sender.sendMessage(ChatColor.GREEN + "Area created");
             return true;
         }
 
@@ -131,6 +135,7 @@ public class AreaBlockCommands implements CommandExecutor, Listener{
                 sender.sendMessage(ChatColor.RED + "No area found with that name");return true;
             }
             component.areaMap.get(areaName).getGates().add(gate);
+            sender.sendMessage(ChatColor.GREEN + "Gate Added");
             return true;
         }
         
