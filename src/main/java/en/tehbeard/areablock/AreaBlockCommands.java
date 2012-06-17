@@ -52,7 +52,7 @@ public class AreaBlockCommands implements CommandExecutor, Listener{
         String areaName = args[1];
 
         //check for arena
-        if(!component.areaMap.containsKey(areaName) && subcmd.equalsIgnoreCase("create")){
+        if(!component.areaMap.containsKey(areaName) && !subcmd.equalsIgnoreCase("create")){
             sender.sendMessage(ChatColor.RED + "No area found with that name");return true;
         }
 
