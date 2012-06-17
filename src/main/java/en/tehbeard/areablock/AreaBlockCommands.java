@@ -70,7 +70,8 @@ public class AreaBlockCommands implements CommandExecutor, Listener{
                 sender.sendMessage(ChatColor.RED + "Area already exists");return true;
             }
 
-            component.areaMap.put(areaName, new GatedArea(threshold));
+            GatedArea a = new GatedArea(threshold);
+            component.areaMap.put(areaName, a);
             sender.sendMessage(ChatColor.GREEN + "Area created");
             return true;
         }
@@ -96,6 +97,14 @@ public class AreaBlockCommands implements CommandExecutor, Listener{
             return true;
         }
 
+        
+        if(subcmd.equalsIgnoreCase("remove")){
+            GatedArea arena = component.areaMap.get(areaName);
+            if(arena == null){sender.sendMessage(ChatColor.RED+"Area not found");return true;}
+            component.areaMap.remove(areaName);
+            component.areas.remove(arena);
+            component.config.set(areaName, null);
+        }
         //info name
         if(subcmd.equalsIgnoreCase("info")){
             //information

@@ -72,6 +72,7 @@ commands:
             /<command> removegate  name id - remove a gate
             /<command> removecheck name id - remove a check area
             /<command> inside - list all arenas we are inside
+            /<command> remove name - Delete a gated area
 permissions:
   escapeplug.*:
     description: Supernode for EscapePlug commands.

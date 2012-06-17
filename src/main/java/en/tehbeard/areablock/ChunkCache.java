@@ -3,6 +3,7 @@ package en.tehbeard.areablock;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 
 
@@ -27,6 +28,19 @@ public class ChunkCache<T> {
 	 */
 	public void clearCache(){
 		cache = new HashMap<String,HashSet<CuboidEntry<T>>>();
+	}
+	
+	public void remove(T entry){
+	    
+	    for(HashSet<CuboidEntry<T>> e : cache.values()){
+	        Iterator<CuboidEntry<T>> it = e.iterator();
+	        while(it.hasNext()){
+	             CuboidEntry<T> ee = it.next();
+	             if(ee.getEntry().equals(entry)){
+	                 it.remove();
+	             }
+	        }
+	    }
 	}
 	
 	/**
