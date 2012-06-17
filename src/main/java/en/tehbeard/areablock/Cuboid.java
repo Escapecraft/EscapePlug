@@ -13,6 +13,8 @@ public class Cuboid {
 
 	Vector v1,v2 = null;
 	String world = null;
+	
+	int maxPly = 1;
 
 	public String getWorld(){
 		return world;
@@ -36,7 +38,7 @@ public class Cuboid {
 				Math.max(Integer.parseInt(l[1]),Integer.parseInt(l[4])), 
 				Math.max(Integer.parseInt(l[2]),Integer.parseInt(l[5])), 
 				Math.max(Integer.parseInt(l[3]),Integer.parseInt(l[6])));
-
+		maxPly = Integer.parseInt(l[7]);
 
 	}
 
@@ -92,11 +94,16 @@ public class Cuboid {
 		v1.getBlockZ() + ":" +
 		v2.getBlockX() + ":" +
 		v2.getBlockY() + ":" +
-		v2.getBlockZ();
+		v2.getBlockZ() + ":" +
+		maxPly;
 	}
 	
 	public int size(){
 	    Vector v3 = v2.clone().subtract(v1.clone());
 	    return (v3.getBlockX()+1) * (v3.getBlockY()+1) *  (v3.getBlockZ()+1);  
+	}
+	
+	public int getMaxPly(){
+	    return maxPly;
 	}
 }

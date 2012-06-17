@@ -24,7 +24,7 @@ public class AreaBlockCommands implements CommandExecutor, Listener{
         if(!sender.hasPermission("escapeplug.areablock")){return true;}
         if(sender instanceof Player == false){sender.sendMessage(ChatColor.RED + "CANNOT USE FROM CONSOLE");return true;}
         if(args.length==0){return false;}
-        
+
         // TODO Auto-generated method stub
         Player p = (Player)sender;
         if(!session.hasSession(p.getName())){
@@ -32,38 +32,62 @@ public class AreaBlockCommands implements CommandExecutor, Listener{
         }
         AreaBlockSession plysession = session.getSession(p.getName());
 
+        ArgumentPack pack = new ArgumentPack(new String[0], new String[] {"open","close","max","min"}, args);
+
+
         String subcmd = args[0];
-        
+        String areaName = "";
+        if(args.length > 1){
+            areaName = args[1];
+        }
+        Material close = Material.getMaterial( pack.getOption("close") == null ? "BEDROCK" : pack.getOption("close").toUpperCase());
+        Material open = Material.getMaterial(   pack.getOption("open") == null ? "AIR" : pack.getOption("open").toUpperCase() );
+        int threshold = pack.getOption("min") == null ? 1 :  Integer.parseInt(pack.getOption("min"));
+        int max =       pack.getOption("max") == null ? -1 :  Integer.parseInt(pack.getOption("max"));
+
+        System.out.println("SUBCOMMAND:" + subcmd);
+
+
         if(subcmd.equalsIgnoreCase("inside")){
             sender.sendMessage(ChatColor.GOLD + "Areas Found:");
             for(CuboidEntry<GatedArea> entry : component.areas.getEntries(p)){
                 sender.sendMessage(ChatColor.GOLD + entry.getEntry().getName());
-                
+
             }
             return true;
         }
+
         if(subcmd.equalsIgnoreCase("tool")){
             plysession.setToolActive(!plysession.isToolActive());
             sender.sendMessage(ChatColor.GREEN + "tool is now " + (plysession.isToolActive()? ChatColor.GOLD + "active" : ChatColor.RED + "inactive") );
             return true;
         }
 
-        if(args.length < 2){sender.sendMessage(ChatColor.RED + "invalid arg length");return false;}
-        String areaName = args[1];
+        //create name [-min Threshold]
+        if(subcmd.equalsIgnoreCase("create")){
 
-        //check for arena
-        if(!component.areaMap.containsKey(areaName) && !subcmd.equalsIgnoreCase("create")){
+            if(component.areaMap.containsKey(areaName)){
+                sender.sendMessage(ChatColor.RED + "Area already exists");return true;
+            }
+
+            component.areaMap.put(areaName, new GatedArea(threshold));
+            sender.sendMessage(ChatColor.GREEN + "Area created");
+            return true;
+        }
+
+        if(!component.areaMap.containsKey(areaName)){
             sender.sendMessage(ChatColor.RED + "No area found with that name");return true;
         }
 
+        //addcheck name [-max threshold]
         if(subcmd.equalsIgnoreCase("addcheck")){
-
-
             //get and check cuboid
             Cuboid cuboid = plysession.makeCuboid(p.getWorld().getName());
             if(cuboid == null){
                 sender.sendMessage(ChatColor.RED + "Cuboid not defined");return true;
-            } 
+            }
+
+            cuboid.maxPly = max;
             //add gate
 
             component.areaMap.get(areaName).getDetectAreas().add(cuboid);
@@ -72,6 +96,7 @@ public class AreaBlockCommands implements CommandExecutor, Listener{
             return true;
         }
 
+        //info name
         if(subcmd.equalsIgnoreCase("info")){
             //information
             GatedArea arena = component.areaMap.get(areaName);
@@ -83,7 +108,7 @@ public class AreaBlockCommands implements CommandExecutor, Listener{
                 sender.sendMessage("" + i +") " + gate.toString());
                 i++;
             }
-            
+
             sender.sendMessage(ChatColor.GOLD + "Detection areas:");         
             i = 0;
             for(Cuboid cuboid : arena.getDetectAreas()){
@@ -95,24 +120,9 @@ public class AreaBlockCommands implements CommandExecutor, Listener{
         }
 
 
-        if(args.length < 3){sender.sendMessage(ChatColor.RED + "invalid arg length");return false;}
 
 
-
-        //areablock create name threshold (3)
-        if(subcmd.equalsIgnoreCase("create")){
-
-            int threshold = Integer.parseInt(args[2]);
-            if(threshold < 1){threshold = 1;}
-            if(component.areaMap.containsKey(areaName)){
-                sender.sendMessage(ChatColor.RED + "Area already exists");return true;
-            }
-            component.areaMap.put(areaName, new GatedArea(threshold));
-            sender.sendMessage(ChatColor.GREEN + "Area created");
-            return true;
-        }
-
-        //areablock addgate name close [open] (4)
+        //areablock addgate name [-close type] [-open type]
         if(subcmd.equalsIgnoreCase("addgate")){
             //get and check cuboid
             Cuboid cuboid = plysession.makeCuboid(p.getWorld().getName());
@@ -123,14 +133,9 @@ public class AreaBlockCommands implements CommandExecutor, Listener{
                 sender.sendMessage(ChatColor.RED + "Cuboid too large (256 max. " + cuboid.size() + " attempted)");return true;
             }
 
-            //set materials
-            Material close = Material.getMaterial(args[2].toUpperCase());
-            if(close == null){close = Material.BEDROCK;}
-            Material open  = Material.AIR;
-            if(args.length == 4){
-                open = Material.getMaterial(args[3]);
-            }
-            if(open == null){open = Material.AIR;}
+
+
+
             //create gate
             Gate gate = new Gate();
             gate.setArea(cuboid);
@@ -145,25 +150,24 @@ public class AreaBlockCommands implements CommandExecutor, Listener{
             sender.sendMessage(ChatColor.GREEN + "Gate Added");
             return true;
         }
-        
+
         if(subcmd.equalsIgnoreCase("removegate")){
             GatedArea arena = component.areaMap.get(areaName);
             int id = Integer.parseInt(args[2]);
             if(id < 0 || id >=arena.getGates().size() ){sender.sendMessage(ChatColor.RED + "ID INVALID");return true;}
             arena.getGates().remove(id);
+            sender.sendMessage("Removed");
         }
 
         if(subcmd.equalsIgnoreCase("removecheck")){
 
-                GatedArea arena = component.areaMap.get(areaName);
-                int id = Integer.parseInt(args[2]);
-                if(id < 0 || id >=arena.getDetectAreas().size() ){sender.sendMessage(ChatColor.RED + "ID INVALID");return true;}
-                arena.getDetectAreas().remove(id);
+            GatedArea arena = component.areaMap.get(areaName);
+            int id = Integer.parseInt(args[2]);
+            if(id < 0 || id >=arena.getDetectAreas().size() ){sender.sendMessage(ChatColor.RED + "ID INVALID");return true;}
+            arena.getDetectAreas().remove(id);
+            sender.sendMessage("Removed");
 
         }
-
-
-
 
 
         return true;

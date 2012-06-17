@@ -46,7 +46,7 @@ public class AreaBlockSession {
                 p1.getBlockZ() + ":" +
                 p2.getBlockX() + ":" +
                 p2.getBlockY() + ":" +
-                p2.getBlockZ();
+                p2.getBlockZ() + ":0";
         Cuboid cc = new Cuboid();
         cc.setCuboid(c);
         return cc;

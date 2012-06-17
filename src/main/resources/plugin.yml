@@ -65,9 +65,9 @@ commands:
         description: setup areablocks
         usage: |
             /<command> tool - Toggle area selection tool on and off
-            /<command> create name threshold - Create an arena
-            /<command> addgate name closedMaterial [openMaterial] - Add a gate to the arena name, made of closedMaterial when closed.
-            /<command> addcheck name - Add a cuboid to check to an arena
+            /<command> create name [-min threshold] - Create an arena
+            /<command> addgate name [-close closedMaterial] [-open openMaterial] - Add a gate to the arena name, made of closedMaterial when closed.
+            /<command> addcheck name [-max threshold] - Add a cuboid to check to an arena
             /<command> info name - info on an arena
             /<command> removegate  name id - remove a gate
             /<command> removecheck name id - remove a check area
