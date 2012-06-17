@@ -1,6 +1,5 @@
 package en.tehbeard.areablock;
 
-import me.tehbeard.utils.cuboid.Cuboid;
 
 import org.bukkit.util.Vector;
 

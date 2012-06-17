@@ -17,8 +17,6 @@ import org.tulonsae.mc.util.Log;
 
 
 
-import me.tehbeard.utils.cuboid.*;
-import me.tehbeard.utils.session.SessionStore;
 import net.escapecraft.component.AbstractComponent;
 import net.escapecraft.component.ComponentDescriptor;
 import net.escapecraft.escapePlug.EscapePlug;
@@ -35,6 +33,7 @@ public class AreaBlockComponent extends AbstractComponent implements Listener, R
         
         try {
             file = new File(plugin.getDataFolder(),"areas.yml");
+            file.createNewFile();
             config.load(file);
 
             GatedArea g;
@@ -44,7 +43,7 @@ public class AreaBlockComponent extends AbstractComponent implements Listener, R
             for(String key : config.getKeys(false)){
                 g = new GatedArea(config.getConfigurationSection(key));
                 areaMap.put(key, g);
-                for( Cuboid area : g.getDetectAreas()){
+                for(Cuboid area : g.getDetectAreas()){
                     areas.addEntry(area, g);
                 }
             }

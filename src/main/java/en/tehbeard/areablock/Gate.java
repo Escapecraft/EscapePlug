@@ -5,7 +5,6 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.util.Vector;
 
-import me.tehbeard.utils.cuboid.Cuboid;
 
 /**
  * Represents an area that will be sealed 

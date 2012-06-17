@@ -1,8 +1,5 @@
 package en.tehbeard.areablock;
 
-import me.tehbeard.utils.cuboid.Cuboid;
-import me.tehbeard.utils.cuboid.CuboidEntry;
-import me.tehbeard.utils.session.SessionStore;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -55,7 +52,7 @@ public class AreaBlockCommands implements CommandExecutor, Listener{
         String areaName = args[1];
 
         //check for arena
-        if(!component.areaMap.containsKey(areaName)){
+        if(!component.areaMap.containsKey(areaName) && subcmd.equalsIgnoreCase("create")){
             sender.sendMessage(ChatColor.RED + "No area found with that name");return true;
         }
 
