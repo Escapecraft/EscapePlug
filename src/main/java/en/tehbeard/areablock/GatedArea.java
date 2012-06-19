@@ -103,7 +103,6 @@ public class GatedArea {
                     g.close();
                 }
                 open = false;
-                System.out.println("Closing area");
             }
         }
         else
@@ -113,7 +112,6 @@ public class GatedArea {
                     g.open();
                 }
                 open = true;
-                System.out.println("Opening area");
             }
         }
     }

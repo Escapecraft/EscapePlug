@@ -25,7 +25,6 @@ public class AreaBlockCommands implements CommandExecutor, Listener{
         if(sender instanceof Player == false){sender.sendMessage(ChatColor.RED + "CANNOT USE FROM CONSOLE");return true;}
         if(args.length==0){return false;}
 
-        // TODO Auto-generated method stub
         Player p = (Player)sender;
         if(!session.hasSession(p.getName())){
             session.putSession(p.getName(),new AreaBlockSession());
@@ -40,12 +39,11 @@ public class AreaBlockCommands implements CommandExecutor, Listener{
         if(args.length > 1){
             areaName = args[1];
         }
-        Material close = Material.getMaterial( pack.getOption("close") == null ? "BEDROCK" : pack.getOption("close").toUpperCase());
-        Material open = Material.getMaterial(   pack.getOption("open") == null ? "AIR" : pack.getOption("open").toUpperCase() );
+        Material close = Material.getMaterial( pack.getOption("close") == null ? 7 : Integer.parseInt(pack.getOption("close")));
+        Material open = Material.getMaterial(   pack.getOption("open") == null ? 0 : Integer.parseInt(pack.getOption("open")) );
         int threshold = pack.getOption("min") == null ? 1 :  Integer.parseInt(pack.getOption("min"));
         int max =       pack.getOption("max") == null ? -1 :  Integer.parseInt(pack.getOption("max"));
 
-        System.out.println("SUBCOMMAND:" + subcmd);
 
 
         if(subcmd.equalsIgnoreCase("inside")){
