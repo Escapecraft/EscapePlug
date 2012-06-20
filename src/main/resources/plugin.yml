@@ -104,10 +104,10 @@ permissions:
   escapeplug.vanish:
     description: gives full permission on Vanish.
     children:
-      escapecraft.vanish.vanish: true
-      escapecraft.vanish.see: true
-      escapecraft.vanish.vanishfull: true
-      escapecraft.vanish.seefull: true
+      escapeplug.vanish.vanish: true
+      escapeplug.vanish.see: true
+      escapeplug.vanish.vanishfull: true
+      escapeplug.vanish.seefull: true
   escapeplug.afkbooter.config:
     description: Allows players to change AfkBooter configuration.
     default: op
