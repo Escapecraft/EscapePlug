@@ -35,7 +35,7 @@ public class HatCommand implements CommandExecutor {
 
 	public boolean onCommand(CommandSender sender, Command cmd,
 			String commandLabel, String[] args) {
-	    if (!(sender instanceof Player)) {
+        if (!(sender instanceof Player)) {
             sender.sendMessage("You must be a player!");
             return true;
         }
@@ -55,8 +55,7 @@ public class HatCommand implements CommandExecutor {
                         // if op or has perm no restrict
                         if (!checkPermissionNoRestrict(player)) {
                             // checks for allowed blocks
-                            if ((!allowID.contains(itemHandId))
-                                    && (itemHand != null)) {
+                            if (!allowID.contains(itemHandId)) {
                                 // Gets custom message from config
                                 player.sendMessage(ChatColor.RED
                                         + notAllowedMsg);
@@ -92,8 +91,7 @@ public class HatCommand implements CommandExecutor {
                             // if op or has perm no restrict
                             if (!checkPermissionNoRestrict(player)) {
                                 // checks for allowed blocks
-                                if ((!allowID.contains(itemHandId))
-                                        && (itemHand != null)) {
+                                if (!allowID.contains(itemHandId)) {
                                     // Gets custom message from config
                                     player.sendMessage(ChatColor.RED
                                             + notAllowedMsg);
@@ -186,13 +184,21 @@ public class HatCommand implements CommandExecutor {
 
     public boolean hatOnAll(CommandSender sender) {
         Player player = (Player) sender;
+        PlayerInventory inventory = player.getInventory();
+        ItemStack itemHead = inventory.getHelmet();
         if (player.getItemInHand().getTypeId() == 0) {
-            player.sendMessage(ChatColor.RED + "Please pick a valid item!");
+
+            // if hand is empty remove hat and place in hand
+            if (inventory.getHelmet() != null) {
+                inventory.setItemInHand(itemHead);
+                inventory.setHelmet(null);
+                player.sendMessage(ChatColor.YELLOW
+                        + "You have taken off your hat!");
+                return true;
+            }
             return true;
         } else {
             ItemStack itemHand = player.getItemInHand();
-            PlayerInventory inventory = player.getInventory();
-            ItemStack itemHead = inventory.getHelmet();
             if (itemHead != null) {
                 player.sendMessage(ChatColor.RED
                         + "You already have a hat! Use /unhat to take it off");
@@ -209,14 +215,23 @@ public class HatCommand implements CommandExecutor {
     public boolean hatOn(CommandSender sender, Command cmd,
             String commandLabel, String[] args) {
         Player player = (Player) sender;
+        PlayerInventory inventory = player.getInventory();
+        ItemStack itemHead = inventory.getHelmet();
         // checks if hand is air
+
+        // TODO CHECK THIS PART FOR BUG
         if (player.getItemInHand().getTypeId() == 0) {
-            player.sendMessage(ChatColor.RED + "Please pick a valid item!");
+            // if hand is empty remove hat and place in hand
+            if (inventory.getHelmet() != null) {
+                inventory.setItemInHand(itemHead);
+                inventory.setHelmet(null);
+                player.sendMessage(ChatColor.YELLOW
+                        + "You have taken off your hat!");
+                return true;
+            }
             return true;
         } else {
             ItemStack itemHand = player.getItemInHand();
-            PlayerInventory inventory = player.getInventory();
-            ItemStack itemHead = inventory.getHelmet();
             // checks if head has hat
             if (itemHead != null) {
                 int empty = inventory.firstEmpty();
@@ -240,11 +255,16 @@ public class HatCommand implements CommandExecutor {
                         if (itemHand.getTypeId() == 35
                                 || itemHand.getTypeId() == 17
                                 || itemHand.getTypeId() == 18
-                                || itemHand.getTypeId() == 44) {
+                                || itemHand.getTypeId() == 44
+                                || itemHand.getTypeId() == 5) {
                             short itemHandData = itemHand.getDurability();
                             newHead = new ItemStack(itemId, 1, itemHandData);
                         }
                         inventory.setHelmet(newHead);
+                        inventory.setItem(empty, itemHead);
+                        player.sendMessage(ChatColor.YELLOW
+                                + "You now have a hat!");
+                        return true;
                     } else {
                         inventory.setHelmet(itemHand);
                         inventory.setItemInHand(null);
@@ -257,7 +277,6 @@ public class HatCommand implements CommandExecutor {
                      // helmet
                      // to first open
                      // slot
-                    return true;
                 }
                 return false;
             } else {
@@ -276,11 +295,14 @@ public class HatCommand implements CommandExecutor {
                     if (itemHand.getTypeId() == 35
                             || itemHand.getTypeId() == 17
                             || itemHand.getTypeId() == 18
-                            || itemHand.getTypeId() == 44) {
+                            || itemHand.getTypeId() == 44
+                            || itemHand.getTypeId() == 5) {
                         short itemHandData = itemHand.getDurability();
                         newHead = new ItemStack(itemId, 1, itemHandData);
                     }
                     inventory.setHelmet(newHead);
+                    player.sendMessage(ChatColor.YELLOW + "You now have a hat!");
+                    return true;
                 } else {
                     // if hand is one block set helmet remove hand
                     inventory.setHelmet(itemHand);
@@ -288,8 +310,7 @@ public class HatCommand implements CommandExecutor {
                     player.sendMessage(ChatColor.YELLOW + "You now have a hat!");
                     return true;
                 }
-                player.sendMessage(ChatColor.YELLOW + "You now have a hat!");
-                return true;
+
             }
 
         }
@@ -407,7 +428,7 @@ public class HatCommand implements CommandExecutor {
 
     public boolean checkPermissionNoRestrict(Player player) {
         // check perm
-        // if (player.hasPermission("excapeplug.hatme.norestrict"))
+        // if (player.hasPermission("escapeplug.hatme.norestrict"))
         // return true;
         // if (rbOp = true && player.isOp())
         // return true;
@@ -422,5 +443,6 @@ public class HatCommand implements CommandExecutor {
             return false;
         }
         return true;
-	}
+    }
+
 }
