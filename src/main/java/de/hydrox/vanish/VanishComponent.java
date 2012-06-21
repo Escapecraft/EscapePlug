@@ -24,7 +24,7 @@ import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.tulonsae.mc.util.Log;
 
-@ComponentDescriptor(name = "Vanish", slug = "vanish", version = "1.00")
+@ComponentDescriptor(name = "Vanish", slug = "vanish", version = "1.01")
 @BukkitCommand(command = "vanish")
 public class VanishComponent extends AbstractComponent implements
 	CommandExecutor, Listener {
@@ -35,6 +35,7 @@ public class VanishComponent extends AbstractComponent implements
     @Override
     public boolean enable(Log log, EscapePlug plugin) {
 	plugin.getComponentManager().registerCommands(this);
+	Bukkit.getPluginManager().registerEvents(this, plugin);
 	return true;
     }
 
@@ -46,8 +47,9 @@ public class VanishComponent extends AbstractComponent implements
     public boolean onCommand(CommandSender sender, Command cmd,
 	    String commandLabel, String[] args) {
 	if (args.length == 0) {
-	    if (!sender.hasPermission("escapecraft.vanish.vanish")) {
+	    if (!sender.hasPermission("escapeplug.vanish.vanish")) {
 		sender.sendMessage(ChatColor.RED + "You shall not vanish.");
+		return true;
 	    }
 	    if (sender instanceof ConsoleCommandSender) {
 		sender.sendMessage("Console can't vanish.");
@@ -67,8 +69,8 @@ public class VanishComponent extends AbstractComponent implements
 		vanished.add(name);
 		Player[] players = Bukkit.getOnlinePlayers();
 		for (Player player : players) {
-		    if (!player.hasPermission("escapecraft.vanish.see")) {
-			player.showPlayer(Bukkit.getPlayerExact(name));
+		    if (!player.hasPermission("escapeplug.vanish.see")) {
+			player.hidePlayer(Bukkit.getPlayerExact(name));
 		    }
 		}
 		sender.sendMessage(ChatColor.GREEN + "You are now vanished.");
@@ -77,9 +79,10 @@ public class VanishComponent extends AbstractComponent implements
 	}
 	if (args.length == 1) {
 	    if (args[0].equalsIgnoreCase("full")) {
-		if (!sender.hasPermission("escapecraft.vanish.vanishfull")) {
+		if (!sender.hasPermission("escapeplug.vanish.vanishfull")) {
 		    sender.sendMessage(ChatColor.RED
 			    + "You shall not fully vanish.");
+		    return true;
 		}
 		String name = sender.getName();
 		vanished.remove(name);
@@ -87,16 +90,18 @@ public class VanishComponent extends AbstractComponent implements
 		fullVanish.add(name);
 		Player[] players = Bukkit.getOnlinePlayers();
 		for (Player player : players) {
-		    if (!player.hasPermission("escapecraft.vanish.seefull")) {
-			player.showPlayer(Bukkit.getPlayerExact(name));
+		    if (!player.hasPermission("escapeplug.vanish.seefull")) {
+			player.hidePlayer(Bukkit.getPlayerExact(name));
 		    }
 		}
 		sender.sendMessage(ChatColor.GREEN
 			+ "You are now full vanished.");
+		return true;
 	    }
 	    if (args[0].equalsIgnoreCase("list")) {
-		if (!sender.hasPermission("escapecraft.vanish.see")) {
+		if (!sender.hasPermission("escapeplug.vanish.see")) {
 		    sender.sendMessage(ChatColor.RED + "You shall not see.");
+		    return true;
 		}
 		StringBuffer output = new StringBuffer();
 		output.append("Vanished Players: ");
@@ -104,7 +109,7 @@ public class VanishComponent extends AbstractComponent implements
 		    output.append(player).append(" ");
 		}
 		sender.sendMessage(ChatColor.GOLD + output.toString());
-		if (sender.hasPermission("escapecraft.vanish.seefull")) {
+		if (sender.hasPermission("escapeplug.vanish.seefull")) {
 		    output = new StringBuffer();
 		    output.append("Full-Vanished Players: ");
 		    for (String player : fullVanish) {
@@ -112,6 +117,7 @@ public class VanishComponent extends AbstractComponent implements
 		    }
 		    sender.sendMessage(ChatColor.GOLD + output.toString());
 		}
+		return true;
 	    }
 	}
 	return false;
@@ -120,14 +126,22 @@ public class VanishComponent extends AbstractComponent implements
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerLogin(PlayerLoginEvent event) {
 	Player player = event.getPlayer();
-	if (!player.hasPermission("escapecraft.vanish.see")) {
+	if (!player.hasPermission("escapeplug.vanish.see")) {
 	    for (String hiddenPlayer : vanished) {
-		player.hidePlayer(Bukkit.getPlayerExact(hiddenPlayer));
+		Player vanishedPlayer = Bukkit.getPlayerExact(hiddenPlayer);
+		if(vanishedPlayer == null) {
+		    continue;
+		}
+		player.hidePlayer(vanishedPlayer);
 	    }
 	}
-	if (!player.hasPermission("escapecraft.vanish.seefull")) {
+	if (!player.hasPermission("escapeplug.vanish.seefull")) {
 	    for (String hiddenPlayer : fullVanish) {
-		player.hidePlayer(Bukkit.getPlayerExact(hiddenPlayer));
+		Player vanishedPlayer = Bukkit.getPlayerExact(hiddenPlayer);
+		if(vanishedPlayer == null) {
+		    continue;
+		}
+		player.hidePlayer(vanishedPlayer);
 	    }
 	}
     }
