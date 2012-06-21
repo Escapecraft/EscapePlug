@@ -76,4 +76,8 @@ public class Gate {
     public String toString(){
         return close + "|" + open + "|" + area.toString();
     }
+    
+    public int getSize(){
+        return area.size();
+    }
 }

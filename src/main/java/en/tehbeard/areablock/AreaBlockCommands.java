@@ -112,7 +112,7 @@ public class AreaBlockCommands implements CommandExecutor, Listener{
             sender.sendMessage(ChatColor.GOLD + "Gates:");
             int i = 0;
             for(Gate gate : arena.getGates()){
-                sender.sendMessage("" + i +") " + gate.toString());
+                sender.sendMessage("" + i +") " + gate.toString() + " [Size: " + gate.getSize() + "]");
                 i++;
             }
 
