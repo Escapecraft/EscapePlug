@@ -59,7 +59,6 @@ plugin:
         - 112
         opnorestrict: true
         notAllowedMsg: Invalid Item
-        hatversion: 9.6-ECV
     mobcontrol:
         enabled: true
         worlds: [testworld]
