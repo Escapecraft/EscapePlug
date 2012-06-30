@@ -46,6 +46,7 @@ public class AreaBlockComponent extends AbstractComponent implements Listener, R
                 for(Cuboid area : g.getDetectAreas()){
                     areas.addEntry(area, g);
                 }
+                
             }
 
             AreaBlockCommands commands = new AreaBlockCommands(this);

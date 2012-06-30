@@ -53,8 +53,9 @@ public class GatedArea {
         }
 
         for(String s :section.getStringList("gates")){
-
-            gates.add(new Gate(s));
+            Gate g = new Gate(s);
+            g.open();
+            gates.add(g);
         }
     }
 
