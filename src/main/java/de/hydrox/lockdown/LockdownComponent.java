@@ -35,6 +35,7 @@ public class LockdownComponent extends AbstractComponent implements CommandExecu
 						player.sendMessage(ChatColor.RED + "LOCKDOWN-MODE ACTIVATED.");
 					}
 				}
+				Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "LOCKDOWN-MODE ACTIVATED.");
 				return true;
 			}
 			if (args[0].equalsIgnoreCase("disable")) {
@@ -45,6 +46,7 @@ public class LockdownComponent extends AbstractComponent implements CommandExecu
 						player.sendMessage(ChatColor.GREEN + "Lockdown-Mode deactivated.");
 					}
 				}
+				Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "Lockdown-Mode deactivated.");
 				return true;
 			}
 		}
