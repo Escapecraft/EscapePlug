@@ -18,6 +18,7 @@ import de.hydrox.blockalert.BlockAlertComponent;
 import de.hydrox.bukkit.DroxPerms.DroxPerms;
 import de.hydrox.bukkit.DroxPerms.DroxPermsAPI;
 import de.hydrox.bukkit.timezone.TimezoneComponent;
+import de.hydrox.endreset.EndResetComponent;
 import de.hydrox.lockdown.LockdownComponent;
 import de.hydrox.mobcontrol.MobControlComponent;
 import de.hydrox.portalblocker.PortalBlockerComponent;
@@ -90,6 +91,7 @@ public class EscapePlug extends JavaPlugin {
 		componentManager.addComponent(BlockAlertComponent.class);
 		componentManager.addComponent(VanishComponent.class);
 		componentManager.addComponent(PortalBlockerComponent.class);
+		componentManager.addComponent(EndResetComponent.class);
 		//start components
 		componentManager.startupComponents();
 

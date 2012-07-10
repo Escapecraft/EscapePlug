@@ -110,3 +110,6 @@ plugin:
     portalblocker:
         enabled: true
         worlds: []
+    endreset:
+        enabled: true
+
