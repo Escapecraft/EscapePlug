@@ -73,6 +73,12 @@ commands:
             /<command> removecheck name id - remove a check area
             /<command> inside - list all arenas we are inside
             /<command> remove name - Delete a gated area
+    endreset:
+        permision: escapeplug.endreset
+        description: controls endreset
+        usage: |
+            /<command> reset - Resets The End
+            /<command> clear - Clears End Reset cache
 permissions:
   escapeplug.*:
     description: Supernode for EscapePlug commands.
@@ -87,8 +93,7 @@ permissions:
       escapeplug.who: true
       escapeplug.blockalert: true
       escapeplug.afkbooter: true
-  
-  
+      escapeplug.endreset: true
   escapeplug.lockdown:
     description: gives full permission on Lockdown-mode.
     children:
@@ -168,3 +173,8 @@ permissions:
   escapeplug.areablock:
     description: Use areablock commands
     default: op
+  escapeplug.endreset:
+    description: Use endreset command
+    children:
+    escapeplug.endreset.reset: true
+    escapeplug.endreset.clear: true

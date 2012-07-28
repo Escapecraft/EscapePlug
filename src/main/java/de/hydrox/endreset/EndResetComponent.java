@@ -1,5 +1,7 @@
 package de.hydrox.endreset;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,6 +11,7 @@ import net.escapecraft.component.ComponentDescriptor;
 import net.escapecraft.escapePlug.EscapePlug;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -16,50 +19,110 @@ import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.CreatureType;
+import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.EnderCrystal;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.entity.EntityCombustEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
+import org.bukkit.util.Vector;
 import org.tulonsae.mc.util.Log;
 
-@ComponentDescriptor(name = "end reset", slug = "endreset", version = "1.00")
+@ComponentDescriptor(name = "End Reset", slug = "endreset", version = "1.00")
 @BukkitCommand(command = "endreset")
 public class EndResetComponent extends AbstractComponent implements
 	CommandExecutor, Listener {
     
-    private List<Location> obsidianBlocks = new ArrayList<Location>();
-    private List<Location> enderCrystals = new ArrayList<Location>();
+    private List<Vector> obsidianBlocks;
+    private List<Vector> enderCrystals;
+
+    private YamlConfiguration config = new YamlConfiguration();
+    private File file;
+
+    private Log log;
 
     @Override
     public boolean enable(Log log, EscapePlug plugin) {
+	this.log = log;
+        try {
+            file = new File(plugin.getDataFolder(),"endReset.yml");
+	    file.createNewFile();
+	    config.load(file);
+
+	    obsidianBlocks = (List<Vector>) config.getList("blocks");
+	    if (obsidianBlocks == null) {
+		obsidianBlocks = new ArrayList<Vector>();
+	    }
+	    log.info("loaded " + obsidianBlocks.size() + " Blocks");
+	    enderCrystals = (List<Vector>) config.getList("crystals");
+	    if (enderCrystals == null) {
+		enderCrystals = new ArrayList<Vector>();
+	    }
+	    log.info("loaded " + enderCrystals.size() + " Crystals");
+	} catch (IOException e) {
+	    e.printStackTrace();
+	} catch (InvalidConfigurationException e) {
+	    e.printStackTrace();
+	}
+
 	Bukkit.getPluginManager().registerEvents(this, plugin);
+        plugin.getComponentManager().registerCommands(this);
 	return true;
     }
 
     @Override
     public void disable() {
-	// TODO Auto-generated method stub
-
+        config.set("blocks", obsidianBlocks);
+        log.info("saved " + obsidianBlocks.size() + " Blocks");
+        config.set("crystals", enderCrystals);
+        log.info("saved " + enderCrystals.size() + " Crystals");
+        try {
+            config.save(file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    public boolean onCommand(CommandSender arg0, Command arg1, String arg2,
-	    String[] arg3) {
-	// TODO Auto-generated method stub
+    public boolean onCommand(CommandSender sender, Command cmd,
+		String commandLabel, String[] args) {
+	if (args.length == 1) {
+	    if (args[0].equalsIgnoreCase("reset")) {
+		if (!sender.hasPermission("escapeplug.endreset.reset")) {
+			sender.sendMessage(ChatColor.RED
+					+ "You don't have permission to reset The End.");
+			return true;
+		}
+		resetBlocks(Bukkit.getWorld("survival_the_end"));
+		sender.sendMessage(ChatColor.GREEN
+				+ "The End has been reset");
+		return true;
+	    }
+	    if (args[0].equalsIgnoreCase("clear")) {
+		if (!sender.hasPermission("escapeplug.endreset.clear")) {
+			sender.sendMessage(ChatColor.RED
+					+ "You don't have permission to clear End Reset.");
+			return true;
+		}
+		obsidianBlocks.clear();
+		enderCrystals.clear();
+		sender.sendMessage(ChatColor.GREEN
+			+ "End Reset cache has been cleared");
+		return true;
+	    }
+	}
 	return false;
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onEntityExplodeEvent(EntityExplodeEvent event) {
 	if (event.getEntityType() == EntityType.ENDER_CRYSTAL) {
-	    Location loc = event.getEntity().getLocation();
+	    Vector loc = event.getEntity().getLocation().toVector();
 	    enderCrystals.add(loc);
-	    System.out.println("Crystal destroyed at " + loc);
 	}
     }
 
@@ -67,6 +130,10 @@ public class EndResetComponent extends AbstractComponent implements
     public void onEntityDeathEvent(EntityDeathEvent event) {
 	if (event.getEntityType() == EntityType.ENDER_DRAGON) {
 	    World world = event.getEntity().getWorld();
+	    if (event.getEntity().getKiller() != null) {
+		Bukkit.broadcastMessage(ChatColor.GOLD + event.getEntity().getKiller().getName() + " killed an Enderdragon");
+	    }
+	    
 	    resetBlocks(world);
 	    world.spawnCreature(new Location(world, 0, 80, 0), EntityType.ENDER_DRAGON);
 	}
@@ -79,24 +146,21 @@ public class EndResetComponent extends AbstractComponent implements
 	}
 	Block block = event.getBlock();
 	if (block.getType() == Material.OBSIDIAN) {
-	    System.out.println("Obsidian destroyed at " + block.getLocation());
-	    obsidianBlocks.add(block.getLocation());
+	    obsidianBlocks.add(block.getLocation().toVector());
 	}
     }
 
     private void resetBlocks(World world) {
-	for (Location loc : obsidianBlocks) {
-	    System.out.println("Trying to place Obsidian at " + loc);
-	    Block block = world.getBlockAt(loc);
+	for (Vector loc : obsidianBlocks) {
+	    Block block = world.getBlockAt(loc.toLocation(world));
 	    block.setType(Material.OBSIDIAN);
 	}
 	obsidianBlocks.clear();
 
-	for (Location crystal : enderCrystals) {
+	for (Vector crystal : enderCrystals) {
 	    
-	    System.out.println("Trying to place Crystal at " + crystal);
 	    crystal.setY(crystal.getY()-1);
-	    world.spawn(crystal, EnderCrystal.class);
+	    world.spawn(crystal.toLocation(world), EnderCrystal.class);
 	}
 	enderCrystals.clear();
     }
