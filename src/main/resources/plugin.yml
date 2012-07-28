@@ -176,5 +176,5 @@ permissions:
   escapeplug.endreset:
     description: Use endreset command
     children:
-    escapeplug.endreset.reset: true
-    escapeplug.endreset.clear: true
+      escapeplug.endreset.reset: true
+      escapeplug.endreset.clear: true
