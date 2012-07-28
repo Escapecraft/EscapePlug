@@ -24,6 +24,7 @@ import de.hydrox.mobcontrol.MobControlComponent;
 import de.hydrox.portalblocker.PortalBlockerComponent;
 import de.hydrox.vanish.VanishComponent;
 import de.hydrox.who.WhoCommandComponent;
+import en.tehbeard.areablock.AreaBlockComponent;
 import en.tehbeard.endernerf.EndernerfComponent;
 import en.tehbeard.gamemode.GameModeToggleComponent;
 import en.tehbeard.mentorTeleport.MentorTeleportComponent;
@@ -91,6 +92,7 @@ public class EscapePlug extends JavaPlugin {
 		componentManager.addComponent(BlockAlertComponent.class);
 		componentManager.addComponent(VanishComponent.class);
 		componentManager.addComponent(PortalBlockerComponent.class);
+		componentManager.addComponent(AreaBlockComponent.class);
 		componentManager.addComponent(EndResetComponent.class);
 		//start components
 		componentManager.startupComponents();
@@ -103,10 +105,10 @@ public class EscapePlug extends JavaPlugin {
 			boolean rbAllow = getConfig().getBoolean("plugin.hatme.enable");
 			String notAllowedMsg = getConfig().getString("plugin.hatme.notAllowedMsg");
 			boolean rbOp = getConfig().getBoolean("plugin.hatme.opnorestrict");
-			String hatversion = getConfig().getString("plugin.hatme.hatversion");
+			String hatversion = "1.1.0-ECV";
 
 			//construct command and assign to /hat and /unhat
-			HatCommand Hat = new HatCommand(rbBlocks, rbAllow, notAllowedMsg, rbOp);
+			HatCommand Hat = new HatCommand(rbBlocks, rbAllow, notAllowedMsg, rbOp, this);
 			getCommand("hat").setExecutor(Hat);
 			getCommand("unhat").setExecutor(Hat);
 			log.info("[EscapePlug] loaded hatMe version " + hatversion);
