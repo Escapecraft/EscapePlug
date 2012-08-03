@@ -21,7 +21,7 @@ public class MobControlComponent extends AbstractComponent implements Listener {
 	@EventHandler
 	public void onCreatureSpawn(CreatureSpawnEvent event) {
 		if (worlds.contains(event.getLocation().getWorld().getName())) {
-			if (mobs.contains(event.getCreatureType().getName())) {
+			if (mobs.contains(event.getEntityType().getName())) {
 				event.setCancelled(true);
 			}
 		}
