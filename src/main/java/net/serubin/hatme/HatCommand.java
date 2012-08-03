@@ -20,7 +20,6 @@ public class HatCommand implements CommandExecutor {
     private List<Integer> rbBlocks;
     private List<Integer> allowID;
     private boolean rbOp;
-    private EscapePlug plugin;
 
     public HatCommand(List<Integer> rbBlocks, boolean rbAllow,
             String notAllowedMsg, boolean rbOp, EscapePlug plugin) {
@@ -28,7 +27,6 @@ public class HatCommand implements CommandExecutor {
         this.rbAllow = rbAllow;
         this.notAllowedMsg = notAllowedMsg;
         this.rbOp = rbOp;
-        this.plugin = plugin;
     }
 
     public boolean onCommand(CommandSender sender, Command cmd,
@@ -39,9 +37,7 @@ public class HatCommand implements CommandExecutor {
         }
         Player player = (Player) sender;
         ItemStack itemHand = player.getItemInHand();
-        PlayerInventory inventory = player.getInventory();
         int itemHandId = itemHand.getTypeId();
-        int intArg0;
         // on command hat
         if (commandLabel.equalsIgnoreCase("hat")) {
             // if args 0 do standard hat function
