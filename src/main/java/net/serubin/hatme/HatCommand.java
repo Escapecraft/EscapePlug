@@ -1,12 +1,10 @@
 package net.serubin.hatme;
 
-import java.util.HashMap;
 import java.util.List;
 
 import net.escapecraft.escapePlug.EscapePlug;
 
 import org.bukkit.ChatColor;
-import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;

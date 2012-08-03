@@ -1,11 +1,9 @@
 package org.tulonsae.afkbooter;
 
-import java.util.Set;
+import net.escapecraft.escapePlug.EscapePlug;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
-
-import net.escapecraft.escapePlug.EscapePlug;
 
 /**
  * AfkBooter component thread that checks for idle players to kick.

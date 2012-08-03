@@ -5,13 +5,12 @@ import java.util.Arrays;
 import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.logging.Logger;
 
+import net.escapecraft.escapePlug.EscapePlug;
+
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
-import net.escapecraft.escapePlug.EscapePlug;
 
 /**
  * AfkBooter command processor.
@@ -80,7 +79,7 @@ public class AfkBooterCommand implements CommandExecutor {
 
     private boolean handleListExemptCommand(CommandSender sender) {
 
-        ConcurrentSkipListSet exemptPlayers = afkBooter.getExemptList().getPlayers();
+        ConcurrentSkipListSet<String> exemptPlayers = afkBooter.getExemptList().getPlayers();
 
         if (exemptPlayers.size() == 0) {
             sender.sendMessage("Exempt players list is empty.");
@@ -98,7 +97,7 @@ public class AfkBooterCommand implements CommandExecutor {
             return true;
         }
 
-        ConcurrentSkipListSet exemptPlayers = afkBooter.getExemptList().getPlayers();
+        ConcurrentSkipListSet<String> exemptPlayers = afkBooter.getExemptList().getPlayers();
 
         for (String name : args) {
             name = name.trim().toLowerCase();
@@ -121,7 +120,7 @@ public class AfkBooterCommand implements CommandExecutor {
             return true;
         }
 
-        ConcurrentSkipListSet exemptPlayers = afkBooter.getExemptList().getPlayers();
+        ConcurrentSkipListSet<String> exemptPlayers = afkBooter.getExemptList().getPlayers();
 
         for (String name : args) {
             name = name.trim().toLowerCase();

@@ -2,9 +2,6 @@ package org.tulonsae.afkbooter;
 
 import java.util.logging.Logger;
 
-import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
-
 import net.escapecraft.escapePlug.EscapePlug;
 
 /**
