@@ -397,7 +397,7 @@ public class HatCommand implements CommandExecutor {
                 || player.hasPermission("escapeplug.hatme.hat."
                         + player.getItemInHand().getTypeId()))
             return true;
-        if (rbOp = true && player.isOp())
+        if (rbOp == true && player.isOp())
             return true;
         return false;
     }
@@ -408,7 +408,7 @@ public class HatCommand implements CommandExecutor {
                 || player.hasPermission("escapeplug.hatme.hat.give."
                         + Integer.parseInt(args[0])))
             return true;
-        if (rbOp = true && player.isOp())
+        if (rbOp == true && player.isOp())
             return true;
         return false;
     }
@@ -419,7 +419,7 @@ public class HatCommand implements CommandExecutor {
                 || player.hasPermission("escapeplug.hatme.hat.all."
                         + player.getItemInHand().getTypeId()))
             return true;
-        if (rbOp = true && player.isOp())
+        if (rbOp == true && player.isOp())
             return true;
         return false;
     }
