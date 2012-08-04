@@ -6,7 +6,7 @@ import java.util.logging.Logger;
 import me.tehbeard.BeardStat.BeardStat;
 import me.tehbeard.BeardStat.containers.PlayerStatManager;
 import net.escapecraft.component.ComponentManager;
-import net.serubin.hatme.HatCommand;
+import net.serubin.hatme.HatComponent;
 
 import org.bukkit.plugin.java.JavaPlugin;
 import org.tulonsae.afkbooter.AfkBooter;
@@ -94,27 +94,9 @@ public class EscapePlug extends JavaPlugin {
 		componentManager.addComponent(PortalBlockerComponent.class);
 		componentManager.addComponent(AreaBlockComponent.class);
 		componentManager.addComponent(EndResetComponent.class);
+                componentManager.addComponent(HatComponent.class);
 		//start components
 		componentManager.startupComponents();
-
-		//start loading hatMe
-		if (getConfig().getBoolean("plugin.hatme.enabled", true)) {
-			log.info("[EscapePlug] loading hatMe");
-
-		List<Integer> rbBlocks = getConfig().getIntegerList("plugin.hatme.allowed");
-			boolean rbAllow = getConfig().getBoolean("plugin.hatme.enable");
-			String notAllowedMsg = getConfig().getString("plugin.hatme.notAllowedMsg");
-			boolean rbOp = getConfig().getBoolean("plugin.hatme.opnorestrict");
-			String hatversion = "1.1.0-ECV";
-
-			//construct command and assign to /hat and /unhat
-			HatCommand Hat = new HatCommand(rbBlocks, rbAllow, notAllowedMsg, rbOp, this);
-			getCommand("hat").setExecutor(Hat);
-			getCommand("unhat").setExecutor(Hat);
-			log.info("[EscapePlug] loaded hatMe version " + hatversion);
-		}
-
-		
 
                 // start loading afkbooter
 		if (getConfig().getBoolean("plugin.afkbooter.enabled", true)) {
