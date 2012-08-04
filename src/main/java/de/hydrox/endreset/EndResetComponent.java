@@ -23,7 +23,6 @@ import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.EnderCrystal;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -46,6 +45,7 @@ public class EndResetComponent extends AbstractComponent implements
 
     private Log log;
 
+    @SuppressWarnings("unchecked")
     @Override
     public boolean enable(Log log, EscapePlug plugin) {
 	this.log = log;

@@ -100,26 +100,4 @@ public class ExemptList {
     public ConcurrentSkipListSet<String> getPlayers() {
         return exemptPlayers;
     }
-
-    /**
-     * Get configuration settings from escapeplug config file.
-     */
-    private void loadConfig() {
-
-        // get exempt player list
-        String exempt = plugin.getConfig().getString(CONFIG_EXEMPT_PLAYERS);
-        exempt = exempt.replace('[', ' ');
-        exempt = exempt.replace(']', ' ');
-        if (exempt != null) {
-            String[] exemptSplit = exempt.split(",");
-            if (exemptSplit != null) {
-                for (String name : exemptSplit) {
-                    name = name.trim().toLowerCase();
-                    if (name.length() > 0) {
-                        exemptPlayers.add(name);
-                    }
-                }
-            }
-        }
-    }
 }

@@ -2,9 +2,6 @@ package org.tulonsae.afkbooter;
 
 import java.util.logging.Logger;
 
-import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
-
 import net.escapecraft.escapePlug.EscapePlug;
 
 /**
@@ -19,7 +16,6 @@ import net.escapecraft.escapePlug.EscapePlug;
 public class AfkBooter {
 
     private static final String VERSION = "1.1.3";
-    private static final String PERMISSION_EXEMPT = "escapeplug.afkbooter.exempt";
 
     private EscapePlug plugin;
     private Logger log;
