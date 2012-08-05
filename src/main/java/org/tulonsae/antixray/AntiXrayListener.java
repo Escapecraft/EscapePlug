@@ -2,6 +2,7 @@ package org.tulonsae.antixray;
 
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -15,15 +16,15 @@ import org.tulonsae.mc.util.Log;
 /**
  * Handle BlockPlaceEvent.
  */
-public class BlockBreakListener implements Listener {
+public class AntiXrayListener implements Listener {
 
     private Log log;
     private EscapePlug plugin;
 
-    private boolean updatePlayerOnlyChanges = true;
+    private boolean updatePlayerOnlyChanges = false;
     private double nearby = 0;
 
-    public BlockBreakListener(AntiXrayComponent component) {
+    public AntiXrayListener(AntiXrayComponent component) {
         this.plugin = component.getPlugin();
         this.log = component.getLogger();
 
@@ -40,7 +41,6 @@ public class BlockBreakListener implements Listener {
         }
 
         // check whether to process only player changes
-        // in other words, no WE changes
         if (updatePlayerOnlyChanges && (event.getPlayer() == null)) {
             return;
         }
@@ -60,6 +60,32 @@ public class BlockBreakListener implements Listener {
                 double distance = player.getLocation().distanceSquared(block.getLocation());
                 if (distance < nearby) {
                     AntiXrayComponent.updatePlayer(player, block);
+                }
+            }
+        }
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onExplosion(EntityExplodeEvent event) {
+        if (event.isCancelled()) {
+            return;
+        }
+
+        // check whether tracking this world
+        Location loc = event.getLocation();
+        World world = loc.getWorld();
+        if (!AntiXrayComponent.isMonitoredWorld(world)) {
+            return;
+        }
+
+        // update the nearby players
+        Player[] allPlayers = plugin.getServer().getOnlinePlayers();
+        for (Player player : allPlayers) {
+            if (player.getWorld() == world) {
+                // note: using square of the distance for comparison
+                double distance = player.getLocation().distanceSquared(loc);
+                if (distance < nearby) {
+                    AntiXrayComponent.updatePlayer(player, event.blockList());
                 }
             }
         }

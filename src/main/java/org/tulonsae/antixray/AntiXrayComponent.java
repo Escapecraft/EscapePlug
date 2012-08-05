@@ -1,5 +1,7 @@
 package org.tulonsae.antixray;
 
+import java.util.List;
+
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.Bukkit;
@@ -23,7 +25,7 @@ public class AntiXrayComponent extends AbstractComponent {
         this.log = log;
         this.plugin = plugin;
 
-        Bukkit.getPluginManager().registerEvents(new BlockBreakListener(this), plugin);
+        Bukkit.getPluginManager().registerEvents(new AntiXrayListener(this), plugin);
 
 	return true;
     }
@@ -59,26 +61,33 @@ public class AntiXrayComponent extends AbstractComponent {
      * @param block the block which has been removed
      */
     protected static void updatePlayer(Player player, Block block) {
-        // update block below
-        if (block.getLocation().getBlockY() != 0) {
-            updateAdjacentBlock(player, block, BlockFace.DOWN);
-        }
-
-        // update block over
-        if (block.getLocation().getBlockY() != 255) {
-            updateAdjacentBlock(player, block, BlockFace.UP);
-        }
-
-        // update block sides
+        updateAdjacentBlock(player, block, BlockFace.DOWN);
+        updateAdjacentBlock(player, block, BlockFace.UP);
         updateAdjacentBlock(player, block, BlockFace.NORTH);
         updateAdjacentBlock(player, block, BlockFace.SOUTH);
         updateAdjacentBlock(player, block, BlockFace.WEST);
         updateAdjacentBlock(player, block, BlockFace.EAST);
     }
 
+    /**
+     * Update the player for blocks around the blocks in the list.
+     *
+     * @param player the online player to update
+     * @param blockList the list of blocks which have been removed
+     */
+    protected static void updatePlayer(Player player, List<Block> blockList) {
+        for (Block block : blockList) {
+            updatePlayer(player, block);
+        }
+    }
+
     // update adjacent block
     private static void updateAdjacentBlock(Player player, Block block, BlockFace face) {
         Block adjBlock = block.getRelative(face);
+        if (adjBlock == null) {
+            return;
+        }
+
         int typeId = adjBlock.getTypeId();
         if (isProtectedBlock(typeId)) {
             player.sendBlockChange(adjBlock.getLocation(), typeId, adjBlock.getData());
