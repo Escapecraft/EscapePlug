@@ -10,6 +10,7 @@ import net.serubin.hatme.HatComponent;
 
 import org.bukkit.plugin.java.JavaPlugin;
 import org.tulonsae.afkbooter.AfkBooter;
+import org.tulonsae.antixray.AntiXrayComponent;
 import org.tulonsae.mc.util.Log;
 
 import uk.co.oliwali.HawkEye.HawkEye;
@@ -95,6 +96,7 @@ public class EscapePlug extends JavaPlugin {
 		componentManager.addComponent(AreaBlockComponent.class);
 		componentManager.addComponent(EndResetComponent.class);
                 componentManager.addComponent(HatComponent.class);
+                componentManager.addComponent(AntiXrayComponent.class);
 		//start components
 		componentManager.startupComponents();
 
