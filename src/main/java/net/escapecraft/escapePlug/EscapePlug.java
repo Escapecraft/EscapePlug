@@ -51,7 +51,8 @@ public class EscapePlug extends JavaPlugin {
         private AfkBooter afkBooter = null;
 
 	public static EscapePlug self = null;
-
+        
+        @Override
 	public void onEnable() {
 		self = this;
 		
@@ -96,26 +97,18 @@ public class EscapePlug extends JavaPlugin {
 		componentManager.addComponent(AreaBlockComponent.class);
 		componentManager.addComponent(EndResetComponent.class);
                 componentManager.addComponent(HatComponent.class);
+		componentManager.addComponent(AfkBooter.class);
                 componentManager.addComponent(AntiXrayComponent.class);
-		//start components
-		componentManager.startupComponents();
 
-                // start loading afkbooter
-		if (getConfig().getBoolean("plugin.afkbooter.enabled", true)) {
-			log.info("[EscapePlug] loading AfkBooter");
-                        afkBooter = new AfkBooter(self);
-			//finished loading afkbooter
-		}
+                //start components
+		componentManager.startupComponents();
 
 		log.info("[EscapePlug] EscapePlug loaded");
 	}
-
+        
+        @Override
 	public void onDisable() {
-                if (afkBooter != null) {
-                        afkBooter.tidyUp();
-			log.info("[EscapePlug] AfkBooter unloaded");
-                }
-        getComponentManager().disableComponents();
+            getComponentManager().disableComponents();
 		self = null;
 		
 		log.info("[EscapePlug] EscapePlug unloaded");

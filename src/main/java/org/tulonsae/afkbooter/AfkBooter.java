@@ -1,8 +1,12 @@
 package org.tulonsae.afkbooter;
 
 import java.util.logging.Logger;
+import net.escapecraft.component.AbstractComponent;
+import net.escapecraft.component.BukkitCommand;
+import net.escapecraft.component.ComponentDescriptor;
 
 import net.escapecraft.escapePlug.EscapePlug;
+import org.tulonsae.mc.util.Log;
 
 /**
  * AfkBooter component of EscapePlug.
@@ -13,7 +17,8 @@ import net.escapecraft.escapePlug.EscapePlug;
  * Updated to the latest Bukkit api for config, even, and permission
  * systems.
  */
-public class AfkBooter {
+@ComponentDescriptor(name="AFKBooter",slug="afkbooter",version="1.1.3")
+public class AfkBooter extends AbstractComponent {
 
     private static final String VERSION = "1.1.3";
 
@@ -39,23 +44,13 @@ public class AfkBooter {
     private boolean isInteractEntityEventActivity;
 
     /**
-     * Construct this component
-     * @param plugin EscapePlug plugin
-     */
-    public AfkBooter (EscapePlug plugin) {
-        this.plugin = plugin;
-        this.log = plugin.getLogger();
-
-        if (!enable()) {
-            log.warning("AfkBooter didn't enable properly.");
-        }
-    }
-
-    /**
      * Called during onEnable()
      */
-    public boolean enable() {
-
+    @Override
+    public boolean enable(Log log, EscapePlug plugin) {
+        this.plugin = plugin;
+        this.log = plugin.getLogger();
+        
         // load configuration
         loadConfig();
 
@@ -116,7 +111,7 @@ public class AfkBooter {
         // register command
         writeDebugMsg("registered AfkBooterCommand");
         AfkBooterCommand afkBooterCommand = new AfkBooterCommand(this);
-        plugin.getCommand("afkbooter").setExecutor(afkBooterCommand);
+        plugin.getComponentManager().registerCommands(afkBooterCommand);
 
         return true;
     }
@@ -124,7 +119,8 @@ public class AfkBooter {
     /**
      * Called during onDisable()
      */
-    public void tidyUp() {
+    @Override
+    public void disable() {
 
         if (threadedTimer != null) {
             threadedTimer.setAborted(true);

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.logging.Logger;
+import net.escapecraft.component.BukkitCommand;
 
 import net.escapecraft.escapePlug.EscapePlug;
 
@@ -15,6 +16,7 @@ import org.bukkit.command.CommandSender;
 /**
  * AfkBooter command processor.
  */
+@BukkitCommand(command="afkbooter")
 public class AfkBooterCommand implements CommandExecutor {
 
     private final String PERMISSION_CONFIG = "escapeplug.afkbooter.change";
