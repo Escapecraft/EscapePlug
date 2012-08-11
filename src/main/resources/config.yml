@@ -16,7 +16,7 @@ plugin:
     hatme:
         enabled: true
 #hatme config
-        enable: true
+        restrict: true
         allowed: 
         - 1
         - 2
@@ -57,7 +57,6 @@ plugin:
         - 98
         - 103
         - 112
-        opnorestrict: true
         notAllowedMsg: Invalid Item
     mobcontrol:
         enabled: true
@@ -111,3 +110,6 @@ plugin:
     portalblocker:
         enabled: true
         worlds: []
+    endreset:
+        enabled: true
+
