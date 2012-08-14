@@ -6,7 +6,7 @@ import java.util.logging.Logger;
 import me.tehbeard.BeardStat.BeardStat;
 import me.tehbeard.BeardStat.containers.PlayerStatManager;
 import net.escapecraft.component.ComponentManager;
-import net.serubin.hatme.HatCommand;
+import net.serubin.hatme.HatComponent;
 
 import org.bukkit.plugin.java.JavaPlugin;
 import org.tulonsae.afkbooter.AfkBooter;
@@ -18,11 +18,13 @@ import de.hydrox.blockalert.BlockAlertComponent;
 import de.hydrox.bukkit.DroxPerms.DroxPerms;
 import de.hydrox.bukkit.DroxPerms.DroxPermsAPI;
 import de.hydrox.bukkit.timezone.TimezoneComponent;
+import de.hydrox.endreset.EndResetComponent;
 import de.hydrox.lockdown.LockdownComponent;
 import de.hydrox.mobcontrol.MobControlComponent;
 import de.hydrox.portalblocker.PortalBlockerComponent;
 import de.hydrox.vanish.VanishComponent;
 import de.hydrox.who.WhoCommandComponent;
+import en.tehbeard.areablock.AreaBlockComponent;
 import en.tehbeard.endernerf.EndernerfComponent;
 import en.tehbeard.gamemode.GameModeToggleComponent;
 import en.tehbeard.mentorTeleport.MentorTeleportComponent;
@@ -48,7 +50,8 @@ public class EscapePlug extends JavaPlugin {
         private AfkBooter afkBooter = null;
 
 	public static EscapePlug self = null;
-
+        
+        @Override
 	public void onEnable() {
 		self = this;
 		
@@ -90,9 +93,14 @@ public class EscapePlug extends JavaPlugin {
 		componentManager.addComponent(BlockAlertComponent.class);
 		componentManager.addComponent(VanishComponent.class);
 		componentManager.addComponent(PortalBlockerComponent.class);
-		//start components
+		componentManager.addComponent(AreaBlockComponent.class);
+		componentManager.addComponent(EndResetComponent.class);
+                componentManager.addComponent(HatComponent.class);
+		componentManager.addComponent(AfkBooter.class);
+                //start components
 		componentManager.startupComponents();
 
+<<<<<<< HEAD
 		//start loading hatMe
 		if (getConfig().getBoolean("plugin.hatme.enabled", true)) {
 			log.info("[EscapePlug] loading hatMe");
@@ -119,15 +127,14 @@ public class EscapePlug extends JavaPlugin {
 			//finished loading afkbooter
 		}
 
+=======
+>>>>>>> escapeplug/develop
 		log.info("[EscapePlug] EscapePlug loaded");
 	}
-
+        
+        @Override
 	public void onDisable() {
-                if (afkBooter != null) {
-                        afkBooter.tidyUp();
-			log.info("[EscapePlug] AfkBooter unloaded");
-                }
-        getComponentManager().disableComponents();
+            getComponentManager().disableComponents();
 		self = null;
 		
 		log.info("[EscapePlug] EscapePlug unloaded");
