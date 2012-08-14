@@ -2,7 +2,6 @@ package net.escapecraft.component;
 
 import net.escapecraft.escapePlug.EscapePlug;
 
-import org.bukkit.plugin.Plugin;
 import org.tulonsae.mc.util.Log;
 
 

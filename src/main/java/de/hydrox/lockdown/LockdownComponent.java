@@ -11,8 +11,6 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerLoginEvent;
-import org.bukkit.plugin.RegisteredListener;
 import org.tulonsae.mc.util.Log;
 
 @ComponentDescriptor(name="Emergency Lockdown",slug="lockdown",version="1.00")

@@ -3,7 +3,7 @@ package org.tulonsae.afkbooter;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerInventoryEvent;
+import org.bukkit.event.inventory.InventoryOpenEvent;
 
 /**
  * Handle PlayerInventoryEvent.
@@ -17,7 +17,7 @@ public class AfkBooterListenerInventory implements Listener {
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
-    public void playerJoin(PlayerInventoryEvent event) {
+    public void playerJoin(InventoryOpenEvent event) {
         afkBooter.getPlayerActivity().recordActivity(event.getPlayer().getName());
     }
 }

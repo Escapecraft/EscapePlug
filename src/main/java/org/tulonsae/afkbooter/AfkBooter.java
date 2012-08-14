@@ -5,9 +5,6 @@ import net.escapecraft.component.AbstractComponent;
 import net.escapecraft.component.BukkitCommand;
 import net.escapecraft.component.ComponentDescriptor;
 
-import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
-
 import net.escapecraft.escapePlug.EscapePlug;
 import org.tulonsae.mc.util.Log;
 
@@ -24,7 +21,6 @@ import org.tulonsae.mc.util.Log;
 public class AfkBooter extends AbstractComponent {
 
     private static final String VERSION = "1.1.3";
-    private static final String PERMISSION_EXEMPT = "escapeplug.afkbooter.exempt";
 
     private EscapePlug plugin;
     private Logger log;
