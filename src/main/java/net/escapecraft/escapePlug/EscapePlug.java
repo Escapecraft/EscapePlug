@@ -102,7 +102,6 @@ public class EscapePlug extends JavaPlugin {
 
                 //start components
 		componentManager.startupComponents();
-
 		log.info("[EscapePlug] EscapePlug loaded");
 	}
         
