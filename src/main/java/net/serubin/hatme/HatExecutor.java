@@ -6,99 +6,125 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
 class HatExecutor {
+    
+    private HatComponent component;
+    
+    public HatExecutor(HatComponent component) {
+        this.component = component;
+    }
+
     public boolean hatOn(Player player) {
         ItemStack itemHand = player.getItemInHand();
-        
-        if (itemHand == null) {
-            player.sendMessage(ChatColor.YELLOW + "[HatMe] You have just tried to put air on your head. Good job.");
-            return true;
+
+        if (itemHand == null || itemHand.getTypeId() == 0) {
+            if (player.getInventory().getHelmet() == null) {
+                component.sendMessage(player, ChatColor.RED,
+                        component.airHeadMessage());
+                return true;
+            } else {
+                if (hatOff(player)) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
         } else {
-            
+
             if (!headEmpty(player)) {
-                player.sendMessage(ChatColor.RED + "[HatMe] You already have a hat on! Take it off with /unhat.");
+                component.sendMessage(player, ChatColor.RED,
+                        component.hatAlreadyOnMessage());
+                // TODO swap helmet with hand
                 return true;
             }
-            
+
             if (moveOneToHead(itemHand, player)) {
-                player.sendMessage(ChatColor.YELLOW + "[HatMe] You now have a hat! Use /unhat to remove it.");
+                component.sendMessage(player, ChatColor.YELLOW,
+                        component.hatOnMessage());
                 return true;
             } else {
                 return false;
             }
         }
     }
-    
+
     public boolean hatOnAll(Player player) {
         ItemStack itemHand = player.getItemInHand();
-        
+
         if (itemHand == null) {
-            player.sendMessage(ChatColor.YELLOW + "[HatMe] You have just tried to put air on your head. Good job.");
+            component.sendMessage(player, ChatColor.RED, component.airHeadMessage());
+            // TODO take off hat
             return true;
         } else {
-            
+
             if (!headEmpty(player)) {
-                player.sendMessage(ChatColor.RED + "[HatMe] You already have a hat on! Take it off with /unhat.");
+                component.sendMessage(player, ChatColor.RED,
+                        component.hatAlreadyOnMessage());
                 return true;
             }
-            
+
             if (moveAllToHead(itemHand, player)) {
-                player.sendMessage(ChatColor.YELLOW + "[HatMe] You now have a hat! Use /unhat to remove it.");
+                component.sendMessage(player, ChatColor.YELLOW,
+                        component.hatOnMessage());
                 return true;
             } else {
                 return false;
             }
         }
     }
-    
+
     public boolean giveHat(Player player, int itemID) {
         if (itemID == 0) {
-            player.sendMessage(ChatColor.YELLOW + "[HatMe] You have just tried to put air on your head. Good job.");
+            component.sendMessage(player, ChatColor.RED, component.airHeadMessage());
             return true;
         } else {
-            
+
             if (!headEmpty(player)) {
-                player.sendMessage(ChatColor.RED + "[HatMe] You already have a hat on! Take it off with /unhat.");
+                component.sendMessage(player, ChatColor.RED,
+                        component.hatAlreadyOnMessage());
                 return true;
             }
-            
+
             if (setHead(itemID, player)) {
-                player.sendMessage(ChatColor.YELLOW + "[HatMe] You now have a hat! Use /unhat to remove it.");
+                component.sendMessage(player, ChatColor.YELLOW,
+                        component.hatOnMessage());
                 return true;
             } else {
                 return false;
             }
         }
     }
-        
-        
 
     public boolean hatOff(Player player) {
         PlayerInventory inventory = player.getInventory();
         int empty = inventory.firstEmpty();
         ItemStack itemHead = inventory.getHelmet();
         if (empty == -1) {
-            player.sendMessage(ChatColor.RED + "[HatMe] You have no space to take of your hat!");
+            component.sendMessage(player, ChatColor.RED, component.noSpaceMessage());
             return true;
         } else {
             inventory.setHelmet(null);
             inventory.setItem(empty, itemHead);
-            player.sendMessage(ChatColor.YELLOW + "[HatMe] You have taken off your hat!");
+            component.sendMessage(player, ChatColor.YELLOW, component.hatOffMessage());
             return true;
         }
     }
 
     private boolean moveOneToHead(ItemStack itemHand, Player player) {
         PlayerInventory playerInv = player.getInventory();
-                    
+
         // if hand has only 1 item
         if (itemHand.getAmount() == 1) {
             playerInv.setHelmet(itemHand);
             playerInv.setItemInHand(null);
             return true;
         } else {
-            ItemStack newHelmet = itemHand;
+            ItemStack newHelmet = new ItemStack(itemHand.getType(), 1,
+                    itemHand.getDurability());
+            component.debug("itemHand Original: " + itemHand.getAmount());
             newHelmet.setAmount(1);
+            playerInv.setHelmet(newHelmet);
             itemHand.setAmount((itemHand.getAmount() - 1));
+            component.debug("itemHand New: " + itemHand.getAmount());
             return true;
         }
     }
@@ -109,7 +135,7 @@ class HatExecutor {
         playerInv.setItemInHand(null);
         return true;
     }
-    
+
     private boolean setHead(int itemID, Player player) {
         PlayerInventory playerInv = player.getInventory();
         playerInv.setHelmet(new ItemStack(itemID));
