@@ -19,24 +19,24 @@ public class HatPermsHandler {
     }
     
     protected boolean checkHatPerms(Player player) {
-        if (player.hasPermission("hatme.hat") || 
-                player.hasPermission("hatme.hat." + player.getItemInHand().getTypeId()) || player.getItemInHand().getTypeId() == 0)
+        if (player.hasPermission("escapeplug.hatme.hat") || 
+                player.hasPermission("escapeplug.hatme.hat." + player.getItemInHand().getTypeId()) || player.getItemInHand().getTypeId() == 0)
             return true;
         
         return false;
     }
     
     protected boolean checkHatAllPerms(Player player) {
-        if (player.hasPermission("hatme.hat.all") || 
-                player.hasPermission("hatme.hat.all." + player.getItemInHand().getTypeId()))
+        if (player.hasPermission("escapeplug.hatme.hat.all") || 
+                player.hasPermission("escapeplug.hatme.hat.all." + player.getItemInHand().getTypeId()))
             return true;
         
         return false;
     }
     
     protected boolean checkGivePerms(Player player, String arg) {
-        if (player.hasPermission("hatme.hat.give") || 
-                player.hasPermission("hatme.hat.give." + arg))
+        if (player.hasPermission("escapeplug.hatme.hat.give") || 
+                player.hasPermission("escapeplug.hatme.hat.give." + arg))
             return true;
         
         return false;
@@ -45,7 +45,7 @@ public class HatPermsHandler {
     protected boolean checkRestrict(Player player) {
         int heldItem = player.getItemInHand().getTypeId();
         if(!restrictionEnabled) return true;
-        if (player.hasPermission("hatme.norestrict"))
+        if (player.hasPermission("escapeplug.hatme.norestrict"))
             return true;
         if (unrestrictBlocks.contains(heldItem))
             return true;
@@ -54,7 +54,7 @@ public class HatPermsHandler {
 
     boolean checkItemRestrict(String arg, Player player) {
         if(!restrictionEnabled) return true;
-        if (player.hasPermission("hatme.norestrict"))
+        if (player.hasPermission("escapeplug.hatme.norestrict"))
             return true;
         if (unrestrictBlocks.contains(Integer.parseInt(arg)))
             return true;
