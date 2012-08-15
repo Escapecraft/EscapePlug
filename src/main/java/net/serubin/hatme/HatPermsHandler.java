@@ -1,22 +1,26 @@
 package net.serubin.hatme;
 
 import java.util.List;
+
+import net.escapecraft.escapePlug.EscapePlug;
+
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
-class HatPermsHandler {
-
+public class HatPermsHandler {
     private boolean restrictionEnabled;
     private List<Integer> unrestrictBlocks;
+    private EscapePlug plugin;
     
-    HatPermsHandler(FileConfiguration config) {
+    public HatPermsHandler(EscapePlug plugin, FileConfiguration config) {
+        this.plugin = plugin;
         this.unrestrictBlocks = config.getIntegerList("plugin.hatme.allowed");
         this.restrictionEnabled = config.getBoolean("plugin.hatme.restrict");
     }
     
     protected boolean checkHatPerms(Player player) {
         if (player.hasPermission("escapeplug.hatme.hat") || 
-                player.hasPermission("escapeplug.hatme.hat." + player.getItemInHand().getTypeId()))
+                player.hasPermission("escapeplug.hatme.hat." + player.getItemInHand().getTypeId()) || player.getItemInHand().getTypeId() == 0)
             return true;
         
         return false;
