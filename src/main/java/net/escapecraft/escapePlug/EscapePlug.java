@@ -102,36 +102,6 @@ public class EscapePlug extends JavaPlugin {
 
                 //start components
 		componentManager.startupComponents();
-
-<<<<<<< HEAD
-		//start loading hatMe
-		if (getConfig().getBoolean("plugin.hatme.enabled", true)) {
-			log.info("[EscapePlug] loading hatMe");
-
-		List<Integer> rbBlocks = getConfig().getIntegerList("plugin.hatme.allowed");
-			boolean rbAllow = getConfig().getBoolean("plugin.hatme.enable");
-			String notAllowedMsg = getConfig().getString("plugin.hatme.notAllowedMsg");
-			boolean rbOp = getConfig().getBoolean("plugin.hatme.opnorestrict");
-			String hatversion = "9.6-ECV";
-
-			//construct command and assign to /hat and /unhat
-			HatCommand Hat = new HatCommand(rbBlocks, rbAllow, notAllowedMsg, rbOp);
-			getCommand("hat").setExecutor(Hat);
-			getCommand("unhat").setExecutor(Hat);
-			log.info("[EscapePlug] loaded hatMe version " + hatversion);
-		}
-
-		
-
-                // start loading afkbooter
-		if (getConfig().getBoolean("plugin.afkbooter.enabled", true)) {
-			log.info("[EscapePlug] loading AfkBooter");
-                        afkBooter = new AfkBooter(self);
-			//finished loading afkbooter
-		}
-
-=======
->>>>>>> escapeplug/develop
 		log.info("[EscapePlug] EscapePlug loaded");
 	}
         
