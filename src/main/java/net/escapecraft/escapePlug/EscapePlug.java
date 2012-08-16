@@ -1,6 +1,5 @@
 package net.escapecraft.escapePlug;
 
-import java.util.List;
 import java.util.logging.Logger;
 
 import me.tehbeard.BeardStat.BeardStat;

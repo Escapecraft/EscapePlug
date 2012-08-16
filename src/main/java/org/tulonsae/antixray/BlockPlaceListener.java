@@ -1,12 +1,11 @@
 package org.tulonsae.antixray;
 
-import org.bukkit.entity.Player;
+import net.escapecraft.escapePlug.EscapePlug;
+
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
-
-import net.escapecraft.escapePlug.EscapePlug;
 
 /**
  * Handle BlockPlaceEvent.
