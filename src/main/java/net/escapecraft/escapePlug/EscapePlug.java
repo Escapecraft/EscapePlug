@@ -47,8 +47,6 @@ public class EscapePlug extends JavaPlugin {
     }
 
     private PlayerStatManager beardStatManager = null;
-        private AfkBooter afkBooter = null;
-
 	public static EscapePlug self = null;
         
         @Override

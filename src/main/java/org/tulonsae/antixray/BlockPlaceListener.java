@@ -12,11 +12,9 @@ import org.bukkit.event.block.BlockBreakEvent;
  */
 public class BlockPlaceListener implements Listener {
 
-    private EscapePlug plugin;
     private boolean updatePlayerOnlyChanges = true;
 
     public BlockPlaceListener(EscapePlug plugin) {
-        this.plugin = plugin;
     }
 
     @EventHandler(priority = EventPriority.MONITOR)

@@ -10,10 +10,8 @@ import org.bukkit.entity.Player;
 public class HatPermsHandler {
     private boolean restrictionEnabled;
     private List<Integer> unrestrictBlocks;
-    private EscapePlug plugin;
     
     public HatPermsHandler(EscapePlug plugin, FileConfiguration config) {
-        this.plugin = plugin;
         this.unrestrictBlocks = config.getIntegerList("plugin.hatme.allowed");
         this.restrictionEnabled = config.getBoolean("plugin.hatme.restrict");
     }

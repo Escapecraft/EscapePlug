@@ -18,7 +18,6 @@ import org.tulonsae.mc.util.Log;
  */
 public class AntiXrayListener implements Listener {
 
-    private Log log;
     private EscapePlug plugin;
 
     private boolean updatePlayerOnlyChanges = false;
@@ -26,7 +25,6 @@ public class AntiXrayListener implements Listener {
 
     public AntiXrayListener(AntiXrayComponent component) {
         this.plugin = component.getPlugin();
-        this.log = component.getLogger();
 
         nearby = (plugin.getServer().getViewDistance() + 1) * 16;
         // use the square of the distance rather than the distance
