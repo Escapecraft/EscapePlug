@@ -1,11 +1,11 @@
 package org.tulonsae.afkbooter;
 
 import java.util.logging.Logger;
-import net.escapecraft.component.AbstractComponent;
-import net.escapecraft.component.BukkitCommand;
-import net.escapecraft.component.ComponentDescriptor;
 
+import net.escapecraft.component.AbstractComponent;
+import net.escapecraft.component.ComponentDescriptor;
 import net.escapecraft.escapePlug.EscapePlug;
+
 import org.tulonsae.mc.util.Log;
 
 /**

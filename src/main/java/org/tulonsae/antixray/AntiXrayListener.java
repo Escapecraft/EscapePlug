@@ -1,24 +1,22 @@
 package org.tulonsae.antixray;
 
+import net.escapecraft.escapePlug.EscapePlug;
+
+import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
-import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.Location;
-import org.bukkit.World;
-
-import net.escapecraft.escapePlug.EscapePlug;
-import org.tulonsae.mc.util.Log;
+import org.bukkit.event.entity.EntityExplodeEvent;
 
 /**
  * Handle BlockPlaceEvent.
  */
 public class AntiXrayListener implements Listener {
 
-    private Log log;
     private EscapePlug plugin;
 
     private boolean updatePlayerOnlyChanges = false;
@@ -26,7 +24,6 @@ public class AntiXrayListener implements Listener {
 
     public AntiXrayListener(AntiXrayComponent component) {
         this.plugin = component.getPlugin();
-        this.log = component.getLogger();
 
         nearby = (plugin.getServer().getViewDistance() + 1) * 16;
         // use the square of the distance rather than the distance

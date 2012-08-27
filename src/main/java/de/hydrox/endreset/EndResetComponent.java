@@ -135,7 +135,7 @@ public class EndResetComponent extends AbstractComponent implements
 	    }
 	    
 	    resetBlocks(world);
-	    world.spawnCreature(new Location(world, 0, 80, 0), EntityType.ENDER_DRAGON);
+	    world.spawnEntity(new Location(world, 0, 80, 0), EntityType.ENDER_DRAGON);
 	}
     }
     
