@@ -17,7 +17,6 @@ import org.tulonsae.mc.util.Log;
 @BukkitCommand(command={"hat","unhat"})
 public class HatComponent extends AbstractComponent implements CommandExecutor {
     
-    private EscapePlug plugin;
     private Logger log;
 
     /*
@@ -44,7 +43,6 @@ public class HatComponent extends AbstractComponent implements CommandExecutor {
         this.notAllowedMsg = plugin.getConfig().getString("plugin.hatme.notAllowedMsg");
         this.permsHandler = new HatPermsHandler(plugin, plugin.getConfig());
         this.executor = new HatExecutor(this);
-        this.plugin = plugin;
         return true;
     }
     

@@ -1,6 +1,5 @@
 package net.escapecraft.escapePlug;
 
-import java.util.List;
 import java.util.logging.Logger;
 
 import me.tehbeard.BeardStat.BeardStat;
@@ -48,8 +47,6 @@ public class EscapePlug extends JavaPlugin {
     }
 
     private PlayerStatManager beardStatManager = null;
-        private AfkBooter afkBooter = null;
-
 	public static EscapePlug self = null;
         
         @Override
