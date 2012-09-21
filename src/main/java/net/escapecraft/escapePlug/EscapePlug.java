@@ -62,6 +62,7 @@ public class EscapePlug extends JavaPlugin {
 		//load/creates/fixes config
 		getConfig().options().copyDefaults(true);
 		saveConfig();
+		reloadConfig();
 
 		DroxPerms droxPerms = ((DroxPerms) this.getServer().getPluginManager().getPlugin("DroxPerms"));
 		if (droxPerms != null) {
