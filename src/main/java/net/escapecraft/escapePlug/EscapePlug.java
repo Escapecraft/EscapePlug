@@ -1,6 +1,5 @@
 package net.escapecraft.escapePlug;
 
-import java.util.List;
 import java.util.logging.Logger;
 
 import me.tehbeard.BeardStat.BeardStat;
@@ -11,6 +10,8 @@ import net.serubin.hatme.HatComponent;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.tulonsae.afkbooter.AfkBooter;
 import org.tulonsae.mc.util.Log;
+
+import com.tehbeard.tourbus.TourBusComponent;
 
 import uk.co.oliwali.HawkEye.HawkEye;
 import de.hydrox.antiSlime.AntiSlimeComponent;
@@ -97,6 +98,7 @@ public class EscapePlug extends JavaPlugin {
 		componentManager.addComponent(EndResetComponent.class);
                 componentManager.addComponent(HatComponent.class);
 		componentManager.addComponent(AfkBooter.class);
+		componentManager.addComponent(TourBusComponent.class);
                 //start components
 		componentManager.startupComponents();
 
