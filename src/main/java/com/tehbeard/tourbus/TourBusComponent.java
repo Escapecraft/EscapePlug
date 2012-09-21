@@ -33,25 +33,32 @@ public class TourBusComponent extends AbstractComponent implements CommandExecut
     public boolean onCommand(CommandSender sender, Command cmd, String lbl,
             String[] args) {
         if(sender instanceof Player == false){return true;}
-        
+        //ONLY one argument
         if(args.length!=1){return false;}
         Player p = (Player)sender;
         String cm = args[0];
+        
+        //add to the tour group
         if(cm.equalsIgnoreCase("join")){
             p.sendMessage("Joined the tour group.");
             tourists.add(p.getName());
         }
         
+      //remove from the tour group
         if(cm.equalsIgnoreCase("leave")){
             p.sendMessage("Left the tour group.");
             tourists.remove(p.getName());
         }
         
+        //Teleport all those in the tour group
         if(cm.equalsIgnoreCase("port")){
+            //check perm node (op default)
             if(p.hasPermission("escapeplug.tourbus.port")){
+                //loop tourists, check online
                 for(String t : tourists){
                     Player pp = Bukkit.getPlayer(t);
-                    if(p==null){continue;}
+                    if(pp==null){continue;}
+                    if(!pp.isOnline()){continue;}
                     pp.teleport(p);
                 }
             }
