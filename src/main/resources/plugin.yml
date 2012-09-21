@@ -79,6 +79,9 @@ commands:
         usage: |
             /<command> reset - Resets The End
             /<command> clear - Clears End Reset cache
+    tour:
+        description: 
+        usage: /<command> [join|leave]
 permissions:
   escapeplug.*:
     description: Supernode for EscapePlug commands.
@@ -178,3 +181,6 @@ permissions:
     children:
       escapeplug.endreset.reset: true
       escapeplug.endreset.clear: true
+  escapeplug.tourbus.port:
+    description: allow use of port command for tourbus
+    default: op
