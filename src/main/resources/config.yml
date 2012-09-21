@@ -113,4 +113,5 @@ plugin:
     endreset:
         enabled: true
         world: survival_the_end
-
+    tourbus:
+        enabled: false
