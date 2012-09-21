@@ -40,6 +40,8 @@ public class EndResetComponent extends AbstractComponent implements
     private List<Vector> obsidianBlocks;
     private List<Vector> enderCrystals;
 
+    private String endWorldName = null;
+
     private YamlConfiguration config = new YamlConfiguration();
     private File file;
 
@@ -64,6 +66,7 @@ public class EndResetComponent extends AbstractComponent implements
 		enderCrystals = new ArrayList<Vector>();
 	    }
 	    log.info("loaded " + enderCrystals.size() + " Crystals");
+	    endWorldName = plugin.getConfig().getString("plugin.endreset.world", "survival_the_end");
 	} catch (IOException e) {
 	    e.printStackTrace();
 	} catch (InvalidConfigurationException e) {
@@ -97,7 +100,7 @@ public class EndResetComponent extends AbstractComponent implements
 					+ "You don't have permission to reset The End.");
 			return true;
 		}
-		resetBlocks(Bukkit.getWorld("survival_the_end"));
+		resetBlocks(Bukkit.getWorld(endWorldName));
 		sender.sendMessage(ChatColor.GREEN
 				+ "The End has been reset");
 		return true;
@@ -120,7 +123,7 @@ public class EndResetComponent extends AbstractComponent implements
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onEntityExplodeEvent(EntityExplodeEvent event) {
-	if (event.getEntityType() == EntityType.ENDER_CRYSTAL) {
+	if (event.getLocation().getWorld().getName().equals(endWorldName) && event.getEntityType() == EntityType.ENDER_CRYSTAL) {
 	    Vector loc = event.getEntity().getLocation().toVector();
 	    enderCrystals.add(loc);
 	}
@@ -128,7 +131,7 @@ public class EndResetComponent extends AbstractComponent implements
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onEntityDeathEvent(EntityDeathEvent event) {
-	if (event.getEntityType() == EntityType.ENDER_DRAGON) {
+	if (event.getEntity().getWorld().getName().equals(endWorldName) && event.getEntityType() == EntityType.ENDER_DRAGON) {
 	    World world = event.getEntity().getWorld();
 	    if (event.getEntity().getKiller() != null) {
 		Bukkit.broadcastMessage(ChatColor.GOLD + event.getEntity().getKiller().getName() + " killed an Enderdragon");
@@ -141,7 +144,7 @@ public class EndResetComponent extends AbstractComponent implements
     
     @EventHandler(priority = EventPriority.MONITOR)
     public void onBlockBreakEvent(BlockBreakEvent event) {
-	if (event.isCancelled()) {
+	if (event.isCancelled() || !event.getBlock().getWorld().getName().equals(endWorldName)) {
 	    return;
 	}
 	Block block = event.getBlock();
