@@ -1,4 +1,6 @@
 plugin:
+    tourbus:
+        enabled: false
     areablock:
         enabled: true
     antislime:

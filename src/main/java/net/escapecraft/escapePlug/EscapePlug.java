@@ -12,6 +12,8 @@ import org.tulonsae.afkbooter.AfkBooter;
 import org.tulonsae.antixray.AntiXrayComponent;
 import org.tulonsae.mc.util.Log;
 
+import com.tehbeard.tourbus.TourBusComponent;
+
 import uk.co.oliwali.HawkEye.HawkEye;
 import de.hydrox.antiSlime.AntiSlimeComponent;
 import de.hydrox.blockalert.BlockAlertComponent;
@@ -96,6 +98,9 @@ public class EscapePlug extends JavaPlugin {
                 componentManager.addComponent(HatComponent.class);
 		componentManager.addComponent(AfkBooter.class);
                 componentManager.addComponent(AntiXrayComponent.class);
+                
+                componentManager.addComponent(TourBusComponent.class);
+
 
                 //start components
 		componentManager.startupComponents();
