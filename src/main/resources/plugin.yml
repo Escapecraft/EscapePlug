@@ -40,6 +40,9 @@ commands:
         aliases: [unhat, unhatme, unhm]
         description: Command to take your "hat" off.
         usage: /<command> - takes item off head
+    setwarp:
+        description: Sets a warp location
+        usage: /<command> <name> - Sets a warp location
     who:
         description: Gives Information about the online Players.
         usage:  |
