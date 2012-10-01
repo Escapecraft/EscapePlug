@@ -1,7 +1,10 @@
 package net.serubin.warp;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.logging.Logger;
 
 import net.escapecraft.escapePlug.EscapePlug;
@@ -13,65 +16,55 @@ import org.bukkit.entity.Player;
 import org.tulonsae.mc.util.Log;
 
 public class FlatFile {
-    private File warpsFile = null;
-    private FileConfiguration warps = null;
-    private EscapePlug plugin = null;
+	private EscapePlug plugin;
 
-    /**
-     * Initiates FlatFile.
-     * 
-     * @param plugin
-     *            EscapePlug
-     */
-    public FlatFile(EscapePlug plugin, Logger log) {
-        this.plugin = plugin;
-        warpsFile = new File(plugin.getDataFolder(), "warps.yml");
-        if (!warpsFile.exists()) {
-            log.info("Creating 'warps.yml'...");
-            try {
-                warpsFile.createNewFile();
-            } catch (IOException e) {
-                log.severe("'warps.yml' could not be created!");
-                e.printStackTrace();
-            }
-        }
-        warps = new YamlConfiguration();
+	// File
+	private String fileName = "warps.csv";
+	private FileWriter fStream = null;
+	private BufferedWriter out = null;
 
-        loadYamls();
+	/**
+	 * Initiates FlatFile.
+	 * 
+	 * @param plugin
+	 *            EscapePlug
+	 */
+	public FlatFile(EscapePlug plugin, Logger log) {
+		this.plugin = plugin;
+		File warpsFile = new File(plugin.getDataFolder(), "warps.yml");
+		if (!warpsFile.exists()) {
+			log.info("Creating 'warps.yml'...");
+			try {
+				warpsFile.createNewFile();
+			} catch (IOException e) {
+				log.severe("'warps.yml' could not be created!");
+				e.printStackTrace();
+			}
+		}
+		loadData();
+	}
 
-    }
+	private void loadData() {
+		try {
+			fStream = new FileWriter(fileName);
+			out = new BufferedWriter(fStream);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
-    /**
-     * loads yaml files
-     */
-    private void loadYamls() {
-        try {
-            warps.load(warpsFile);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
+	public boolean addWarp(String name, Location loc, Player user) {
+		String format = name + ", " + loc.getWorld() + ", " + loc.getBlockX()
+				+ ", " + loc.getBlockY() + ", " + loc.getBlockZ() + ", "
+				+ user.getName();
+		return false;
+	}
 
-    /**
-     * Saves yaml files
-     */
-    private void saveYamls() {
-        try {
-            warps.save(warpsFile);
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-    }
-
-    public boolean addWarp(String name, Location pos, Player user) {
-        name = name.toLowerCase();
-        warps.set("", name);
-        warps.set(name + ".position.x", pos.getBlockX());
-        warps.set(name + ".position.y", pos.getBlockY());
-        warps.set(name + ".position.z", pos.getBlockZ());
-        warps.set(name + ".created.user", user.getName());
-        warps.set(name + ".created.date", "date");
-        saveYamls();
-        return true;
-    }
+	public static Timestamp getDateTime() {
+		java.sql.Timestamp date;
+		java.util.Date today = new java.util.Date();
+		date = new java.sql.Timestamp(today.getTime());
+		return date;
+	}
 }
