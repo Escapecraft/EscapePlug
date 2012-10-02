@@ -115,3 +115,5 @@ plugin:
         world: survival_the_end
     tourbus:
         enabled: false
+    warp:
+        enabled: true;
