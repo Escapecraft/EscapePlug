@@ -16,40 +16,37 @@ import org.tulonsae.mc.util.Log;
 @ComponentDescriptor(name = "Warp", slug = "warp", version = "0.1")
 @BukkitCommand(command = { "warp", "setwarp" })
 public class WarpComponent extends AbstractComponent implements CommandExecutor {
-	private EscapePlug plugin;
-	private FlatFile flatFile;
-	private Logger log;
+    private EscapePlug plugin;
+    private FlatFile flatFile;
+    private Logger log;
 
-	@Override
-	public boolean enable(Log log, EscapePlug plugin) {
-		this.plugin = plugin;
-		this.log = plugin.getLogger();
-		plugin.getComponentManager().registerCommands(this);
-		flatFile = new FlatFile(plugin, this.log);
-		return true;
-	}
+    @Override
+    public boolean enable(Log log, EscapePlug plugin) {
+        this.plugin = plugin;
+        this.log = plugin.getLogger();
+        plugin.getComponentManager().registerCommands(this);
+        flatFile = new FlatFile(plugin, this.log);
+        return true;
+    }
 
-	@Override
-	public void disable() {
-		// TODO Auto-generated method stub
+    @Override
+    public void disable() {
+        // TODO Auto-generated method stub
 
-	}
+    }
 
-	public boolean onCommand(CommandSender sender, Command cmd,
-			String commandLabel, String[] args) {
-		if (commandLabel.equalsIgnoreCase("warp")) {
-return true;
-		} else if (commandLabel.equalsIgnoreCase("setwarp")) {
-			if (args.length == 0) {
-				return false;
-			}
-			// flatFile.addWarp(args[0], ((Player)
-			// sender).getLocation(),(Player) sender);
-			flatFile.test(args[0], -54348, 74, 73344, "Serubin");
-			return true;
-		} else if (commandLabel.equalsIgnoreCase("remwarp")) {
-			return true;
-		}
-		return false;
-	}
+    public boolean onCommand(CommandSender sender, Command cmd,
+            String commandLabel, String[] args) {
+        if (commandLabel.equalsIgnoreCase("warp")) {
+            return true;
+        } else if (commandLabel.equalsIgnoreCase("setwarp")) {
+            if (args.length == 0) {
+                return false;
+            }
+            return true;
+        } else if (commandLabel.equalsIgnoreCase("remwarp")) {
+            return true;
+        }
+        return false;
+    }
 }
