@@ -244,20 +244,21 @@ public class FlatFile {
             while (it.hasNext()) {
                 Entry<String, WarpData> next = it.next();
                 WarpData nextWarp = next.getValue();
-                outWarps = outWarps + nextWarp.getName() + ","
+                outWarps = nextWarp.getName() + ","
                         + nextWarp.getLoc().getWorld() + ","
                         + nextWarp.getLoc().getBlockX() + ":"
                         + nextWarp.getLoc().getBlockY() + ":"
                         + nextWarp.getLoc().getBlockZ() + ","
-                        + nextWarp.getUser() + "," + nextWarp.getDate() + "\n";
-
+                        + nextWarp.getUser() + "," + nextWarp.getDate();
+                out.write(outWarps);
+                out.newLine();
             }
-            out.write(outWarps);
+
             out.close();
             warpClass
                     .printDebug("Finished pushing data... no errors detected.");
             return true;
-        } catch (Exception e) {
+        } catch (IOException e) {
             log.warning("[Warps] There was an error pushing data: ");
             e.printStackTrace();
             return false;

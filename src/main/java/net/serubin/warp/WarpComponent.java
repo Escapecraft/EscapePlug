@@ -91,12 +91,14 @@ public class WarpComponent extends AbstractComponent implements CommandExecutor 
                                 flatFile.printWarp(((Player) sender), args[0]);
                             } else {
                                 for (Player player : players) {
+                                    if(!silent){
                                     player.sendMessage(ChatColor.YELLOW
                                             + "You have been warped to "
                                             + ChatColor.GOLD + args[0]
                                             + ChatColor.YELLOW + " by "
                                             + ChatColor.GOLD + sender.getName()
                                             + ChatColor.YELLOW + ".");
+                                    }
                                     player.teleport(warp.getLoc());
                                     return true;
                                 }

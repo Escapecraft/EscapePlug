@@ -13,10 +13,10 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.tulonsae.mc.util.Log;
 
-@ComponentDescriptor(name="HatMe",slug="hatme",version="2.0.0-ECV")
-@BukkitCommand(command={"hat","unhat"})
+@ComponentDescriptor(name = "HatMe", slug = "hatme", version = "2.0.0-ECV")
+@BukkitCommand(command = { "hat", "unhat" })
 public class HatComponent extends AbstractComponent implements CommandExecutor {
-    
+
     private Logger log;
 
     /*
@@ -28,27 +28,28 @@ public class HatComponent extends AbstractComponent implements CommandExecutor {
     private final String hatAlreadyOn = "You already have a hat on! Take it off with /unhat.";
     private final String airHead = "You have just tried to put air on your head. Good job.";
     private final String noPerm = "You do not have permission to use this command.";
-    
+
     private final String name = "HatMe";
 
     private String notAllowedMsg;
     private HatPermsHandler permsHandler;
     private HatExecutor executor;
     private boolean debug = false;
-    
+
     @Override
     public boolean enable(Log log, EscapePlug plugin) {
         this.log = plugin.getLogger();
         plugin.getComponentManager().registerCommands(this);
-        this.notAllowedMsg = plugin.getConfig().getString("plugin.hatme.notAllowedMsg");
+        this.notAllowedMsg = plugin.getConfig().getString(
+                "plugin.hatme.notAllowedMsg");
         this.permsHandler = new HatPermsHandler(plugin, plugin.getConfig());
         this.executor = new HatExecutor(this);
         return true;
     }
-    
+
     @Override
     public void disable() {
-        //do nothing
+        // do nothing
     }
 
     /*
