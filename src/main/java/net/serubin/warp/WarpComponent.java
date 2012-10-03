@@ -41,7 +41,7 @@ public class WarpComponent extends AbstractComponent implements CommandExecutor 
 
     @Override
     public void disable() {
-        flatFile.pushData();
+        // flatFile.pushData();
         log.info("[Warps] Saved warps file.");
 
     }
@@ -75,15 +75,20 @@ public class WarpComponent extends AbstractComponent implements CommandExecutor 
                         if (args.length == 2) {
                             String[] playerStr = args[1].split(",");
                             Player[] players = null;
-                            int i = 0;
-                            for (String str : playerStr) {
-                                players[i] = plugin.getServer().getPlayer(str);
-                                i++;
-                                if (players[i] == null) {
-                                    sender.sendMessage("Player " + players[i]
-                                            + "could not be found.");
-                                    stripArg(players, i);
-                                    i--;
+                            if (!args[1].equalsIgnoreCase("-a")) {
+                                int i = 0;
+                                for (String str : playerStr) {
+                                    try {
+                                        players[i] = plugin.getServer()
+                                                .getPlayer(str);
+                                        i++;
+                                    } catch (NullPointerException npe) {
+                                        sender.sendMessage("Player "
+                                                + players[i]
+                                                + "could not be found.");
+                                        stripArg(players, i);
+                                        i--;
+                                    }
                                 }
                             }
 
@@ -91,13 +96,14 @@ public class WarpComponent extends AbstractComponent implements CommandExecutor 
                                 flatFile.printWarp(((Player) sender), args[0]);
                             } else {
                                 for (Player player : players) {
-                                    if(!silent){
-                                    player.sendMessage(ChatColor.YELLOW
-                                            + "You have been warped to "
-                                            + ChatColor.GOLD + args[0]
-                                            + ChatColor.YELLOW + " by "
-                                            + ChatColor.GOLD + sender.getName()
-                                            + ChatColor.YELLOW + ".");
+                                    if (!silent) {
+                                        player.sendMessage(ChatColor.YELLOW
+                                                + "You have been warped to "
+                                                + ChatColor.GOLD + args[0]
+                                                + ChatColor.YELLOW + " by "
+                                                + ChatColor.GOLD
+                                                + sender.getName()
+                                                + ChatColor.YELLOW + ".");
                                     }
                                     player.teleport(warp.getLoc());
                                     return true;
@@ -124,8 +130,11 @@ public class WarpComponent extends AbstractComponent implements CommandExecutor 
                     if (args.length == 0) {
                         return false;
                     }
-                    flatFile.addWarp(args[0], ((Player) sender).getLocation(),
-                            ((Player) sender));
+                    if (flatFile.addWarp(args[0],
+                            ((Player) sender).getLocation(), ((Player) sender))) {
+                        sender.sendMessage(ChatColor.GOLD + args[0]
+                                + ChatColor.YELLOW + "added to warps!");
+                    }
                     return true;
                 } else {
 
@@ -137,7 +146,10 @@ public class WarpComponent extends AbstractComponent implements CommandExecutor 
                     if (args.length == 0) {
                         return false;
                     }
-                    flatFile.rmWarp(args[0]);
+                    if (flatFile.rmWarp(args[0])) {
+                        sender.sendMessage(ChatColor.GOLD + args[0]
+                                + ChatColor.YELLOW + "added to warps!");
+                    }
                     return true;
                 } else {
 

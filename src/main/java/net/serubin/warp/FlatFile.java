@@ -32,6 +32,7 @@ public class FlatFile {
     private String fileName = "warps.csv";
     private FileWriter fStreamOut = null;
     private FileReader fStreamIn = null;
+    File warpsFile = null;
 
     private int name = 0;
     private int world = 1;
@@ -58,19 +59,22 @@ public class FlatFile {
         this.plugin = plugin;
         this.warpClass = warpClass;
         this.log = log;
-        File warpsFile = new File(plugin.getDataFolder(), fileName);
+        warpsFile = new File(plugin.getDataFolder(), fileName);
         if (!warpsFile.exists()) {
             log.info("Creating '" + fileName + "'...");
             try {
-                warpsFile.createNewFile();
+                boolean test = false;
+                if (test) {
+                    warpsFile.createNewFile();
+                }
             } catch (IOException e) {
                 log.warning("'" + fileName + "' could not be created!");
                 e.printStackTrace();
             }
         }
         try {
-            fStreamOut = new FileWriter(fileName);
-            fStreamIn = new FileReader(fileName);
+            fStreamOut = new FileWriter(warpsFile);
+            fStreamIn = new FileReader(warpsFile);
         } catch (IOException e) {
             log.warning("[Warps] There was an error enabling Warps");
             e.printStackTrace();
@@ -190,16 +194,18 @@ public class FlatFile {
     public boolean loadData() {
         warpClass.printDebug("Starting to load data...");
         warps.clear();
-        BufferedReader in = new BufferedReader(fStreamIn);
         try {
+            fStreamIn = new FileReader(warpsFile);
+            BufferedReader in = new BufferedReader(fStreamIn);
+
             String line = in.readLine();
             int lineNumber = 0;
             while (line != null) {
                 lineNumber++;
                 String[] warp = line.split(",");
                 String[] coordString = warp[this.coords].split(":");
-                double[] coord = null;
-                for (int i = 0; coord.length < i; i++) {
+                double[] coord = new double[coordString.length];
+                for (int i = 0; coordString.length < i; i++) {
                     try {
                         coord[i] = Double.parseDouble(coordString[i]);
                     } catch (NumberFormatException ex) {
@@ -238,6 +244,7 @@ public class FlatFile {
         warpClass.printDebug("Pushing data to file...");
         String outWarps = "";
         try {
+            fStreamOut = new FileWriter(warpsFile);
             BufferedWriter out = new BufferedWriter(fStreamOut);
 
             Iterator<Entry<String, WarpData>> it = warps.entrySet().iterator();
@@ -273,6 +280,7 @@ public class FlatFile {
     public static String getDate() {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
         Date date = new Date();
-        return date.toString();
+
+        return dateFormat.format(date);
     }
 }
