@@ -24,7 +24,7 @@ public class WarpData {
         this.pitch = pitch;
     }
 
-    // TODO yaw pitch work around - save as a seprate data point in WarpData
+    // DONE yaw pitch work around - save as a seprate data point in WarpData
     // then apply to location on teleport, DONT SAVE WITH YAW & PITCH
     /**
      * get warp name

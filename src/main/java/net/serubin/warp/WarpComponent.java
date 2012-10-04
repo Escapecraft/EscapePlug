@@ -49,6 +49,7 @@ public class WarpComponent extends AbstractComponent implements CommandExecutor 
         if (sender instanceof Player) {
             if (commandLabel.equalsIgnoreCase("warp")) {
                 if (sender.hasPermission("escapeplug.warp.tele")
+                        || sender.hasPermission("escapeplug.warp.edit")
                         || sender.isOp()) {
                     WarpData warp;
                     Location warpLoc;
@@ -78,40 +79,49 @@ public class WarpComponent extends AbstractComponent implements CommandExecutor 
                         // checks for second argument
                         // TODO clean up args
                         if (args.length == 2) {
-                            String[] playerStr = args[1].split(",");
-                            Player[] players = null;
-                            if (!args[1].equalsIgnoreCase("-a")) {
-                                int i = 0;
-                                for (String str : playerStr) {
-                                    try {
-                                        players[i] = plugin.getServer()
-                                                .getPlayer(str);
-                                        i++;
-                                    } catch (NullPointerException npe) {
-                                        sender.sendMessage("Player "
-                                                + players[i]
-                                                + "could not be found.");
-                                        stripArg(players, i);
-                                        i--;
-                                    }
-                                }
-                            }
-
                             if (args[1].equalsIgnoreCase("-a")) {
                                 flatFile.printWarp(((Player) sender), args[0]);
                             } else {
-                                for (Player player : players) {
-                                    if (!silent) {
-                                        player.sendMessage(ChatColor.YELLOW
-                                                + "You have been warped to "
-                                                + ChatColor.GOLD + args[0]
-                                                + ChatColor.YELLOW + " by "
-                                                + ChatColor.GOLD
-                                                + sender.getName()
-                                                + ChatColor.YELLOW + ".");
+                                // Processes arguemtns - player
+                                String[] playerStr = args[1].split(",");
+                                Player[] players = new Player[playerStr.length];
+                                if (!args[1].equalsIgnoreCase("-a")) {
+                                    int i = 0;
+                                    for (String str : playerStr) {
+
+                                        players[i] = plugin.getServer()
+                                                .getPlayer(str);
+                                        if (players[i] == null) {
+                                            sender.sendMessage(ChatColor.RED
+                                                    + "Player "
+                                                    + ChatColor.GOLD + str
+                                                    + ChatColor.RED
+                                                    + " could not be found.");
+                                            stripArg(players, i);
+                                        } else {
+                                            i++;
+                                        }
                                     }
-                                    player.teleport(warpLoc);
-                                    return true;
+                                }
+                                // Sends player message and teleports for each
+                                // player
+                                for (Player player : players) {
+                                    try {
+                                        if (!silent) {
+                                            player.sendMessage(ChatColor.YELLOW
+                                                    + "You have been warped to "
+                                                    + ChatColor.GOLD + args[0]
+                                                    + ChatColor.YELLOW + " by "
+                                                    + ChatColor.GOLD
+                                                    + sender.getName()
+                                                    + ChatColor.YELLOW + ".");
+                                        }
+                                        player.teleport(warpLoc);
+                                        return true;
+                                    } catch (NullPointerException npe) {
+                                        sender.sendMessage(ChatColor.RED
+                                                + "No players warped!");
+                                    }
                                 }
                             }
                             // Standard warp
@@ -188,6 +198,7 @@ public class WarpComponent extends AbstractComponent implements CommandExecutor 
      * @return new array
      */
     public static Player[] stripArg(Player[] args, int index) {
+        index++;
         Player[] argNew = new Player[args.length - 1];
         for (int i = index; i < args.length; i++) {
             argNew[i - 1] = args[i];
@@ -196,6 +207,7 @@ public class WarpComponent extends AbstractComponent implements CommandExecutor 
     }
 
     public static String[] stripArg(String[] args, int index) {
+        index++;
         String[] argNew = new String[args.length - 1];
         for (int i = index; i < args.length; i++) {
             argNew[i - 1] = args[i];
