@@ -15,7 +15,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.tulonsae.mc.util.Log;
 
-@ComponentDescriptor(name = "Warps", slug = "warps", version = "1.0")
+@ComponentDescriptor(name = "Warps", slug = "warps", version = "1.1")
 @BukkitCommand(command = { "warp", "setwarp", "remwarp" })
 public class WarpComponent extends AbstractComponent implements CommandExecutor {
     private EscapePlug plugin;
@@ -60,7 +60,10 @@ public class WarpComponent extends AbstractComponent implements CommandExecutor 
                     } else {
                         if (args[0].equalsIgnoreCase("-s")) {
                             silent = true;
-                            args = stripArg(args, 1);
+                            args = stripArg(args, 0);
+                            for (String str : args) {
+                                printDebug(str);
+                            }
                         }
                         warp = flatFile.getWarp(args[0]);
                         // checks if warp is valid
@@ -77,18 +80,16 @@ public class WarpComponent extends AbstractComponent implements CommandExecutor 
                         warpLoc.setYaw(warp.getYaw());
 
                         // checks for second argument
-                        // TODO clean up args
                         if (args.length == 2) {
                             if (args[1].equalsIgnoreCase("-a")) {
                                 flatFile.printWarp(((Player) sender), args[0]);
-                            } else {
+                            } else {\
                                 // Processes arguemtns - player
                                 String[] playerStr = args[1].split(",");
                                 Player[] players = new Player[playerStr.length];
                                 if (!args[1].equalsIgnoreCase("-a")) {
                                     int i = 0;
                                     for (String str : playerStr) {
-
                                         players[i] = plugin.getServer()
                                                 .getPlayer(str);
                                         if (players[i] == null) {
@@ -105,6 +106,7 @@ public class WarpComponent extends AbstractComponent implements CommandExecutor 
                                 }
                                 // Sends player message and teleports for each
                                 // player
+                                String sucessMessage = "";
                                 for (Player player : players) {
                                     try {
                                         if (!silent) {
@@ -116,13 +118,27 @@ public class WarpComponent extends AbstractComponent implements CommandExecutor 
                                                     + sender.getName()
                                                     + ChatColor.YELLOW + ".");
                                         }
+                                        printDebug("Warping "
+                                                + player.getName() + " to "
+                                                + warp.getName());
                                         player.teleport(warpLoc);
-                                        return true;
-                                    } catch (NullPointerException npe) {
-                                        sender.sendMessage(ChatColor.RED
-                                                + "No players warped!");
+                                        sucessMessage += " " + player.getName();
+                                    } catch (NullPointerException NPE) {
+
                                     }
                                 }
+                                String wasWere = "";
+                                if (sucessMessage.isEmpty()) {
+                                    sucessMessage = "No one";
+                                } else if (players.length == 1) {
+                                    wasWere = " was";
+                                } else {
+                                    wasWere = " were";
+                                }
+                                sender.sendMessage(ChatColor.GOLD
+                                        + sucessMessage + ChatColor.YELLOW
+                                        + wasWere + " warped");
+                                return true;
                             }
                             // Standard warp
                         } else if (args.length == 1) {
@@ -134,6 +150,7 @@ public class WarpComponent extends AbstractComponent implements CommandExecutor 
                                     + warp.getLoc().getBlockX() + ", "
                                     + warp.getLoc().getBlockY() + ", "
                                     + warp.getLoc().getBlockZ() + ")");
+
                             ((Player) sender).teleport(warpLoc);
                             return true;
                         }

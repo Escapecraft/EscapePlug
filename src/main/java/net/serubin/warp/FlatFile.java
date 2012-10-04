@@ -60,9 +60,9 @@ public class FlatFile {
         this.warpClass = warpClass;
         this.log = plugin.getLogger();
 
-        log.info("[Warps] Loading in warp data...");
+        log.info("Loading in warp data...");
         if (loadData()) {
-            log.info("[Warps] Sucessfully loaded warp data!");
+            log.info("Sucessfully loaded warp data!");
         }
     }
 
@@ -78,6 +78,7 @@ public class FlatFile {
      * @return true if no errors : false if error
      */
     public boolean addWarp(String name, Location loc, Player user) {
+        name = name.toLowerCase();
         if (!warps.containsKey(name)) {
             warps.put(name, new WarpData(name, loc, getDate(), user.getName(),
                     loc.getYaw(), loc.getPitch()));
@@ -230,11 +231,13 @@ public class FlatFile {
                             + Integer.toString(lineNumber) + "!");
                 }
                 if (!warps.containsKey(warp[name])) {
-                    warps.put(warp[name],
-                            new WarpData(warp[name], new Location(plugin
-                                    .getServer().getWorld(warp[world]),
-                                    coord[0], coord[1], coord[2]), warp[date],
-                                    warp[user], yapi[0], yapi[1]));
+                    warps.put(
+                            warp[name].toLowerCase(),
+                            new WarpData(warp[name].toLowerCase(),
+                                    new Location(plugin.getServer().getWorld(
+                                            warp[world]), coord[0], coord[1],
+                                            coord[2]), warp[date], warp[user],
+                                    yapi[0], yapi[1]));
                 } else {
                     warpClass.printDebug(warp[name] + " already in map!");
                 }
