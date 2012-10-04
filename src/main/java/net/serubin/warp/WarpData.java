@@ -8,16 +8,24 @@ public class WarpData {
 
     private String name;
     private Location loc;
+    private float yaw;
+    private float pitch;
     private String date;
     private String user;
 
-    public WarpData(String name, Location loc, String date, String user) {
+    public WarpData(String name, Location loc, String date, String user,
+            float yaw, float pitch) {
         this.name = name;
         this.date = date;
         this.loc = loc;
         this.user = user;
+        // Yaw - pitch work around
+        this.yaw = yaw;
+        this.pitch = pitch;
     }
 
+    // TODO yaw pitch work around - save as a seprate data point in WarpData
+    // then apply to location on teleport, DONT SAVE WITH YAW & PITCH
     /**
      * get warp name
      * 
@@ -53,5 +61,29 @@ public class WarpData {
     public String getUser() {
         return user;
 
+    }
+
+    /**
+     * get warp yaw
+     * 
+     * @return yaw
+     */
+    public float getYaw() {
+        return yaw;
+    }
+
+    /**
+     * get warp pitch
+     * 
+     * @return pitch
+     */
+    public float getPitch() {
+        return pitch;
+    }
+
+    public String toString() {
+        return "[" + name + ", " + loc.getWorld() + ", " + loc.getBlockX()
+                + ", " + loc.getBlockY() + ", " + loc.getBlockZ() + ", " + user
+                + ", " + date + "]";
     }
 }

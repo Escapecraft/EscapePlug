@@ -8,6 +8,7 @@ import net.escapecraft.component.ComponentDescriptor;
 import net.escapecraft.escapePlug.EscapePlug;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -15,7 +16,7 @@ import org.bukkit.entity.Player;
 import org.tulonsae.mc.util.Log;
 
 @ComponentDescriptor(name = "Warps", slug = "warps", version = "0.1")
-@BukkitCommand(command = { "warp", "setwarp", "rmwarp" })
+@BukkitCommand(command = { "warp", "setwarp", "remwarp" })
 public class WarpComponent extends AbstractComponent implements CommandExecutor {
     private EscapePlug plugin;
     private FlatFile flatFile;
@@ -31,11 +32,7 @@ public class WarpComponent extends AbstractComponent implements CommandExecutor 
         this.plugin = plugin;
         this.log = plugin.getLogger();
         plugin.getComponentManager().registerCommands(this);
-        flatFile = new FlatFile(plugin, this.log, this);
-        log.info("[Warps] Loading in warp data...");
-        if (flatFile.loadData()) {
-            log.info("[Warps] Sucessfully loaded warp data!");
-        }
+        flatFile = new FlatFile(plugin, this);
         return true;
     }
 
@@ -54,6 +51,7 @@ public class WarpComponent extends AbstractComponent implements CommandExecutor 
                 if (sender.hasPermission("escapeplug.warp.tele")
                         || sender.isOp()) {
                     WarpData warp;
+                    Location warpLoc;
                     silent = false;
                     if (args.length == 0) {
                         flatFile.printWarps(((Player) sender));
@@ -71,7 +69,14 @@ public class WarpComponent extends AbstractComponent implements CommandExecutor 
                                     + " is not a existing warp!");
                             return true;
                         }
+
+                        // yaw-pitch workaround
+                        warpLoc = warp.getLoc();
+                        warpLoc.setPitch(warp.getPitch());
+                        warpLoc.setYaw(warp.getYaw());
+
                         // checks for second argument
+                        // TODO clean up args
                         if (args.length == 2) {
                             String[] playerStr = args[1].split(",");
                             Player[] players = null;
@@ -105,16 +110,20 @@ public class WarpComponent extends AbstractComponent implements CommandExecutor 
                                                 + sender.getName()
                                                 + ChatColor.YELLOW + ".");
                                     }
-                                    player.teleport(warp.getLoc());
+                                    player.teleport(warpLoc);
                                     return true;
                                 }
                             }
                             // Standard warp
                         } else if (args.length == 1) {
+                            // TODO add coords and world to message
                             sender.sendMessage(ChatColor.YELLOW
                                     + "Warping you to " + ChatColor.GOLD
-                                    + args[0]);
-                            ((Player) sender).teleport(warp.getLoc());
+                                    + args[0] + ChatColor.YELLOW + "("
+                                    + warp.getLoc().getBlockX() + ", "
+                                    + warp.getLoc().getBlockY() + ", "
+                                    + warp.getLoc().getBlockZ() + ")");
+                            ((Player) sender).teleport(warpLoc);
                             return true;
                         }
                     }
@@ -148,7 +157,7 @@ public class WarpComponent extends AbstractComponent implements CommandExecutor 
                     }
                     if (flatFile.rmWarp(args[0])) {
                         sender.sendMessage(ChatColor.GOLD + args[0]
-                                + ChatColor.YELLOW + "added to warps!");
+                                + ChatColor.YELLOW + " removed from warps!");
                     }
                     return true;
                 } else {
@@ -158,10 +167,10 @@ public class WarpComponent extends AbstractComponent implements CommandExecutor 
             return false;
         } else {
             if (commandLabel.equalsIgnoreCase("warp") && args.length == 0) {
-                flatFile.printWarps(((Player) sender));
+                flatFile.printWarps(sender);
             } else if (commandLabel.equalsIgnoreCase("warp")
                     && args.length == 1) {
-                flatFile.printWarp(((Player) sender), args[0]);
+                flatFile.printWarp(sender, args[0]);
             } else {
                 sender.sendMessage("This command cannot be used via console.");
             }
