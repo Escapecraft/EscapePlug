@@ -15,7 +15,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.tulonsae.mc.util.Log;
 
-@ComponentDescriptor(name = "Warps", slug = "warps", version = "0.1")
+@ComponentDescriptor(name = "Warps", slug = "warps", version = "1.0")
 @BukkitCommand(command = { "warp", "setwarp", "remwarp" })
 public class WarpComponent extends AbstractComponent implements CommandExecutor {
     private EscapePlug plugin;
@@ -129,7 +129,8 @@ public class WarpComponent extends AbstractComponent implements CommandExecutor 
                             // TODO add coords and world to message
                             sender.sendMessage(ChatColor.YELLOW
                                     + "Warping you to " + ChatColor.GOLD
-                                    + args[0] + ChatColor.YELLOW + "("
+                                    + args[0] + ChatColor.YELLOW + " ("
+                                    + warpLoc.getWorld().getName() + ", "
                                     + warp.getLoc().getBlockX() + ", "
                                     + warp.getLoc().getBlockY() + ", "
                                     + warp.getLoc().getBlockZ() + ")");
@@ -142,6 +143,7 @@ public class WarpComponent extends AbstractComponent implements CommandExecutor 
                 } else {
                     sender.sendMessage(ChatColor.RED
                             + "You don't have permission!");
+                    return true;
                 }
             } else if (commandLabel.equalsIgnoreCase("setwarp")) {
                 if (sender.hasPermission("escapeplug.warp.edit")
@@ -152,11 +154,13 @@ public class WarpComponent extends AbstractComponent implements CommandExecutor 
                     if (flatFile.addWarp(args[0],
                             ((Player) sender).getLocation(), ((Player) sender))) {
                         sender.sendMessage(ChatColor.GOLD + args[0]
-                                + ChatColor.YELLOW + "added to warps!");
+                                + ChatColor.YELLOW + " added to warps!");
                     }
                     return true;
                 } else {
-
+                    sender.sendMessage(ChatColor.RED
+                            + "You don't have permission!");
+                    return true;
                 }
 
             } else if (commandLabel.equalsIgnoreCase("remwarp")) {
@@ -171,10 +175,12 @@ public class WarpComponent extends AbstractComponent implements CommandExecutor 
                     }
                     return true;
                 } else {
-
+                    sender.sendMessage(ChatColor.RED
+                            + "You don't have permission!");
+                    return true;
                 }
             }
-            return false;
+
         } else {
             if (commandLabel.equalsIgnoreCase("warp") && args.length == 0) {
                 flatFile.printWarps(sender);
@@ -186,6 +192,7 @@ public class WarpComponent extends AbstractComponent implements CommandExecutor 
             }
             return true;
         }
+        return false;
     }
 
     /**

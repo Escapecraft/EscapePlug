@@ -151,7 +151,7 @@ public class FlatFile {
                 + warp.getLoc().getBlockZ());
         sender.sendMessage(ChatColor.YELLOW + "Created by: " + ChatColor.GOLD
                 + warp.getUser());
-        sender.sendMessage(ChatColor.YELLOW + "On: " + ChatColor.GOLD + ","
+        sender.sendMessage(ChatColor.YELLOW + "On: " + ChatColor.GOLD
                 + warp.getDate());
 
     }
@@ -166,7 +166,7 @@ public class FlatFile {
         while (it.hasNext()) {
             Entry<String, WarpData> next = it.next();
             WarpData nextWarp = next.getValue();
-            //alphabetize 
+            // alphabetize
             sender.sendMessage(ChatColor.YELLOW + nextWarp.getName() + "("
                     + nextWarp.getLoc().getBlockX() + ", "
                     + nextWarp.getLoc().getBlockY() + ", "
