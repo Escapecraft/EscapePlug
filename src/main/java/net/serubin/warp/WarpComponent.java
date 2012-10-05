@@ -22,7 +22,7 @@ public class WarpComponent extends AbstractComponent implements CommandExecutor 
     private FlatFile flatFile;
     private Logger log;
 
-    boolean debug = true;
+    boolean debug = false;
     private boolean silent = false;
 
     private CommandSender sender;
@@ -31,6 +31,9 @@ public class WarpComponent extends AbstractComponent implements CommandExecutor 
     public boolean enable(Log log, EscapePlug plugin) {
         this.plugin = plugin;
         this.log = plugin.getLogger();
+        // debug
+        debug = plugin.getConfig().getBoolean("plugin.warp.debug");
+        printDebug("Debug is enabled...");
         plugin.getComponentManager().registerCommands(this);
         flatFile = new FlatFile(plugin, this);
         return true;
@@ -83,7 +86,7 @@ public class WarpComponent extends AbstractComponent implements CommandExecutor 
                         if (args.length == 2) {
                             if (args[1].equalsIgnoreCase("-a")) {
                                 flatFile.printWarp(((Player) sender), args[0]);
-                            } else {\
+                            } else {
                                 // Processes arguemtns - player
                                 String[] playerStr = args[1].split(",");
                                 Player[] players = new Player[playerStr.length];

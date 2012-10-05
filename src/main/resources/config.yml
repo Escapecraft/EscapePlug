@@ -116,4 +116,5 @@ plugin:
     tourbus:
         enabled: false
     warp:
-        enabled: true;
+        enabled: true
+        debug: false
