@@ -40,6 +40,15 @@ commands:
         aliases: [unhat, unhatme, unhm]
         description: Command to take your "hat" off.
         usage: /<command> - takes item off head
+    warp:
+        description: Warps you location to a pre-defined location
+        usage: /<command> <name> [player,player2,etc] - Warps you [or another player] to a pre-defined location
+    setwarp:
+        description: Sets a warp location
+        usage: /<command> <name> - Sets a warp location
+    remwarp:
+        description: removes a warp location
+        usage: /<command> <name> - removes a warp location
     who:
         description: Gives Information about the online Players.
         usage:  |
@@ -97,6 +106,7 @@ permissions:
       escapeplug.blockalert: true
       escapeplug.afkbooter: true
       escapeplug.endreset: true
+      escapeplug.warp: true
   escapeplug.lockdown:
     description: gives full permission on Lockdown-mode.
     children:
@@ -183,4 +193,15 @@ permissions:
       escapeplug.endreset.clear: true
   escapeplug.tourbus.port:
     description: allow use of port command for tourbus
+    default: op
+  escapeplug.warp:
+    description: Use warp all commands
+    children:
+      escapeplug.warp.tele: true
+      escapeplug.warp.edit: true
+  escapeplug.warp.tele:
+    description: Use warp commands to teleport
+    default: op
+  escapeplug.warp.tele:
+    description: Use warp commands edit warps
     default: op
