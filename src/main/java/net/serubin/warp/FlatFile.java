@@ -168,7 +168,9 @@ public class FlatFile {
             Entry<String, WarpData> next = it.next();
             WarpData nextWarp = next.getValue();
             // alphabetize
-            sender.sendMessage(ChatColor.YELLOW + nextWarp.getName() + "("
+            sender.sendMessage(ChatColor.GOLD + nextWarp.getName()
+                    + ChatColor.YELLOW + " ("
+                    + nextWarp.getLoc().getWorld().getName() + ", "
                     + nextWarp.getLoc().getBlockX() + ", "
                     + nextWarp.getLoc().getBlockY() + ", "
                     + nextWarp.getLoc().getBlockZ() + ")");
