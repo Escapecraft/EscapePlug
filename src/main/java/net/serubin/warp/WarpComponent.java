@@ -15,8 +15,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.tulonsae.mc.util.Log;
 
-@ComponentDescriptor(name = "Warps", slug = "warps", version = "1.1")
-@BukkitCommand(command = { "warp", "setwarp", "remwarp" })
+@ComponentDescriptor(name = "Warps", slug = "warps", version = "1.2")
+@BukkitCommand(command = { "warp", "setwarp", "remwarp", "warplist" })
 public class WarpComponent extends AbstractComponent implements CommandExecutor {
     private EscapePlug plugin;
     private FlatFile flatFile;
@@ -33,7 +33,9 @@ public class WarpComponent extends AbstractComponent implements CommandExecutor 
         this.log = plugin.getLogger();
         // debug
         debug = plugin.getConfig().getBoolean("plugin.warp.debug");
-        printDebug("Debug is enabled...");
+        if (debug) {
+            printDebug("Debug is enabled...");
+        }
         plugin.getComponentManager().registerCommands(this);
         flatFile = new FlatFile(plugin, this);
         return true;
@@ -50,6 +52,7 @@ public class WarpComponent extends AbstractComponent implements CommandExecutor 
             String commandLabel, String[] args) {
         this.sender = sender;
         if (sender instanceof Player) {
+
             if (commandLabel.equalsIgnoreCase("warp")) {
                 if (sender.hasPermission("escapeplug.warp.tele")
                         || sender.hasPermission("escapeplug.warp.edit")
@@ -58,8 +61,7 @@ public class WarpComponent extends AbstractComponent implements CommandExecutor 
                     Location warpLoc;
                     silent = false;
                     if (args.length == 0) {
-                        flatFile.printWarps(((Player) sender));
-                        return true;
+                        return false;
                     } else {
                         if (args[0].equalsIgnoreCase("-s")) {
                             silent = true;
@@ -145,7 +147,7 @@ public class WarpComponent extends AbstractComponent implements CommandExecutor 
                             }
                             // Standard warp
                         } else if (args.length == 1) {
-                            // TODO add coords and world to message
+
                             sender.sendMessage(ChatColor.YELLOW
                                     + "Warping you to " + ChatColor.GOLD
                                     + args[0] + ChatColor.YELLOW + " ("
@@ -199,6 +201,19 @@ public class WarpComponent extends AbstractComponent implements CommandExecutor 
                             + "You don't have permission!");
                     return true;
                 }
+            } else if (commandLabel.equalsIgnoreCase("warplist")) {
+                if (sender.hasPermission("escapeplug.warp")
+                        || sender.hasPermission("escapeplug.warp.edit")
+                        || sender.isOp()) {
+                    if (args.length == 0) {
+                        flatFile.printWarps(((Player) sender));
+                        return true;
+                    } else {
+                        return false;
+                    }
+
+                }
+
             }
 
         } else {
