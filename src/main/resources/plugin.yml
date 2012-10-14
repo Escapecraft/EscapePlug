@@ -42,13 +42,16 @@ commands:
         usage: /<command> - takes item off head
     warp:
         description: Warps you location to a pre-defined location
-        usage: /<command> <name> [player,player2,etc] - Warps you [or another player] to a pre-defined location
+        usage: /<command> [-s] <name> [-a] [player,player2,etc] - Warps you [or another player] to a pre-defined location; [-a] Show's warp info; [-s] specifies if the player being warped is to be informed of who is warping them.
     setwarp:
         description: Sets a warp location
         usage: /<command> <name> - Sets a warp location
     remwarp:
         description: removes a warp location
         usage: /<command> <name> - removes a warp location
+    warplist:
+        description: removes a warp location
+        usage: /<command> - lists all avalible warps
     who:
         description: Gives Information about the online Players.
         usage:  |

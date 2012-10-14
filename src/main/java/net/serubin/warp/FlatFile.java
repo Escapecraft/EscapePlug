@@ -40,6 +40,7 @@ public class FlatFile {
     private int pitch = 6;
     // Hashmaps
     private Map<String, WarpData> warps = new HashMap<String, WarpData>();
+    private Map<String, WarpData> disabledWarps = new HashMap<String, WarpData>();
 
     private Logger log;
     private WarpComponent warpClass;
@@ -114,7 +115,7 @@ public class FlatFile {
             return true;
         } else {
             warpClass.printPlayer(ChatColor.RED + "This warp does not exsist!");
-            return true;
+            return false;
         }
     }
 
@@ -145,11 +146,9 @@ public class FlatFile {
         sender.sendMessage(ChatColor.YELLOW + "World: " + ChatColor.GOLD
                 + warp.getLoc().getWorld().getName());
         sender.sendMessage(ChatColor.YELLOW + "X: " + ChatColor.GOLD
-                + warp.getLoc().getBlockX());
-        sender.sendMessage(ChatColor.YELLOW + "Y: " + ChatColor.GOLD
-                + warp.getLoc().getBlockY());
-        sender.sendMessage(ChatColor.YELLOW + "Z: " + ChatColor.GOLD
-                + warp.getLoc().getBlockZ());
+                + warp.getLoc().getBlockX() + ChatColor.YELLOW + " Y: "
+                + ChatColor.GOLD + warp.getLoc().getBlockY() + ChatColor.YELLOW
+                + " Z: " + ChatColor.GOLD + warp.getLoc().getBlockZ());
         sender.sendMessage(ChatColor.YELLOW + "Created by: " + ChatColor.GOLD
                 + warp.getUser());
         sender.sendMessage(ChatColor.YELLOW + "On: " + ChatColor.GOLD
@@ -167,13 +166,18 @@ public class FlatFile {
         while (it.hasNext()) {
             Entry<String, WarpData> next = it.next();
             WarpData nextWarp = next.getValue();
-            // alphabetize
-            sender.sendMessage(ChatColor.GOLD + nextWarp.getName()
-                    + ChatColor.YELLOW + " ("
-                    + nextWarp.getLoc().getWorld().getName() + ", "
-                    + nextWarp.getLoc().getBlockX() + ", "
-                    + nextWarp.getLoc().getBlockY() + ", "
-                    + nextWarp.getLoc().getBlockZ() + ")");
+            try {
+                sender.sendMessage(ChatColor.GOLD + nextWarp.getName()
+                        + ChatColor.YELLOW + " ("
+                        + nextWarp.getLoc().getWorld().getName() + ", "
+                        + nextWarp.getLoc().getBlockX() + ", "
+                        + nextWarp.getLoc().getBlockY() + ", "
+                        + nextWarp.getLoc().getBlockZ() + ")");
+            } catch (NullPointerException NPE) {
+                log.warning("There was an issue displaying warp "
+                        + nextWarp.getName() + ":");
+                NPE.printStackTrace();
+            }
         }
     }
 
@@ -195,6 +199,7 @@ public class FlatFile {
             }
         }
         // Loads data
+        // TODO alphabetize
         warpClass.printDebug("Starting to load data...");
         warps.clear();
         try {
@@ -205,7 +210,6 @@ public class FlatFile {
             int lineNumber = 0;
             while (line != null) {
                 warpClass.printDebug(line);
-                lineNumber++;
                 String[] warp = line.split(",");
                 // Processes coords
                 String[] coordString = warp[this.coords].split(":");
@@ -233,19 +237,27 @@ public class FlatFile {
                             + Integer.toString(lineNumber) + "!");
                 }
                 if (!warps.containsKey(warp[name])) {
-                    warps.put(
-                            warp[name].toLowerCase(),
-                            new WarpData(warp[name].toLowerCase(),
-                                    new Location(plugin.getServer().getWorld(
-                                            warp[world]), coord[0], coord[1],
-                                            coord[2]), warp[date], warp[user],
-                                    yapi[0], yapi[1]));
+                    if (plugin.getServer().getWorld(warp[world]) != null) {
+                        warps.put(warp[name].toLowerCase(), new WarpData(
+                                warp[name].toLowerCase(), new Location(plugin
+                                        .getServer().getWorld(warp[world]),
+                                        coord[0], coord[1], coord[2]),
+                                warp[date], warp[user], yapi[0], yapi[1]));
+                        lineNumber++;
+                    } else {
+                        log.warning(warp[name] + " was not loaded, world '"
+                                + warp[world] + "' does not exist! ("
+                                + warp[world] + ", " + coord[0] + ", "
+                                + coord[1] + ", " + coord[2] + ")(Line "
+                                + lineNumber + ")");
+                    }
                 } else {
                     warpClass.printDebug(warp[name] + " already in map!");
                 }
                 line = in.readLine();
             }
             in.close();
+            log.info(Integer.toString(lineNumber) + " warps loaded!");
         } catch (IOException e) {
             log.warning("[Warps] There was an error loading warp data...");
             e.printStackTrace();
@@ -253,7 +265,7 @@ public class FlatFile {
         }
         warpClass.printDebug("Finished loading data... no error detected.");
         for (Entry<String, WarpData> entry : warps.entrySet()) {
-            warpClass.printDebug(entry.toString());
+            warpClass.printDebug(entry.getValue().toString());
         }
         return true;
     }
@@ -274,16 +286,19 @@ public class FlatFile {
             while (it.hasNext()) {
                 Entry<String, WarpData> next = it.next();
                 WarpData nextWarp = next.getValue();
-                outWarps = nextWarp.getName() + ","
-                        + nextWarp.getLoc().getWorld().getName() + ","
-                        + nextWarp.getLoc().getX() + ":"
-                        + nextWarp.getLoc().getY() + ":"
-                        + nextWarp.getLoc().getZ() + "," + nextWarp.getUser()
-                        + "," + nextWarp.getDate() + ","
-                        + nextWarp.getLoc().getYaw() + ","
-                        + nextWarp.getLoc().getPitch() + ",";
-                out.write(outWarps);
-                out.newLine();
+                if (nextWarp != null) {
+                    log.info("Name: " + nextWarp.getName());
+                    outWarps = nextWarp.getName() + ","
+                            + nextWarp.getLoc().getWorld().getName() + ","
+                            + nextWarp.getLoc().getX() + ":"
+                            + nextWarp.getLoc().getY() + ":"
+                            + nextWarp.getLoc().getZ() + ","
+                            + nextWarp.getUser() + "," + nextWarp.getDate()
+                            + "," + nextWarp.getLoc().getYaw() + ","
+                            + nextWarp.getLoc().getPitch() + ",";
+                    out.write(outWarps);
+                    out.newLine();
+                }
             }
 
             out.close();
