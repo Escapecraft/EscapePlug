@@ -212,6 +212,10 @@ public class WarpComponent extends AbstractComponent implements CommandExecutor 
                         return false;
                     }
 
+                } else {
+                    sender.sendMessage(ChatColor.RED
+                            + "You don't have permission!");
+                    return true;
                 }
 
             }
