@@ -287,7 +287,6 @@ public class FlatFile {
                 Entry<String, WarpData> next = it.next();
                 WarpData nextWarp = next.getValue();
                 if (nextWarp != null) {
-                    log.info("Name: " + nextWarp.getName());
                     outWarps = nextWarp.getName() + ","
                             + nextWarp.getLoc().getWorld().getName() + ","
                             + nextWarp.getLoc().getX() + ":"
