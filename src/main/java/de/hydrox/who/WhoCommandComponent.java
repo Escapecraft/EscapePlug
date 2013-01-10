@@ -80,7 +80,9 @@ public class WhoCommandComponent extends AbstractComponent implements CommandExe
 				if (perms != null) {
 					String group = perms.getPlayerGroup(player.getName());
 					String groupPrefix = perms.getGroupInfo(group, "prefix");
-					groupPrefix = groupPrefix.replace("&", "\247");
+					if (groupPrefix != null) {
+					    groupPrefix = groupPrefix.replace("&", "\247");
+					}
 					sender.sendMessage(ChatColor.GOLD + "Group: " + groupPrefix + group);
 					String playerPrefix = perms.getPlayerInfo(player.getName(), "prefix");
 					String effectivePrefix = "";
