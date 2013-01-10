@@ -94,6 +94,14 @@ commands:
     tour:
         description: 
         usage: /<command> [join|leave]
+    kit:
+        description: Provides you with a kit!
+        permission: escapeplug.kit.command.kit
+        usage: /<command> [kitname]
+    kit-admin:
+        description: manages kits
+        permission: escapeplug.kit.command.kitadmin
+        usage: /<command> [make|del] kitname [cooldown]
 permissions:
   escapeplug.*:
     description: Supernode for EscapePlug commands.

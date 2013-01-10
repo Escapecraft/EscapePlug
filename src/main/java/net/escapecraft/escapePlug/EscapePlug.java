@@ -104,6 +104,7 @@ public class EscapePlug extends JavaPlugin {
         componentManager.addComponent(WarpComponent.class);
 
         componentManager.addComponent(TourBusComponent.class);
+        componentManager.addComponent(EscapeKitComponent.class);
 
         // start components
         componentManager.startupComponents();
