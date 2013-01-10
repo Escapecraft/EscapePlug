@@ -13,6 +13,7 @@ import org.tulonsae.afkbooter.AfkBooter;
 import org.tulonsae.antixray.AntiXrayComponent;
 import org.tulonsae.mc.util.Log;
 
+import com.tehbeard.kit.EscapeKitComponent;
 import com.tehbeard.tourbus.TourBusComponent;
 
 import uk.co.oliwali.HawkEye.HawkEye;
