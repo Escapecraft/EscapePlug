@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -74,7 +75,7 @@ public class EscapeKitComponent extends AbstractComponent{
 		//load contexts
 		if(loadContext){
 			contextConfig = YamlConfiguration.loadConfiguration(dbContextFile); 
-			
+
 			ConfigurationSection players = contextConfig.getConfigurationSection("contexts");
 			if(players!=null){
 				for(String player : players.getKeys(false)){
@@ -90,12 +91,16 @@ public class EscapeKitComponent extends AbstractComponent{
 	 * Save kit Data
 	 */
 	public void saveData(){
-		kitConfig.set("kits",kits.values());
-		
+		List<Kit> kit = new ArrayList<Kit>();
+		for(Kit k : kits.values()){
+			kit.add(k);
+		}
+		kitConfig.set("kits",kit);
+
 		for( Entry<String, Set<KitContext>> e : KitContext.getAllContexts().entrySet()){
 			contextConfig.set(e.getKey(), e.getValue());
 		}
-		
+
 
 		try {
 			kitConfig.save(dbKitsFile);
