@@ -19,7 +19,8 @@ public class KitAdminCommand implements CommandExecutor{
 			String[] args) {
 
 
-		if(args.length==2 && sender instanceof Player){
+
+		if(args.length>=2 && sender instanceof Player){
 			if(args[0].equalsIgnoreCase("make")){
 				String name = args[1];
 				int timer = 0;
@@ -41,8 +42,11 @@ public class KitAdminCommand implements CommandExecutor{
 				dataManager.removeKit(args[1]);
 				dataManager.saveData();
 			}
+
+			return true;
 		}
-		return true;
+		return false;
+		
 	}
 
 }

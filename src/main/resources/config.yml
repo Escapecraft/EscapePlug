@@ -1,4 +1,6 @@
 plugin:
+    kitplugin:
+        enabled: true
     areablock:
         enabled: true
     antislime:
