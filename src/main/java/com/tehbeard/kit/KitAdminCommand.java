@@ -41,8 +41,10 @@ public class KitAdminCommand implements CommandExecutor{
 				dataManager.removeKit(args[1]);
 				dataManager.saveData();
 			}
+			return true;
 		}
-		return true;
+		return false;
+		
 	}
 
 }
