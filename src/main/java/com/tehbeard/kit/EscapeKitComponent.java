@@ -76,11 +76,7 @@ public class EscapeKitComponent extends AbstractComponent{
 		//load contexts
 		if(loadContext){
 			contextConfig = YamlConfiguration.loadConfiguration(dbContextFile); 
-<<<<<<< HEAD
-			
-=======
 
->>>>>>> EC/develop
 			ConfigurationSection players = contextConfig.getConfigurationSection("contexts");
 			if(players!=null){
 				for(String player : players.getKeys(false)){
@@ -96,14 +92,7 @@ public class EscapeKitComponent extends AbstractComponent{
 	 * Save kit Data
 	 */
 	public void saveData(){
-<<<<<<< HEAD
-		kitConfig.set("kits",kits.values());
-		
-		for( Entry<String, Set<KitContext>> e : KitContext.getAllContexts().entrySet()){
-			contextConfig.set(e.getKey(), e.getValue());
-		}
-		
-=======
+
 		List<Kit> kit = new ArrayList<Kit>();
 		for(Kit k : kits.values()){
 			kit.add(k);
@@ -114,7 +103,6 @@ public class EscapeKitComponent extends AbstractComponent{
 			contextConfig.set(e.getKey(), e.getValue());
 		}
 
->>>>>>> EC/develop
 
 		try {
 			kitConfig.save(dbKitsFile);
