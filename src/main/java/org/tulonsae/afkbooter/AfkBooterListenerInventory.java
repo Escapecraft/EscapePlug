@@ -6,7 +6,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 
 /**
- * Handle PlayerInventoryEvent.
+ * Handles PlayerInventoryEvent.
  */
 public class AfkBooterListenerInventory implements Listener {
 
@@ -18,6 +18,6 @@ public class AfkBooterListenerInventory implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void playerJoin(InventoryOpenEvent event) {
-        afkBooter.getPlayerActivity().recordActivity(event.getPlayer().getName());
+        afkBooter.recordActivity(event.getPlayer().getName());
     }
 }

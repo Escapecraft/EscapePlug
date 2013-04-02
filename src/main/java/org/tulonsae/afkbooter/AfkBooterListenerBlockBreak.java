@@ -6,7 +6,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 
 /**
- * Handle BlockBreakEvent.
+ * Handles BlockBreakEvent.
  */
 public class AfkBooterListenerBlockBreak implements Listener {
 
@@ -18,6 +18,6 @@ public class AfkBooterListenerBlockBreak implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void playerJoin(BlockBreakEvent event) {
-        afkBooter.getPlayerActivity().recordActivity(event.getPlayer().getName());
+        afkBooter.recordActivity(event.getPlayer().getName());
     }
 }

@@ -6,7 +6,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 
 /**
- * Handle PlayerInteractEntityEvent.
+ * Handles PlayerInteractEntityEvent.
  */
 public class AfkBooterListenerInteractEntity implements Listener {
 
@@ -19,7 +19,7 @@ public class AfkBooterListenerInteractEntity implements Listener {
     @EventHandler(priority = EventPriority.MONITOR)
     public void playerJoin(PlayerInteractEntityEvent event) {
         if (!event.isCancelled()) {
-             afkBooter.getPlayerActivity().recordActivity(event.getPlayer().getName());
+             afkBooter.recordActivity(event.getPlayer().getName());
         }
     }
 }
