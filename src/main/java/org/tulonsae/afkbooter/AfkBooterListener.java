@@ -7,7 +7,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 /**
- * Handle PlayerJoinEvent and PlayerQuitEvent.
+ * Handles PlayerJoinEvent and PlayerQuitEvent.
  */
 public class AfkBooterListener implements Listener {
 
@@ -23,7 +23,7 @@ public class AfkBooterListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void playerJoin(PlayerJoinEvent event) {
-        afkBooter.getPlayerActivity().recordActivity(event.getPlayer().getName());
+        afkBooter.recordActivity(event.getPlayer().getName());
         if (afkBooter.getMovementTrackerFlag()) {
             movementTracker.addPlayer(event.getPlayer());
         }
@@ -31,7 +31,7 @@ public class AfkBooterListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void playerQuit(PlayerQuitEvent event) {
-        afkBooter.getPlayerActivity().removePlayer(event.getPlayer().getName());
+        afkBooter.removePlayerFromActivityList(event.getPlayer().getName());
         if (afkBooter.getMovementTrackerFlag()) {
             movementTracker.removePlayer(event.getPlayer().getName());
         }

@@ -2,10 +2,10 @@ package org.tulonsae.afkbooter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.logging.Logger;
-import net.escapecraft.component.BukkitCommand;
+import java.util.Set;
 
+import net.escapecraft.component.BukkitCommand;
 import net.escapecraft.escapePlug.EscapePlug;
 
 import org.bukkit.ChatColor;
@@ -81,7 +81,7 @@ public class AfkBooterCommand implements CommandExecutor {
 
     private boolean handleListExemptCommand(CommandSender sender) {
 
-        ConcurrentSkipListSet<String> exemptPlayers = afkBooter.getExemptList().getPlayers();
+        Set<String> exemptPlayers = afkBooter.getExemptList();
 
         if (exemptPlayers.size() == 0) {
             sender.sendMessage("Exempt players list is empty.");
@@ -99,7 +99,7 @@ public class AfkBooterCommand implements CommandExecutor {
             return true;
         }
 
-        ConcurrentSkipListSet<String> exemptPlayers = afkBooter.getExemptList().getPlayers();
+        Set<String> exemptPlayers = afkBooter.getExemptList();
 
         for (String name : args) {
             name = name.trim().toLowerCase();
@@ -108,7 +108,7 @@ public class AfkBooterCommand implements CommandExecutor {
                 continue;
             }
 
-            afkBooter.getExemptList().addPlayer(name, sender.getName());
+            afkBooter.addPlayer(name, sender.getName());
             sender.sendMessage("Added player '" + name + "' to the exempt list.");
         }
 
@@ -122,7 +122,7 @@ public class AfkBooterCommand implements CommandExecutor {
             return true;
         }
 
-        ConcurrentSkipListSet<String> exemptPlayers = afkBooter.getExemptList().getPlayers();
+        Set<String> exemptPlayers = afkBooter.getExemptList();
 
         for (String name : args) {
             name = name.trim().toLowerCase();
@@ -131,10 +131,11 @@ public class AfkBooterCommand implements CommandExecutor {
                 continue;
             }
 
-            afkBooter.getExemptList().removePlayer(name, sender.getName());
+            afkBooter.removePlayerFromExemptList(name, sender.getName());
             sender.sendMessage("Removed player '" + name + "' from the exempt list.");
         }
 
         return true;
     }
+
 }

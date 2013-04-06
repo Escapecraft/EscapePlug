@@ -1,6 +1,6 @@
 package org.tulonsae.afkbooter;
 
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.HashMap;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -9,9 +9,12 @@ import net.escapecraft.escapePlug.EscapePlug;
 
 /**
  * Schedules a Bukkit process to periodically determine if players have moved.
- * Uses this method instead of the PlayerMoveEvent.  If player is using a
- * vehicle when checked and ignore-vehicle-movement config setting is true,
- * the move is not counted as activity.
+ * <p />
+ * Uses this method instead of the PlayerMoveEvent in order to reduce load
+ * by not listening to every move event.
+ * <p />
+ * If the player is using a vehicle when checked and the ignore-vehicle-movement
+ * config setting is true, then the move is not counted as activity.
  *
  * @author Tulonsae
  * Original author morganm.  Idea is the same, but algorithm rewritten by
@@ -25,8 +28,13 @@ public class MovementTracker implements Runnable {
     // config settings
     private boolean isIgnoreVehicleMovement;
 
-    private ConcurrentHashMap<String, Location> lastLoc = new ConcurrentHashMap<String, Location>();
+    private HashMap<String, Location> lastLoc = new HashMap<String, Location>();
     
+    /**
+     * Constructs this object.
+     *
+     * @param afkBooter the AfkBooter component object
+     */
     public MovementTracker(AfkBooter afkBooter) {
         this.afkBooter = afkBooter;
         this.plugin = afkBooter.getPlugin();
@@ -40,13 +48,23 @@ public class MovementTracker implements Runnable {
             addPlayer(player);
         }
 
-        afkBooter.writeDebugMsg("created MovementTracker object.");
+        afkBooter.writeDebugMsg("created MovementTracker object");
     }
     
+    /**
+     * Removes a player from the last location list.
+     *
+     * @param playerName name of player to remove
+     */
     public void removePlayer(String playerName) {
         lastLoc.remove(playerName);
     }
     
+    /**
+     * Adds a player and their location to the last location list.
+     *
+     * @param player player to add
+     */
     public void addPlayer(Player player) {
         Location curLoc = player.getLocation();
         String name = player.getName();
@@ -56,7 +74,14 @@ public class MovementTracker implements Runnable {
         }
     }
     
+    /**
+     * Gets the last location of each player.
+     * <p />
+     * The method for the Bukkit scheduler to run.
+     */ 
     public void run() {
+        afkBooter.writeDebugMsg("begin MovementTracker.run()..."); 
+
         for (String name : lastLoc.keySet()) {
             Player player = plugin.getServer().getPlayer(name);
             if (player == null) {
@@ -76,14 +101,16 @@ public class MovementTracker implements Runnable {
                 // then update location, but don't count this move as active
                 addPlayer(player);
                 if (!isIgnoreVehicleMovement || !player.isInsideVehicle()) {
-                    afkBooter.getPlayerActivity().recordActivity(name);
+                    afkBooter.recordActivity(name);
                 }
             }
         }
+
+        afkBooter.writeDebugMsg("...end MovementTracker.run()"); 
     }
 
     /**
-     * Get configuration settings from escapeplug config file.
+     * Gets configuration settings from escapeplug config file.
      */
     private void loadConfig() {
 
@@ -93,4 +120,5 @@ public class MovementTracker implements Runnable {
         // save any changes
         plugin.saveConfig();
     }
+
 }

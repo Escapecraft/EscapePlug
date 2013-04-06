@@ -6,7 +6,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerDropItemEvent;
 
 /**
- * Handle PlayerDropItemEvent.
+ * Handles PlayerDropItemEvent.
  */
 public class AfkBooterListenerDropItem implements Listener {
 
@@ -19,7 +19,7 @@ public class AfkBooterListenerDropItem implements Listener {
     @EventHandler(priority = EventPriority.MONITOR)
     public void playerJoin(PlayerDropItemEvent event) {
         if (!event.isCancelled()) {
-            afkBooter.getPlayerActivity().recordActivity(event.getPlayer().getName());
+            afkBooter.recordActivity(event.getPlayer().getName());
         }
     }
 }
