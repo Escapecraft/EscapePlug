@@ -3,6 +3,7 @@ import java.util.Collection;
 
 import net.escapecraft.component.BukkitCommand;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -40,8 +41,8 @@ public class KitCommand implements CommandExecutor{
 		if(args.length==1 && sender instanceof Player){
 			Kit kit = dataManager.getKit(args[0]);
 			if(kit == null){
-				sender.sendMessage(ChatColor.RED + " Kit does not exist");
-				return true;
+			    sender.sendMessage(ChatColor.RED + " Kit does not exist");
+			    return true;
 			}
 
 			switch(kit.giveKit((Player)sender)){
@@ -57,6 +58,16 @@ public class KitCommand implements CommandExecutor{
 				}
 				break;
 			}
+		}
+		else if(sender.isOp() && args.length == 2) //Add support for console and command block
+		{
+		    Kit kit = dataManager.getKit(args[0]);
+		    if(kit == null){
+		        sender.sendMessage(ChatColor.RED + " Kit does not exist");
+		        return true;
+		    }
+		    
+		    kit.giveKit(Bukkit.getPlayer(args[1]),true,true);
 		}
 
 		return true;

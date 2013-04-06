@@ -125,7 +125,7 @@ public class Kit implements ConfigurationSerializable {
 		return giveKit(player,(
 				player.hasPermission("escapeplug.kit.kits.*.nocooldown")||
 				player.hasPermission("escapeplug.kit.kits." + name + ".nocooldown")
-				));
+				),false);
 	}
 	
 	/**
@@ -134,7 +134,7 @@ public class Kit implements ConfigurationSerializable {
 	 * @param overrideContexts if set to true, any existing context (timer) is ignored
 	 * @return
 	 */
-	public Result giveKit(Player player,boolean overrideContexts){
+	public Result giveKit(Player player,boolean overrideContexts,boolean overridePermissions){
 		
 		if(!overrideContexts){
 			for(KitContext kc : KitContext.getContexts(player.getName())){
@@ -145,7 +145,7 @@ public class Kit implements ConfigurationSerializable {
 				}
 			}
 		}
-		if(!canUsePerm(player)){
+		if(!canUsePerm(player) && !overridePermissions){
 			return Result.PERM;
 		}
 		for(ItemStack item : items){
