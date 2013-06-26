@@ -2,8 +2,8 @@ package net.escapecraft.escapePlug;
 
 import java.util.logging.Logger;
 
-import me.tehbeard.BeardStat.BeardStat;
-import me.tehbeard.BeardStat.containers.PlayerStatManager;
+import com.tehbeard.BeardStat.BeardStat;
+import com.tehbeard.BeardStat.containers.PlayerStatManager;
 import net.escapecraft.component.ComponentManager;
 import net.serubin.hatme.HatComponent;
 import net.serubin.warp.WarpComponent;
