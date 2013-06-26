@@ -40,6 +40,10 @@ public class KitContext implements ConfigurationSerializable{
 	public boolean canUseTime(){
 		return (timeIn < System.currentTimeMillis());
 	}
+	
+	public long timeTill(){
+		return (timeIn - System.currentTimeMillis())/1000L;
+	}
 
 	public static Set<KitContext> getContexts(String player){
 		if(!contexts.containsKey(player)){
