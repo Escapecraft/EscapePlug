@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -91,6 +92,7 @@ public class EscapeKitComponent extends AbstractComponent{
 	 * Save kit Data
 	 */
 	public void saveData(){
+
 		List<Kit> kit = new ArrayList<Kit>();
 		for(Kit k : kits.values()){
 			kit.add(k);

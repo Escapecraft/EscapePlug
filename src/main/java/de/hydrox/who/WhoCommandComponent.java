@@ -2,7 +2,7 @@ package de.hydrox.who;
 
 import java.util.Arrays;
 
-import me.tehbeard.BeardStat.containers.PlayerStatManager;
+import com.tehbeard.BeardStat.containers.PlayerStatManager;
 import net.escapecraft.component.AbstractComponent;
 import net.escapecraft.component.BukkitCommand;
 import net.escapecraft.component.ComponentDescriptor;
@@ -94,7 +94,7 @@ public class WhoCommandComponent extends AbstractComponent implements CommandExe
 					sender.sendMessage(ChatColor.GOLD + "Shown Name: " + effectivePrefix + player.getName());
 				}
 				if (beardStatManager!=null) {
-					long seconds = beardStatManager.getPlayerBlob(player.getName()).getStat("stats","playedfor").getValue();
+					long seconds = beardStatManager.getPlayerBlob(player.getName()).getStats(".*",".*","stats","playedfor").getValue();
 					int weeks   = (int) seconds / 604800;
 					int days = (int)Math.ceil((seconds -604800*weeks) / 86400);
 					int hours = (int)Math.ceil((seconds - (86400 * days + 604800*weeks)) / 3600);
