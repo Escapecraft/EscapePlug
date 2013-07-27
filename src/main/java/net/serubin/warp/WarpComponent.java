@@ -23,7 +23,6 @@ public class WarpComponent extends AbstractComponent implements CommandExecutor 
     private Logger log;
 
     boolean debug = false;
-    private boolean silent = false;
 
     private CommandSender sender;
 
@@ -51,33 +50,18 @@ public class WarpComponent extends AbstractComponent implements CommandExecutor 
     public boolean onCommand(CommandSender sender, Command cmd,
             String commandLabel, String[] args) {
         this.sender = sender;
-        if (sender instanceof Player) {
+        boolean isPlayer = (sender instanceof Player) ? true : false;
 
             if (commandLabel.equalsIgnoreCase("warp")) {
-                if (sender.hasPermission("escapeplug.warp.tele")
-                        || sender.hasPermission("escapeplug.warp.edit")
-                        || sender.isOp()) {
+                if (sender.hasPermission("escapeplug.warp.tele")) {
                     WarpData warp;
                     Location warpLoc;
-                    silent = false;
-                    if (args.length == 0) {
-                        return false;
-                    } else {
-                        if (args[0].equalsIgnoreCase("-s")) {
-                            silent = true;
-                            args = stripArg(args, 0);
-                            for (String str : args) {
-                                printDebug(str);
-                            }
-                        }
+                    Player targetPlayer;
+                    
+                    if (args.length == 0) return false;
+                    
                         warp = flatFile.getWarp(args[0]);
                         // checks if warp is valid
-                        if (warp == null) {
-                            sender.sendMessage(ChatColor.GOLD + args[0]
-                                    + ChatColor.RED
-                                    + " is not a existing warp!");
-                            return true;
-                        }
 
                         // yaw-pitch workaround
                         warpLoc = warp.getLoc();
@@ -85,51 +69,62 @@ public class WarpComponent extends AbstractComponent implements CommandExecutor 
                         warpLoc.setYaw(warp.getYaw());
 
                         // checks for second argument
-                        if (args.length == 2) {
-                            if (args[1].equalsIgnoreCase("-a")) {
-                                flatFile.printWarp(((Player) sender), args[0]);
+                        if (args.length >= 2) {
+                            if (args[0].equalsIgnoreCase("-i") && args.length == 2) {
+                                if (flatFile.getWarp(args[1]) == null) {
+                                    sender.sendMessage(ChatColor.GOLD + args[0]
+                                    + ChatColor.RED
+                                    + " is not an existing warp!");
+                                } else {
+                                flatFile.printWarp(sender, args[1]);
+                                }
                             } else {
-                                // Processes arguemtns - player
-                                String[] playerStr = args[1].split(",");
-                                Player[] players = new Player[playerStr.length];
-                                if (!args[1].equalsIgnoreCase("-a")) {
-                                    int i = 0;
-                                    for (String str : playerStr) {
-                                        players[i] = plugin.getServer()
-                                                .getPlayer(str);
-                                        if (players[i] == null) {
-                                            sender.sendMessage(ChatColor.RED
+                                // Processes arguments - player(s)
+                                    if (flatFile.getWarp(args[args.length - 1]) == null) {
+                                        sender.sendMessage(ChatColor.GOLD + args[0]
+                                            + ChatColor.RED + " is not an existing warp!");
+                                        return true;
+                                    }
+                                    
+                                    Player[] players;
+                                    
+                                    if (args.length == 2 && args[0] == "*") {
+                                        players = plugin.getServer().getOnlinePlayers();
+                                    } else {
+                                        String[] playerStr = new String[args.length - 1];
+                                        for (int i = 0; i < (args.length - 1); i++) {
+                                            playerStr[i] = args[i]; 
+                                        }
+                                        
+                                        players = new Player[playerStr.length];
+                                        int i = 0;
+                                        for (String str : playerStr) {
+                                            players[i] = plugin.getServer()
+                                                   .getPlayer(str);
+                                            if (players[i] == null) {
+                                                sender.sendMessage(ChatColor.RED
                                                     + "Player "
                                                     + ChatColor.GOLD + str
                                                     + ChatColor.RED
                                                     + " could not be found.");
-                                            stripArg(players, i);
-                                        } else {
-                                            i++;
+                                                stripArg(players, i);
+                                            } else {
+                                                i++;
+                                            }
                                         }
                                     }
-                                }
                                 // Sends player message and teleports for each
                                 // player
                                 String sucessMessage = "";
                                 for (Player player : players) {
                                     try {
-                                        if (!silent) {
-                                            player.sendMessage(ChatColor.YELLOW
-                                                    + "You have been warped to "
-                                                    + ChatColor.GOLD + args[0]
-                                                    + ChatColor.YELLOW + " by "
-                                                    + ChatColor.GOLD
-                                                    + sender.getName()
-                                                    + ChatColor.YELLOW + ".");
-                                        }
                                         printDebug("Warping "
                                                 + player.getName() + " to "
                                                 + warp.getName());
                                         player.teleport(warpLoc);
                                         sucessMessage += " " + player.getName();
                                     } catch (NullPointerException NPE) {
-
+                                        NPE.printStackTrace();
                                     }
                                 }
                                 String wasWere = "";
@@ -147,7 +142,16 @@ public class WarpComponent extends AbstractComponent implements CommandExecutor 
                             }
                             // Standard warp
                         } else if (args.length == 1) {
-
+                            if (!isPlayer) {
+                                sender.sendMessage("You cannot warp from the console!");
+                                return true;
+                            }
+                            if (flatFile.getWarp(args[args.length - 1]) == null) {
+                                        sender.sendMessage(ChatColor.GOLD + args[0]
+                                            + ChatColor.RED + " is not an existing warp!");
+                                        return true;
+                            }
+                            
                             sender.sendMessage(ChatColor.YELLOW
                                     + "Warping you to " + ChatColor.GOLD
                                     + args[0] + ChatColor.YELLOW + " ("
@@ -159,7 +163,6 @@ public class WarpComponent extends AbstractComponent implements CommandExecutor 
                             ((Player) sender).teleport(warpLoc);
                             return true;
                         }
-                    }
 
                     return true;
                 } else {
@@ -168,11 +171,14 @@ public class WarpComponent extends AbstractComponent implements CommandExecutor 
                     return true;
                 }
             } else if (commandLabel.equalsIgnoreCase("setwarp")) {
-                if (sender.hasPermission("escapeplug.warp.edit")
-                        || sender.isOp()) {
+                if (sender.hasPermission("escapeplug.warp.edit")) {
                     if (args.length == 0) {
                         return false;
                     }
+                    if (!isPlayer) {
+                                sender.sendMessage("You cannot  set warps from the console!");
+                                return true;
+                            }
                     if (flatFile.addWarp(args[0],
                             ((Player) sender).getLocation(), ((Player) sender))) {
                         sender.sendMessage(ChatColor.GOLD + args[0]
@@ -186,8 +192,7 @@ public class WarpComponent extends AbstractComponent implements CommandExecutor 
                 }
 
             } else if (commandLabel.equalsIgnoreCase("remwarp")) {
-                if (sender.hasPermission("escapeplug.warp.edit")
-                        || sender.isOp()) {
+                if (sender.hasPermission("escapeplug.warp.edit")) {
                     if (args.length == 0) {
                         return false;
                     }
@@ -202,9 +207,7 @@ public class WarpComponent extends AbstractComponent implements CommandExecutor 
                     return true;
                 }
             } else if (commandLabel.equalsIgnoreCase("warplist")) {
-                if (sender.hasPermission("escapeplug.warp")
-                        || sender.hasPermission("escapeplug.warp.edit")
-                        || sender.isOp()) {
+                if (sender.hasPermission("escapeplug.warp")) {
                     if (args.length == 0) {
                         flatFile.printWarps(((Player) sender));
                         return true;
@@ -219,18 +222,6 @@ public class WarpComponent extends AbstractComponent implements CommandExecutor 
                 }
 
             }
-
-        } else {
-            if (commandLabel.equalsIgnoreCase("warp") && args.length == 0) {
-                flatFile.printWarps(sender);
-            } else if (commandLabel.equalsIgnoreCase("warp")
-                    && args.length == 1) {
-                flatFile.printWarp(sender, args[0]);
-            } else {
-                sender.sendMessage("This command cannot be used via console.");
-            }
-            return true;
-        }
         return false;
     }
 

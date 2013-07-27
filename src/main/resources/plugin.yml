@@ -213,6 +213,6 @@ permissions:
   escapeplug.warp.tele:
     description: Use warp commands to teleport
     default: op
-  escapeplug.warp.tele:
+  escapeplug.warp.edit:
     description: Use warp commands edit warps
     default: op
