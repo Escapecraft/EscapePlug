@@ -81,7 +81,7 @@ public class WarpComponent extends AbstractComponent implements CommandExecutor 
                             } else {
                                 // Processes arguments - player(s)
                                     if (flatFile.getWarp(args[args.length - 1]) == null) {
-                                        sender.sendMessage(ChatColor.GOLD + args[0]
+                                        sender.sendMessage(ChatColor.GOLD + args[args.length - 1]
                                             + ChatColor.RED + " is not an existing warp!");
                                         return true;
                                     }
