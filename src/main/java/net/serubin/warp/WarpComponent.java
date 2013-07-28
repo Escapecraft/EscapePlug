@@ -60,8 +60,7 @@ public class WarpComponent extends AbstractComponent implements CommandExecutor 
                     
                     if (args.length == 0) return false;
                     
-                        warp = flatFile.getWarp(args[0]);
-                        // checks if warp is valid
+                        warp = flatFile.getWarp(args[args.length -1]);
 
                         // yaw-pitch workaround
                         warpLoc = warp.getLoc();
