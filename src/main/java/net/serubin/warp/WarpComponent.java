@@ -55,18 +55,19 @@ public class WarpComponent extends AbstractComponent implements CommandExecutor 
             if (commandLabel.equalsIgnoreCase("warp")) {
                 if (sender.hasPermission("escapeplug.warp.tele")) {
                     WarpData warp;
-                    Location warpLoc;
-                    Player targetPlayer;
+                    Location warpLoc = null;
                     
                     if (args.length == 0) return false;
                     
                         warp = flatFile.getWarp(args[args.length -1]);
 
                         // yaw-pitch workaround
-                        warpLoc = warp.getLoc();
-                        warpLoc.setPitch(warp.getPitch());
-                        warpLoc.setYaw(warp.getYaw());
-
+                        if (warp != null) {
+                            warpLoc = warp.getLoc();
+                            warpLoc.setPitch(warp.getPitch());
+                            warpLoc.setYaw(warp.getYaw());
+                        }
+                        
                         // checks for second argument
                         if (args.length >= 2) {
                             if (args[0].equalsIgnoreCase("-i") && args.length == 2) {
@@ -87,7 +88,7 @@ public class WarpComponent extends AbstractComponent implements CommandExecutor 
                                     
                                     Player[] players;
                                     
-                                    if (args.length == 2 && args[0] == "*") {
+                                    if (args.length == 2 && args[0].equalsIgnoreCase("*")) {
                                         players = plugin.getServer().getOnlinePlayers();
                                     } else {
                                         String[] playerStr = new String[args.length - 1];
@@ -123,7 +124,7 @@ public class WarpComponent extends AbstractComponent implements CommandExecutor 
                                         player.teleport(warpLoc);
                                         sucessMessage += " " + player.getName();
                                     } catch (NullPointerException NPE) {
-                                        NPE.printStackTrace();
+                                        printDebug("Could not find players array");
                                     }
                                 }
                                 String wasWere = "";
