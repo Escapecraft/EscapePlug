@@ -220,9 +220,8 @@ public class WarpComponent extends AbstractComponent implements CommandExecutor 
                             + "You don't have permission!");
                     return true;
                 }
-
             }
-        return false;
+            return false;
     }
 
     /**

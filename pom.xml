@@ -46,7 +46,7 @@
     <dependency>
         <groupId>com.tehbeard</groupId>
         <artifactId>BeardStat</artifactId>
-        <version>0.6.1</version>
+        <version>0.6.2-s1-1.6.1-ec</version>
     </dependency>
     <dependency>
         <groupId>uk.co.oliwali</groupId>
