@@ -56,7 +56,7 @@ public class WarpComponent extends AbstractComponent implements CommandExecutor 
                 if (sender.hasPermission("escapeplug.warp.tele")) {
                     WarpData warp;
                     Location warpLoc = null;
-                    
+                    int playerCount = 0;
                     if (args.length == 0) return false;
                     
                         warp = flatFile.getWarp(args[args.length -1]);
@@ -110,6 +110,7 @@ public class WarpComponent extends AbstractComponent implements CommandExecutor 
                                                 stripArg(players, i);
                                             } else {
                                                 i++;
+                                                playerCount++;
                                             }
                                         }
                                     }
@@ -122,18 +123,18 @@ public class WarpComponent extends AbstractComponent implements CommandExecutor 
                                                 + player.getName() + " to "
                                                 + warp.getName());
                                         player.teleport(warpLoc);
-                                        sucessMessage += " " + player.getName();
+                                        sucessMessage += player.getName() + " ";
                                     } catch (NullPointerException NPE) {
                                         printDebug("Could not find players array");
                                     }
                                 }
                                 String wasWere = "";
                                 if (sucessMessage.isEmpty()) {
-                                    sucessMessage = "No one";
-                                } else if (players.length == 1) {
-                                    wasWere = " was";
+                                    sucessMessage = "No one ";
+                                } else if (playerCount <= 1) {
+                                    wasWere = "was";
                                 } else {
-                                    wasWere = " were";
+                                    wasWere = "were all";
                                 }
                                 sender.sendMessage(ChatColor.GOLD
                                         + sucessMessage + ChatColor.YELLOW
@@ -176,7 +177,7 @@ public class WarpComponent extends AbstractComponent implements CommandExecutor 
                         return false;
                     }
                     if (!isPlayer) {
-                                sender.sendMessage("You cannot  set warps from the console!");
+                                sender.sendMessage("You cannot set warps from the console!");
                                 return true;
                             }
                     if (flatFile.addWarp(args[0],
