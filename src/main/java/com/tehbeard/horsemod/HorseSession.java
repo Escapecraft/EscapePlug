@@ -9,6 +9,7 @@ public class HorseSession {
 	
 	public enum HorseState{
 		NONE,
-		TRANSFER
+		TRANSFER,
+		INFO
 	}
 }
