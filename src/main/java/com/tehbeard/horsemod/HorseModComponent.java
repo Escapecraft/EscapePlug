@@ -146,6 +146,7 @@ public class HorseModComponent extends AbstractComponent implements CommandExecu
 					return;
 				}
 				horse.setOwner(p);
+				player.sendMessage("Horse transferred to " + p);
 			}
 			break;
 		case INFO:
@@ -163,10 +164,6 @@ public class HorseModComponent extends AbstractComponent implements CommandExecu
 			
 			break;
 		}
-
-
-
-
 	}
 
 	private boolean isMyHorse(Horse horse,Player player,String overridePerm){

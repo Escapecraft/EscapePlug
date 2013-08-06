@@ -4,6 +4,7 @@ import java.util.logging.Logger;
 
 import com.tehbeard.BeardStat.BeardStat;
 import com.tehbeard.BeardStat.containers.PlayerStatManager;
+
 import net.escapecraft.component.ComponentManager;
 import net.serubin.hatme.HatComponent;
 import net.serubin.warp.WarpComponent;
@@ -13,6 +14,7 @@ import org.tulonsae.afkbooter.AfkBooter;
 import org.tulonsae.antixray.AntiXrayComponent;
 import org.tulonsae.mc.util.Log;
 
+import com.tehbeard.horsemod.HorseModComponent;
 import com.tehbeard.kit.EscapeKitComponent;
 import com.tehbeard.tourbus.TourBusComponent;
 
@@ -106,6 +108,7 @@ public class EscapePlug extends JavaPlugin {
 
         componentManager.addComponent(TourBusComponent.class);
         componentManager.addComponent(EscapeKitComponent.class);
+        componentManager.addComponent(HorseModComponent.class);
 
         // start components
         componentManager.startupComponents();

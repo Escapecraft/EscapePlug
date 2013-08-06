@@ -102,6 +102,9 @@ commands:
         description: manages kits
         permission: escapeplug.kit.command.kitadmin
         usage: /<command> [make|del] kitname [cooldown]
+    horsemod:
+        description: horse controls
+        usage: /<command> transfer|info [player]
 permissions:
   escapeplug.*:
     description: Supernode for EscapePlug commands.
