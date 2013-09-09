@@ -80,7 +80,7 @@ public class HorseModComponent extends AbstractComponent implements CommandExecu
 				
 				Player p = Bukkit.getPlayerExact(args[1]);
 				if(p == null){
-					player.sendMessage("Can only transfer to players who are online");
+					player.sendMessage(ChatColor.RED + "Can only transfer to players who are online");
 					return true;
 				}
 				horseSession.toOwner = args[1];
@@ -108,7 +108,7 @@ public class HorseModComponent extends AbstractComponent implements CommandExecu
 
 		if(holder instanceof Horse){
 			Horse horse = (Horse)holder;
-			if(!isMyHorse(horse, (Player) event.getPlayer(),PERM_INV)){
+			if(!haveHorsePermission(horse, (Player) event.getPlayer(),PERM_INV)){
 				event.setCancelled(true);
 			}
 
@@ -124,9 +124,9 @@ public class HorseModComponent extends AbstractComponent implements CommandExecu
 		Player player = event.getPlayer();
 		HorseSession horseSession = getSession(player.getName());
 
-		boolean canInv      = isMyHorse(horse, event.getPlayer(),PERM_INV);
-		boolean canRide     = isMyHorse(horse, event.getPlayer(),PERM_RIDE);
-		boolean canTransfer = isMyHorse(horse, event.getPlayer(),PERM_TRANSFER);
+		boolean canInv      = haveHorsePermission(horse, event.getPlayer(),PERM_INV);
+		boolean canRide     = haveHorsePermission(horse, event.getPlayer(),PERM_RIDE);
+		boolean canTransfer = haveHorsePermission(horse, event.getPlayer(),PERM_TRANSFER);
 
 		switch(horseSession.state){
 		case NONE:
@@ -147,6 +147,7 @@ public class HorseModComponent extends AbstractComponent implements CommandExecu
 				}
 				horse.setOwner(p);
 				player.sendMessage("Horse transferred to " + p);
+				horseSession.resetState();
 			}
 			break;
 		case INFO:
@@ -161,17 +162,30 @@ public class HorseModComponent extends AbstractComponent implements CommandExecu
 					ChatColor.GOLD + "Color: " + ChatColor.WHITE + color,
 					ChatColor.GOLD + "Type: " + ChatColor.WHITE + type
 			});
-			
+			horseSession.resetState();
 			break;
 		}
 	}
 
-	private boolean isMyHorse(Horse horse,Player player,String overridePerm){
+	/**
+	 * Checks if a player is allowed to access a horse by virtue of owning said horse or having a specific permission
+	 * @param horse
+	 * @param player
+	 * @param overridePerm
+	 * @return
+	 */
+	private boolean haveHorsePermission(Horse horse,Player player,String overridePerm){
 		return isMyHorse(horse,player.getName()) || player.hasPermission(overridePerm);
 	}
-
+	
+	/**
+	 * Check if player owns a horse
+	 * @param horse
+	 * @param name
+	 * @return
+	 */
 	private boolean isMyHorse(Horse horse, String name) {
-		return horse.getOwner().getName().equals(name);
+		return horse.getOwner().getName().equalsIgnoreCase(name);
 	}
 
 	private HorseSession getSession(String player){

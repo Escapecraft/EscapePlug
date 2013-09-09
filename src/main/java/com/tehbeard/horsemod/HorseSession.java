@@ -6,6 +6,10 @@ public class HorseSession {
 	
 	public String toOwner = null;
 
+	public void resetState(){
+		state = HorseState.NONE;
+		toOwner = null;
+	}
 	
 	public enum HorseState{
 		NONE,
