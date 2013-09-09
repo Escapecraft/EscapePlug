@@ -78,13 +78,14 @@ public class HorseModComponent extends AbstractComponent implements CommandExecu
 
 			if(args[0].equals("transfer") && args.length == 2){
 				HorseSession horseSession = getSession(player.getName());
-				horseSession.state = HorseState.TRANSFER;
+				
 				
 				Player p = Bukkit.getPlayerExact(args[1]);
 				if(p == null){
 					player.sendMessage(ChatColor.RED + "Can only transfer to players who are online");
 					return true;
 				}
+				horseSession.state = HorseState.TRANSFER;
 				horseSession.toOwner = args[1];
 				return true;
 			}
