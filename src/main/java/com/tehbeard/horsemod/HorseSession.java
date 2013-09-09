@@ -2,7 +2,7 @@ package com.tehbeard.horsemod;
 
 public class HorseSession {
 	
-	public HorseState state;
+	public HorseState state = HorseState.NONE;
 	
 	public String toOwner = null;
 

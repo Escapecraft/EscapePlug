@@ -87,12 +87,14 @@ public class HorseModComponent extends AbstractComponent implements CommandExecu
 				}
 				horseSession.state = HorseState.TRANSFER;
 				horseSession.toOwner = args[1];
+				player.sendMessage("Right click a horse you own to transfer it to " + args[1]);
 				return true;
 			}
 
 			if(args[0].equals("info")){
 				HorseSession pses = getSession(player.getName());
 				pses.state = HorseState.INFO;
+				player.sendMessage("Right click a horse to get information on it");
 				return true;
 			}
 
@@ -149,7 +151,7 @@ public class HorseModComponent extends AbstractComponent implements CommandExecu
 					return;
 				}
 				horse.setOwner(p);
-				player.sendMessage("Horse transferred to " + p);
+				player.sendMessage("Horse transferred to " + p.getDisplayName());
 				horseSession.resetState();
 			}
 			break;
