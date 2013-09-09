@@ -219,3 +219,11 @@ permissions:
   escapeplug.warp.edit:
     description: Use warp commands edit warps
     default: op
+escapeplug.horsemod.override.inventory:
+        default: op
+escapeplug.horsemod.override.transfer:
+        default: op
+escapeplug.horsemod.override.damage:
+        default: op
+escapeplug.horsemod.override.ride:
+        default: op
