@@ -13,6 +13,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.inventory.InventoryHolder;
@@ -193,6 +195,24 @@ public class HorseModComponent extends AbstractComponent implements CommandExecu
 			session.putSession(player, new HorseSession());
 		}
 		return session.getSession(player);
+	}
+	
+	
+	@EventHandler(ignoreCancelled=true,priority=EventPriority.HIGHEST)
+	public void horseDamageProtect(EntityDamageEvent event){
+		if(event.getEntity() instanceof Horse == false){return;}
+		
+		Horse horse = (Horse) event.getEntity();
+		boolean ownerOnline = Bukkit.getPlayerExact(horse.getOwner().getName()) != null;
+		
+		event.setCancelled(!ownerOnline);
+		
+		if(event instanceof EntityDamageByEntityEvent){
+			EntityDamageByEntityEvent ede = (EntityDamageByEntityEvent)event;
+			if(ede.getDamager() instanceof Player){
+				event.setCancelled(!((Player)ede.getDamager()).hasPermission(PERM_DAMAGE));
+			}
+		}
 	}
 
 }
