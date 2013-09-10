@@ -190,7 +190,8 @@ public class HorseModComponent extends AbstractComponent implements CommandExecu
 	 * @return
 	 */
 	private boolean isMyHorse(Horse horse, String name) {
-		return horse.getOwner().getName().equalsIgnoreCase(name);
+		
+		return !horse.isTamed() || horse.getOwner().getName().equalsIgnoreCase(name);
 	}
 
 	private HorseSession getSession(String player){
