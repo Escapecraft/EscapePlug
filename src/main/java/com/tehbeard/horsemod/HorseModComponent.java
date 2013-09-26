@@ -5,11 +5,14 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Horse;
 import org.bukkit.entity.Horse.Color;
 import org.bukkit.entity.Horse.Variant;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
+import org.bukkit.entity.TNTPrimed;
+import org.bukkit.entity.Tameable;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -136,11 +139,11 @@ public class HorseModComponent extends AbstractComponent implements CommandExecu
 		switch(horseSession.state){
 		case NONE:
 			if(player.isSneaking()){
-				event.setCancelled(!canInv);return;
+				event.setCancelled(!canInv);player.updateInventory();return;//UpdateInventory to fix leash disappearing
 			}
 			else
 			{
-				event.setCancelled(!canRide);return;
+				event.setCancelled(!canRide);player.updateInventory();return;//UpdateInventory to fix leash disappearing
 			}
 		case TRANSFER:
 			event.setCancelled(true);
@@ -211,12 +214,39 @@ public class HorseModComponent extends AbstractComponent implements CommandExecu
 		
 		event.setCancelled(!ownerOnline);
 		
+		
 		if(event instanceof EntityDamageByEntityEvent){
 			EntityDamageByEntityEvent ede = (EntityDamageByEntityEvent)event;
-			if(ede.getDamager() instanceof Player){
-				event.setCancelled(!((Player)ede.getDamager()).hasPermission(PERM_DAMAGE));
+			
+			Entity source = ede.getDamager();
+			
+			//Check if TNT
+			if(source instanceof TNTPrimed){
+			    if(((TNTPrimed)source).getSource() == null){event.setCancelled(true);return;}//Cancel unknown TNT
+			    source = ((TNTPrimed)source).getSource();
 			}
+			
+			//Check arrow
+			if(source instanceof Projectile){
+			    source = ((Projectile)source).getShooter();
+			}
+			
+			
+			//Check wolfs
+			if(source instanceof Tameable){
+			    Tameable animal = (Tameable) source;
+			    if(animal.isTamed()){
+			        source = (Entity) animal.getOwner();
+			    }
+			}
+			
+			if(source != null && source instanceof Player){
+				event.setCancelled(!((Player)source).hasPermission(PERM_DAMAGE));
+			}
+			
 		}
+		
+
 	}
 
 }
