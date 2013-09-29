@@ -138,41 +138,44 @@ public class HorseModComponent extends AbstractComponent implements CommandExecu
 
 		switch(horseSession.state){
 		case NONE:
-			if(player.isSneaking()){
-				event.setCancelled(!canInv);player.updateInventory();return;//UpdateInventory to fix leash disappearing
-			}
-			else
-			{
-				event.setCancelled(!canRide);player.updateInventory();return;//UpdateInventory to fix leash disappearing
-			}
-		case TRANSFER:
-			event.setCancelled(true);
-			if(canTransfer){
-				Player p = Bukkit.getPlayerExact(horseSession.toOwner);
-				if(p == null){
-					player.sendMessage("Cannot transfer to offline player");
-					return;
-				}
-				horse.setOwner(p);
-				player.sendMessage("Horse transferred to " + p.getDisplayName());
-				horseSession.resetState();
-			}
-			break;
-		case INFO:
-			event.setCancelled(true);
-			
-			Color color  = horse.getColor();
-			Variant type = horse.getVariant(); 
-			String owner = horse.getOwner().getName();
-			
-			player.sendMessage(new String[]{
-					ChatColor.GOLD + "Owner: " + ChatColor.WHITE + owner,
-					ChatColor.GOLD + "Color: " + ChatColor.WHITE + color,
-					ChatColor.GOLD + "Type: " + ChatColor.WHITE + type
-			});
-			horseSession.resetState();
-			break;
-		}
+            if(player.isSneaking()){
+                event.setCancelled(!canInv);player.updateInventory();return;//UpdateInventory to fix leash disappearing
+            }
+            else
+            {
+                event.setCancelled(!canRide);player.updateInventory();return;//UpdateInventory to fix leash disappearing
+            }
+        case TRANSFER:
+            event.setCancelled(true);
+            if(canTransfer){
+                Player p = Bukkit.getPlayerExact(horseSession.toOwner);
+                if(p == null){
+                    player.sendMessage("Cannot transfer to offline player");
+                    player.sendMessage("Transfer aborted");
+                }
+                else
+                {
+                    horse.setOwner(p);
+                    player.sendMessage("Horse transferred to " + p.getDisplayName());
+                }
+                horseSession.resetState();
+            }
+            break;
+        case INFO:
+            event.setCancelled(true);
+
+            Color color  = horse.getColor();
+            Variant type = horse.getVariant(); 
+            String owner = horse.getOwner() == null ? "None" : horse.getOwner().getName();
+
+            player.sendMessage(new String[]{
+                    ChatColor.GOLD + "Owner: " + ChatColor.WHITE + owner,
+                    ChatColor.GOLD + "Color: " + ChatColor.WHITE + color,
+                    ChatColor.GOLD + "Type: " + ChatColor.WHITE + type
+            });
+            horseSession.resetState();
+            break;
+        }
 	}
 
 	/**
