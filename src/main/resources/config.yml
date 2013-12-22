@@ -9,8 +9,6 @@ plugin:
         enabled: true
     mentortp:
         enabled: true
-    endernerf:
-        enabled: false
     pigjoust:
         enabled: false
     hatme:
