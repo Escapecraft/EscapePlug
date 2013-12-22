@@ -2,8 +2,8 @@ package net.escapecraft.escapePlug;
 
 import java.util.logging.Logger;
 
-import com.tehbeard.BeardStat.BeardStat;
-import com.tehbeard.BeardStat.containers.PlayerStatManager;
+import com.tehbeard.beardstat.BeardStat;
+//import com.tehbeard.beardstat.containers.PlayerStatManager;
 
 import net.escapecraft.component.ComponentManager;
 import net.serubin.hatme.HatComponent;
@@ -19,7 +19,6 @@ import com.tehbeard.kit.EscapeKitComponent;
 import com.tehbeard.tourbus.TourBusComponent;
 
 import uk.co.oliwali.HawkEye.HawkEye;
-import de.hydrox.antiSlime.AntiSlimeComponent;
 import de.hydrox.blockalert.BlockAlertComponent;
 import de.hydrox.bukkit.DroxPerms.DroxPerms;
 import de.hydrox.bukkit.DroxPerms.DroxPermsAPI;
@@ -30,8 +29,8 @@ import de.hydrox.mobcontrol.MobControlComponent;
 import de.hydrox.portalblocker.PortalBlockerComponent;
 import de.hydrox.vanish.VanishComponent;
 import de.hydrox.who.WhoCommandComponent;
+
 import en.tehbeard.areablock.AreaBlockComponent;
-import en.tehbeard.endernerf.EndernerfComponent;
 import en.tehbeard.gamemode.GameModeToggleComponent;
 import en.tehbeard.mentorTeleport.MentorTeleportComponent;
 import en.tehbeard.pigjouster.PigJousterComponent;
@@ -48,11 +47,13 @@ public class EscapePlug extends JavaPlugin {
         return droxPermsAPI;
     }
 
+/*
     public PlayerStatManager getBeardStatManager() {
         return beardStatManager;
     }
+*/
 
-    private PlayerStatManager beardStatManager = null;
+//    private PlayerStatManager beardStatManager = null;
     public static EscapePlug self = null;
 
     @Override
@@ -72,11 +73,13 @@ public class EscapePlug extends JavaPlugin {
             droxPermsAPI = droxPerms.getAPI();
         }
 
+/*
         BeardStat beardStat = ((BeardStat) this.getServer().getPluginManager()
                 .getPlugin("BeardStat"));
         if (beardStat != null) {
             beardStatManager = beardStat.getStatManager();
         }
+*/
 
         HawkEye hawkEye = (HawkEye) this.getServer().getPluginManager()
                 .getPlugin("HawkEye");
@@ -91,10 +94,8 @@ public class EscapePlug extends JavaPlugin {
         componentManager.addComponent(GameModeToggleComponent.class);
         componentManager.addComponent(TimezoneComponent.class);
         componentManager.addComponent(LockdownComponent.class);
-        componentManager.addComponent(EndernerfComponent.class);
         componentManager.addComponent(PigJousterComponent.class);
         componentManager.addComponent(WhoCommandComponent.class);
-        componentManager.addComponent(AntiSlimeComponent.class);
         componentManager.addComponent(MobControlComponent.class);
         componentManager.addComponent(BlockAlertComponent.class);
         componentManager.addComponent(VanishComponent.class);

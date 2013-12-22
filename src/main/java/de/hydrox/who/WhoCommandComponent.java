@@ -2,7 +2,7 @@ package de.hydrox.who;
 
 import java.util.Arrays;
 
-import com.tehbeard.BeardStat.containers.PlayerStatManager;
+//import com.tehbeard.BeardStat.containers.PlayerStatManager;
 import net.escapecraft.component.AbstractComponent;
 import net.escapecraft.component.BukkitCommand;
 import net.escapecraft.component.ComponentDescriptor;
@@ -25,7 +25,7 @@ public class WhoCommandComponent extends AbstractComponent implements CommandExe
 
 	private DroxPermsAPI perms = null;
 	private PlayerComparator playerCompare = null;
-	private PlayerStatManager beardStatManager = null;
+//	private PlayerStatManager beardStatManager = null;
 
 	
 
@@ -93,6 +93,7 @@ public class WhoCommandComponent extends AbstractComponent implements CommandExe
 					}
 					sender.sendMessage(ChatColor.GOLD + "Shown Name: " + effectivePrefix + player.getName());
 				}
+/*
 				if (beardStatManager!=null) {
 					long seconds = beardStatManager.getPlayerBlob(player.getName()).getStats(".*",".*","stats","playedfor").getValue();
 					int weeks   = (int) seconds / 604800;
@@ -115,6 +116,7 @@ public class WhoCommandComponent extends AbstractComponent implements CommandExe
 					}
 					sender.sendMessage(playTime.toString());
 				}
+*/
 				sender.sendMessage(ChatColor.GOLD + "OP: " + player.isOp());
 			}
 		}
@@ -125,7 +127,7 @@ public class WhoCommandComponent extends AbstractComponent implements CommandExe
     public boolean enable(Log log, EscapePlug plugin) {
         this.perms = plugin.getDroxPermsAPI();
         this.playerCompare = new PlayerComparator(perms);
-        this.beardStatManager = plugin.getBeardStatManager();
+//        this.beardStatManager = plugin.getBeardStatManager();
         plugin.getComponentManager().registerCommands(this);
         return true;
     }
