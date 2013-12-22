@@ -4,17 +4,17 @@ plugin:
     areablock:
         enabled: true
     antislime:
-        enabled: true
+        enabled: false
     timezone:
         enabled: true
     togglemode:
-        enabled: false
+        enabled: true
     mentortp:
         enabled: true
     endernerf:
-        enabled: true
+        enabled: false
     pigjoust:
-        enabled: true
+        enabled: false
     hatme:
         enabled: true
 #hatme config
@@ -61,7 +61,7 @@ plugin:
         - 112
         notAllowedMsg: Invalid Item
     mobcontrol:
-        enabled: true
+        enabled: false
         worlds: [testworld]
         mobs: [Snowman]
     lockdown:
@@ -71,21 +71,17 @@ plugin:
     who:
         enabled: true
     blockalert:
-        enabled: true
+        enabled: false
         notifyOnCanceledBreak: false
         notifyOnCanceledPlace: true
         worlds:
             break:
                 survival: 
-# Goldblock
                     - 41
-# Diamondblock
                     - 57
             place:
                 survival:
-# Bedrock
                     - 7
-# TNT
                     - 46
     afkbooter:
         enabled: true
@@ -113,8 +109,8 @@ plugin:
         enabled: true
         worlds: []
     endreset:
-        enabled: true
-        world: survival_the_end
+        enabled: false
+        world: world_the_end
     tourbus:
         enabled: false
     warp:
