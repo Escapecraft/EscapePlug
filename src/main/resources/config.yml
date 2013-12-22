@@ -3,8 +3,6 @@ plugin:
         enabled: true
     areablock:
         enabled: true
-    antislime:
-        enabled: false
     timezone:
         enabled: true
     togglemode:
