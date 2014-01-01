@@ -6,7 +6,6 @@ import java.util.Set;
 import net.escapecraft.component.AbstractComponent;
 import net.escapecraft.component.BukkitCommand;
 import net.escapecraft.component.ComponentDescriptor;
-import net.escapecraft.component.Log;
 import net.escapecraft.escapeplug.EscapePlug;
 
 import org.bukkit.Bukkit;
@@ -72,7 +71,7 @@ public class PigJousterComponent extends AbstractComponent implements CommandExe
     }
 
     @Override
-    public boolean enable(Log log, EscapePlug plugin) {
+    public boolean enable(EscapePlug plugin) {
         plugin.getComponentManager().registerCommands(this);
         Bukkit.getPluginManager().registerEvents(new PigJoustListener(), plugin);
         return true;

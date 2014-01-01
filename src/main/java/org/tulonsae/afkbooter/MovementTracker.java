@@ -22,7 +22,7 @@ import net.escapecraft.escapeplug.EscapePlug;
  */
 public class MovementTracker implements Runnable {
 
-    private final AfkBooter afkBooter;
+    private final AfkBooterComponent afkBooter;
     private EscapePlug plugin;
 
     // config settings
@@ -35,7 +35,7 @@ public class MovementTracker implements Runnable {
      *
      * @param afkBooter the AfkBooter component object
      */
-    public MovementTracker(AfkBooter afkBooter) {
+    public MovementTracker(AfkBooterComponent afkBooter) {
         this.afkBooter = afkBooter;
         this.plugin = afkBooter.getPlugin();
 

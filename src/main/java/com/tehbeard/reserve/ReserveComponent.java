@@ -2,7 +2,6 @@ package com.tehbeard.reserve;
 
 import net.escapecraft.component.AbstractComponent;
 import net.escapecraft.component.ComponentDescriptor;
-import net.escapecraft.component.Log;
 import net.escapecraft.escapeplug.EscapePlug;
 
 import org.bukkit.Bukkit;
@@ -20,7 +19,7 @@ public class ReserveComponent extends AbstractComponent implements Listener {
         if (event.getResult() != Result.KICK_WHITELIST && event.getResult() != Result.KICK_BANNED) {
             if ((Bukkit.getOnlinePlayers().length >= Bukkit.getMaxPlayers())) {
                 if (!event.getPlayer().hasPermission("escapeplug.reserve.allow")) {
-                    EscapePlug.printCon("ATTEMPTING DENIAL!");
+                    log.warning("ATTEMPTING DENIAL!");
                     event.setKickMessage("server is fullup :(");
                     event.setResult(PlayerLoginEvent.Result.KICK_FULL);
                 } else {
@@ -31,7 +30,7 @@ public class ReserveComponent extends AbstractComponent implements Listener {
     }
 
     @Override
-    public boolean enable(Log log, EscapePlug plugin) {
+    public boolean enable(EscapePlug plugin) {
         Bukkit.getPluginManager().registerEvents(this, plugin);
         return true;
     }

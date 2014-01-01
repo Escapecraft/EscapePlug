@@ -6,7 +6,6 @@ import java.util.List;
 import net.escapecraft.component.AbstractComponent;
 import net.escapecraft.component.BukkitCommand;
 import net.escapecraft.component.ComponentDescriptor;
-import net.escapecraft.component.Log;
 import net.escapecraft.escapeplug.EscapePlug;
 
 import org.bukkit.Bukkit;
@@ -32,7 +31,7 @@ public class VanishComponent extends AbstractComponent implements CommandExecuto
     private List<String> fullVanish = new ArrayList<String>();
 
     @Override
-    public boolean enable(Log log, EscapePlug plugin) {
+    public boolean enable(EscapePlug plugin) {
         plugin.getComponentManager().registerCommands(this);
         Bukkit.getPluginManager().registerEvents(this, plugin);
         return true;

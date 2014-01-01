@@ -1,11 +1,8 @@
 package net.serubin.warp;
 
-import java.util.logging.Logger;
-
 import net.escapecraft.component.AbstractComponent;
 import net.escapecraft.component.BukkitCommand;
 import net.escapecraft.component.ComponentDescriptor;
-import net.escapecraft.component.Log;
 import net.escapecraft.escapeplug.EscapePlug;
 
 import org.bukkit.ChatColor;
@@ -20,16 +17,14 @@ import org.bukkit.entity.Player;
 public class WarpComponent extends AbstractComponent implements CommandExecutor {
     private EscapePlug plugin;
     private FlatFile flatFile;
-    private Logger log;
 
     boolean debug = false;
 
     private CommandSender sender;
 
     @Override
-    public boolean enable(Log log, EscapePlug plugin) {
+    public boolean enable(EscapePlug plugin) {
         this.plugin = plugin;
-        this.log = plugin.getLogger();
         // debug
         debug = plugin.getConfig().getBoolean("plugin.warp.debug");
         if (debug) {

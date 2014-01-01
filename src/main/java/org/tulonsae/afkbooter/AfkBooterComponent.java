@@ -1,6 +1,5 @@
 package org.tulonsae.afkbooter;
 
-import java.util.logging.Logger;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -8,7 +7,6 @@ import java.util.Set;
 
 import net.escapecraft.component.AbstractComponent;
 import net.escapecraft.component.ComponentDescriptor;
-import net.escapecraft.component.Log;
 import net.escapecraft.escapeplug.EscapePlug;
 
 /**
@@ -23,15 +21,14 @@ import net.escapecraft.escapeplug.EscapePlug;
  * morganm, but massively rewritten by Tulonsae.  Updated to the latest Bukkit
  * api (1.5.1) for config, event, scheduling, and permission systems.
  */
-@ComponentDescriptor(name="AFKBooter",slug="afkbooter",version="1.1.4")
-public class AfkBooter extends AbstractComponent {
+@ComponentDescriptor(name="AFKBooter",slug="afkbooter",version="1.2")
+public class AfkBooterComponent extends AbstractComponent {
 
-    private static final String VERSION = "1.1.4";
+    private static final String VERSION = "1.2";
 
     private String CONFIG_EXEMPT_PLAYERS = "plugin.afkbooter.exempt-players";
 
     private EscapePlug plugin;
-    private Logger log;
 
     // schedulers
     private MovementTracker movementTracker;
@@ -62,9 +59,8 @@ public class AfkBooter extends AbstractComponent {
      * Called during onEnable()
      */
     @Override
-    public boolean enable(Log log, EscapePlug plugin) {
+    public boolean enable(EscapePlug plugin) {
         this.plugin = plugin;
-        this.log = plugin.getLogger();
         
         // load configuration
         loadConfig();
@@ -342,5 +338,4 @@ public class AfkBooter extends AbstractComponent {
     public Long getTime(String name) {
         return lastActivity.get(name);
     }
-
 }

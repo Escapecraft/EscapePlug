@@ -1,8 +1,9 @@
 package net.escapecraft.escapeplug;
 
-import java.util.logging.Logger;
-
 import org.bukkit.plugin.java.JavaPlugin;
+
+import net.escapecraft.component.ComponentManager;
+import net.escapecraft.component.Log;
 
 import com.tehbeard.areablock.AreaBlockComponent;
 import com.tehbeard.beardstat.BeardStat;
@@ -15,13 +16,10 @@ import com.tehbeard.pigjouster.PigJousterComponent;
 import com.tehbeard.reserve.ReserveComponent;
 import com.tehbeard.tourbus.TourBusComponent;
 
-import net.escapecraft.component.ComponentManager;
-import net.escapecraft.component.Log;
-
 import net.serubin.hatme.HatComponent;
 import net.serubin.warp.WarpComponent;
 
-import org.tulonsae.afkbooter.AfkBooter;
+import org.tulonsae.afkbooter.AfkBooterComponent;
 
 import de.hydrox.blockalert.BlockAlertComponent;
 import de.hydrox.bukkit.DroxPerms.DroxPerms;
@@ -36,35 +34,47 @@ import de.hydrox.who.WhoCommandComponent;
 
 public class EscapePlug extends JavaPlugin {
 
-    private static final Logger log = Logger.getLogger("Minecraft");
     public static EscapePlug self = null;
+    private static final String logPrefix = "EscapePlug";
+    private Log log = new Log(logPrefix);
     private ComponentManager componentManager;
     private DroxPermsAPI droxPermsAPI = null;
     private EntityStatManager beardStatManager = null;
 
     /**
-     * Returns the permissions manager.
+     * Gets the plugin log prefix.
+     * @return the log prefix string
+     */
+    public String getLogPrefix() {
+        return logPrefix;
+    }
+
+    /**
+     * Gets the permissions manager.
      * 
-     * @return
+     * @return the DroxPerms plugin API
      */
     public DroxPermsAPI getDroxPermsAPI() {
         return droxPermsAPI;
     }
 
     /**
-     * Returns the statistics manager.
+     * Gets the statistics manager.
      * 
-     * @return
+     * @return the BeardStat plugin EntityStatManager
      */
     public EntityStatManager getBeardStatManager() {
         return beardStatManager;
     }
 
+    /**
+     * Runs plugin initialization.
+     */
     @Override
     public void onEnable() {
         self = this;
 
-        log.info("[EscapePlug] loading EscapePlug");
+        log.info("starting loading...");
 
         // load/creates/fixes config
         getConfig().options().copyDefaults(true);
@@ -82,8 +92,8 @@ public class EscapePlug extends JavaPlugin {
         }
 
         // start the component manager
-        componentManager = new ComponentManager(this, new Log("EscapePlug"));
-        componentManager.addComponent(AfkBooter.class);
+        componentManager = new ComponentManager(this, log);
+        componentManager.addComponent(AfkBooterComponent.class);
         componentManager.addComponent(AreaBlockComponent.class);
         componentManager.addComponent(BlockAlertComponent.class);
         componentManager.addComponent(EndResetComponent.class);
@@ -105,25 +115,24 @@ public class EscapePlug extends JavaPlugin {
 
         // start components
         componentManager.startupComponents();
-        log.info("[EscapePlug] EscapePlug loaded");
+        log.info("...loading complete");
     }
 
+    /**
+     * Runs plugin shutdown cleanup.
+     */
     @Override
     public void onDisable() {
-        getComponentManager().disableComponents();
+        log.info("unloading...");
+        getComponentManager().shutdownComponents();
         self = null;
-
-        log.info("[EscapePlug] EscapePlug unloaded");
-    }
-
-    public static void printCon(String line) {
-        log.info("[EscapePlug] " + line);
+        log.info("unloaded");
     }
 
     /**
      * Returns the component manager.
      * 
-     * @return
+     * @return the component manager
      */
     public ComponentManager getComponentManager() {
         return componentManager;

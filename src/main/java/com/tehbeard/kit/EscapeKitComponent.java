@@ -17,7 +17,6 @@ import java.util.Set;
 
 import net.escapecraft.component.AbstractComponent;
 import net.escapecraft.component.ComponentDescriptor;
-import net.escapecraft.component.Log;
 import net.escapecraft.escapeplug.EscapePlug;
 
 import org.bukkit.configuration.ConfigurationSection;
@@ -44,7 +43,6 @@ public class EscapeKitComponent extends AbstractComponent {
     private EscapePlug plugin;
 
     private File dbContextFile;
-    private Log log;
 
     public void loadData() {
         loadData(true);
@@ -184,8 +182,7 @@ public class EscapeKitComponent extends AbstractComponent {
     }
 
     @Override
-    public boolean enable(Log log,EscapePlug plugin) {
-        this.log = log;
+    public boolean enable(EscapePlug plugin) {
         this.plugin = plugin;
         dbKitsFile = new File(plugin.getDataFolder(),"kits.yml");
         dbContextFile = new File(plugin.getDataFolder(),"kits-players.yml");

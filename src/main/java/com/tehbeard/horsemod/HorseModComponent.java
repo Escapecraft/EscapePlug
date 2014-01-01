@@ -28,7 +28,6 @@ import com.tehbeard.horsemod.HorseSession.HorseState;
 import net.escapecraft.component.AbstractComponent;
 import net.escapecraft.component.BukkitCommand;
 import net.escapecraft.component.ComponentDescriptor;
-import net.escapecraft.component.Log;
 import net.escapecraft.escapeplug.EscapePlug;
 
 /**
@@ -51,7 +50,7 @@ public class HorseModComponent extends AbstractComponent implements CommandExecu
     private SessionStore<HorseSession> session = new SessionStore<HorseSession>();
 
     @Override
-    public boolean enable(Log log, EscapePlug plugin) {
+    public boolean enable(EscapePlug plugin) {
         plugin.getCommand("horsemod").setExecutor(this);
 
         Bukkit.getPluginManager().registerEvents(session,plugin);

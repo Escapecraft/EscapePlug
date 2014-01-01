@@ -1,11 +1,8 @@
 package net.serubin.hatme;
 
-import java.util.logging.Logger;
-
 import net.escapecraft.component.AbstractComponent;
 import net.escapecraft.component.BukkitCommand;
 import net.escapecraft.component.ComponentDescriptor;
-import net.escapecraft.component.Log;
 import net.escapecraft.escapeplug.EscapePlug;
 
 import org.bukkit.ChatColor;
@@ -18,8 +15,6 @@ import org.bukkit.entity.Player;
 @BukkitCommand(command={"hat","unhat"})
 public class HatComponent extends AbstractComponent implements CommandExecutor {
     
-    private Logger log;
-
     /*
      * Chat Messages
      */
@@ -38,8 +33,7 @@ public class HatComponent extends AbstractComponent implements CommandExecutor {
     private boolean debug = false;
     
     @Override
-    public boolean enable(Log log, EscapePlug plugin) {
-        this.log = plugin.getLogger();
+    public boolean enable(EscapePlug plugin) {
         plugin.getComponentManager().registerCommands(this);
         this.notAllowedMsg = plugin.getConfig().getString("plugin.hatme.notAllowedMsg");
         this.permsHandler = new HatPermsHandler(plugin, plugin.getConfig());

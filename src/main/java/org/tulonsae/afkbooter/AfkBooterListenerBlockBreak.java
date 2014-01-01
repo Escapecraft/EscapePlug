@@ -10,9 +10,9 @@ import org.bukkit.event.block.BlockBreakEvent;
  */
 public class AfkBooterListenerBlockBreak implements Listener {
 
-    private AfkBooter afkBooter;
+    private AfkBooterComponent afkBooter;
 
-    public AfkBooterListenerBlockBreak(AfkBooter afkBooter) {
+    public AfkBooterListenerBlockBreak(AfkBooterComponent afkBooter) {
         this.afkBooter = afkBooter;
     }
 

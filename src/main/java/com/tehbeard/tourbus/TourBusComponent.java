@@ -12,7 +12,6 @@ import org.bukkit.entity.Player;
 
 import net.escapecraft.component.AbstractComponent;
 import net.escapecraft.component.ComponentDescriptor;
-import net.escapecraft.component.Log;
 import net.escapecraft.escapeplug.EscapePlug;
 
 @ComponentDescriptor(name="Tour Bus",slug="tourbus",version="1.00")
@@ -22,7 +21,7 @@ public class TourBusComponent extends AbstractComponent implements CommandExecut
     private boolean open = false;
 
     @Override
-    public boolean enable(Log log, EscapePlug plugin) {
+    public boolean enable(EscapePlug plugin) {
         plugin.getCommand("tour").setExecutor(this);
         return true;
     }

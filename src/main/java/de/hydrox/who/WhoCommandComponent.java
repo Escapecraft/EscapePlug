@@ -10,7 +10,6 @@ import com.tehbeard.beardstat.manager.EntityStatManager;
 import net.escapecraft.component.AbstractComponent;
 import net.escapecraft.component.BukkitCommand;
 import net.escapecraft.component.ComponentDescriptor;
-import net.escapecraft.component.Log;
 import net.escapecraft.escapeplug.EscapePlug;
 
 import org.bukkit.Bukkit;
@@ -130,7 +129,7 @@ public class WhoCommandComponent extends AbstractComponent implements CommandExe
     }
 
     @Override
-    public boolean enable(Log log, EscapePlug plugin) {
+    public boolean enable(EscapePlug plugin) {
         this.perms = plugin.getDroxPermsAPI();
         this.playerCompare = new PlayerComparator(perms);
         this.beardStatManager = plugin.getBeardStatManager();

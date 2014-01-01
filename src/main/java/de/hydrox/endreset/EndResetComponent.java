@@ -8,7 +8,6 @@ import java.util.List;
 import net.escapecraft.component.AbstractComponent;
 import net.escapecraft.component.BukkitCommand;
 import net.escapecraft.component.ComponentDescriptor;
-import net.escapecraft.component.Log;
 import net.escapecraft.escapeplug.EscapePlug;
 
 import org.bukkit.Bukkit;
@@ -44,12 +43,9 @@ public class EndResetComponent extends AbstractComponent implements CommandExecu
     private YamlConfiguration config = new YamlConfiguration();
     private File file;
 
-    private Log log;
-
     @SuppressWarnings("unchecked")
     @Override
-    public boolean enable(Log log, EscapePlug plugin) {
-    this.log = log;
+    public boolean enable(EscapePlug plugin) {
         try {
             file = new File(plugin.getDataFolder(),"endReset.yml");
             file.createNewFile();

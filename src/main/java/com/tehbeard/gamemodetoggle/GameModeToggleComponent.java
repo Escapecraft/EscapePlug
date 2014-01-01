@@ -3,7 +3,6 @@ package com.tehbeard.gamemodetoggle;
 import net.escapecraft.component.AbstractComponent;
 import net.escapecraft.component.BukkitCommand;
 import net.escapecraft.component.ComponentDescriptor;
-import net.escapecraft.component.Log;
 import net.escapecraft.escapeplug.EscapePlug;
 
 import org.bukkit.GameMode;
@@ -31,7 +30,7 @@ public class GameModeToggleComponent extends AbstractComponent implements Comman
     }
 
     @Override
-    public boolean enable(Log log, EscapePlug plugin) {
+    public boolean enable(EscapePlug plugin) {
         plugin.getComponentManager().registerCommands(this);
         return true;
     }

@@ -11,10 +11,10 @@ import org.bukkit.event.player.PlayerQuitEvent;
  */
 public class AfkBooterListener implements Listener {
 
-    private AfkBooter afkBooter;
+    private AfkBooterComponent afkBooter;
     private MovementTracker movementTracker;
 
-    public AfkBooterListener(AfkBooter afkBooter) {
+    public AfkBooterListener(AfkBooterComponent afkBooter) {
         this.afkBooter = afkBooter;
         if (afkBooter.getMovementTrackerFlag()) {
             this.movementTracker = afkBooter.getMovementTracker();

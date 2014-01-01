@@ -10,9 +10,9 @@ import org.bukkit.event.player.PlayerInteractEvent;
  */
 public class AfkBooterListenerInteract implements Listener {
 
-    private AfkBooter afkBooter;
+    private AfkBooterComponent afkBooter;
 
-    public AfkBooterListenerInteract(AfkBooter afkBooter) {
+    public AfkBooterListenerInteract(AfkBooterComponent afkBooter) {
         this.afkBooter = afkBooter;
     }
 

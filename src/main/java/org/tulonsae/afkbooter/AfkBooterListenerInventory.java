@@ -10,9 +10,9 @@ import org.bukkit.event.inventory.InventoryOpenEvent;
  */
 public class AfkBooterListenerInventory implements Listener {
 
-    private AfkBooter afkBooter;
+    private AfkBooterComponent afkBooter;
 
-    public AfkBooterListenerInventory(AfkBooter afkBooter) {
+    public AfkBooterListenerInventory(AfkBooterComponent afkBooter) {
         this.afkBooter = afkBooter;
     }
 

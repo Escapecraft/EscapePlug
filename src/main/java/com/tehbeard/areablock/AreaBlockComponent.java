@@ -16,7 +16,6 @@ import org.bukkit.event.player.PlayerMoveEvent;
 
 import net.escapecraft.component.AbstractComponent;
 import net.escapecraft.component.ComponentDescriptor;
-import net.escapecraft.component.Log;
 import net.escapecraft.escapeplug.EscapePlug;
 
 @ComponentDescriptor(name="Area Block",slug="areablock",version="1.00")
@@ -27,7 +26,7 @@ public class AreaBlockComponent extends AbstractComponent implements Listener, R
     YamlConfiguration config = new YamlConfiguration();
     private File file;
     @Override
-    public boolean enable(Log log, EscapePlug plugin) {
+    public boolean enable(EscapePlug plugin) {
         
         try {
             file = new File(plugin.getDataFolder(),"areas.yml");

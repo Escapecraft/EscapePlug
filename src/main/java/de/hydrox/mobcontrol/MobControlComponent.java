@@ -4,7 +4,6 @@ import java.util.List;
 
 import net.escapecraft.component.AbstractComponent;
 import net.escapecraft.component.ComponentDescriptor;
-import net.escapecraft.component.Log;
 import net.escapecraft.escapeplug.EscapePlug;
 
 import org.bukkit.Bukkit;
@@ -28,7 +27,7 @@ public class MobControlComponent extends AbstractComponent implements Listener {
     }
 
     @Override
-    public boolean enable(Log log, EscapePlug plugin) {
+    public boolean enable(EscapePlug plugin) {
         worlds = plugin.getConfig().getStringList("plugin.mobcontrol.worlds");
         mobs = plugin.getConfig().getStringList("plugin.mobcontrol.mobs");
         Bukkit.getServer().getPluginManager().registerEvents(this, plugin);

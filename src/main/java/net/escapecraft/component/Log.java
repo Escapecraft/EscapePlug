@@ -17,17 +17,17 @@ public class Log {
     private static final Logger log = Logger.getLogger("Minecraft");
 
     /**
-     * Main plugin
+     * Log instance for main plugin
      */
     public Log(String pluginName) {
         this.prefix = "[" + pluginName + "]";
     }
 
     /**
-     * Plugin component
+     * Log instance for a plugin component
      */
     public Log(String pluginName, String componentName) {
-        this.prefix = "[" + pluginName + "]" + ":" + componentName;
+        this.prefix = "[" + pluginName + ":" + componentName + "]";
     }
 
     /**

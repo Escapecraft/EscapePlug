@@ -10,9 +10,9 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
  */
 public class AfkBooterListenerCommand implements Listener {
 
-    private AfkBooter afkBooter;
+    private AfkBooterComponent afkBooter;
 
-    public AfkBooterListenerCommand(AfkBooter afkBooter) {
+    public AfkBooterListenerCommand(AfkBooterComponent afkBooter) {
         this.afkBooter = afkBooter;
     }
 

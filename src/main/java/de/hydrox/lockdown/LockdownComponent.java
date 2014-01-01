@@ -3,7 +3,6 @@ package de.hydrox.lockdown;
 import net.escapecraft.component.AbstractComponent;
 import net.escapecraft.component.BukkitCommand;
 import net.escapecraft.component.ComponentDescriptor;
-import net.escapecraft.component.Log;
 import net.escapecraft.escapeplug.EscapePlug;
 
 import org.bukkit.Bukkit;
@@ -52,7 +51,7 @@ public class LockdownComponent extends AbstractComponent implements CommandExecu
     }
 
     @Override
-    public boolean enable(Log log, EscapePlug plugin) {
+    public boolean enable(EscapePlug plugin) {
         listener = new LockdownListener(plugin);
         Bukkit.getPluginManager().registerEvents(listener , plugin);
         plugin.getComponentManager().registerCommands(this);

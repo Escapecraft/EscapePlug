@@ -10,14 +10,13 @@ import org.bukkit.ChatColor;
 
 import net.escapecraft.component.AbstractComponent;
 import net.escapecraft.component.ComponentDescriptor;
-import net.escapecraft.component.Log;
 import net.escapecraft.escapeplug.EscapePlug;
 
 @ComponentDescriptor(slug="blockalert",name="Block Alert",version="1.00")
 public class BlockAlertComponent extends AbstractComponent {
 
     @Override
-    public boolean enable(Log log, EscapePlug plugin) {
+    public boolean enable(EscapePlug plugin) {
     Map<String, List<Integer>> notifyBlockBreak = new HashMap<String, List<Integer>>();
     Map<String, List<Integer>> notifyBlockPlace = new HashMap<String, List<Integer>>();
     Set<String> worlds = plugin.getConfig().getConfigurationSection("plugin.blockalert.worlds.break.").getKeys(false);

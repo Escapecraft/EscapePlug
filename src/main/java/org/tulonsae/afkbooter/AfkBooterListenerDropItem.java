@@ -10,9 +10,9 @@ import org.bukkit.event.player.PlayerDropItemEvent;
  */
 public class AfkBooterListenerDropItem implements Listener {
 
-    private AfkBooter afkBooter;
+    private AfkBooterComponent afkBooter;
 
-    public AfkBooterListenerDropItem(AfkBooter afkBooter) {
+    public AfkBooterListenerDropItem(AfkBooterComponent afkBooter) {
         this.afkBooter = afkBooter;
     }
 

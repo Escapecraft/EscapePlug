@@ -6,7 +6,6 @@ import java.util.Map;
 import net.escapecraft.component.AbstractComponent;
 import net.escapecraft.component.BukkitCommand;
 import net.escapecraft.component.ComponentDescriptor;
-import net.escapecraft.component.Log;
 import net.escapecraft.escapeplug.EscapePlug;
 
 import org.bukkit.Location;
@@ -84,7 +83,7 @@ public class MentorTeleportComponent extends AbstractComponent implements Comman
     }
 
     @Override
-    public boolean enable(Log log, EscapePlug plugin) {
+    public boolean enable(EscapePlug plugin) {
         this.plugin = plugin;
         prevLoc = new HashMap<String,Location>();
         plugin.getComponentManager().registerCommands(this);

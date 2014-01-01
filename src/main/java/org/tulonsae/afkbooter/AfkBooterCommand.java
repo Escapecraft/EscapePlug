@@ -21,11 +21,11 @@ public class AfkBooterCommand implements CommandExecutor {
 
     private final String PERMISSION_CONFIG = "escapeplug.afkbooter.change";
 
-    private AfkBooter afkBooter;
+    private AfkBooterComponent afkBooter;
     private EscapePlug plugin;
     Logger log;
 
-    public AfkBooterCommand(AfkBooter afkBooter) {
+    public AfkBooterCommand(AfkBooterComponent afkBooter) {
         this.afkBooter = afkBooter;
         this.plugin = afkBooter.getPlugin();
         this.log = plugin.getLogger();

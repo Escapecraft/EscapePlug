@@ -15,7 +15,7 @@ public class KickChecker implements Runnable {
 
     private static final String PERMISSION_EXEMPT = "escapeplug.afkbooter.exempt";
 
-    private AfkBooter afkBooter;
+    private AfkBooterComponent afkBooter;
     private EscapePlug plugin;
 
     // config settings
@@ -29,7 +29,7 @@ public class KickChecker implements Runnable {
      *
      * @param afkBooter the AfkBooter component object
      */
-    public KickChecker(AfkBooter afkBooter) {
+    public KickChecker(AfkBooterComponent afkBooter) {
         this.afkBooter = afkBooter;
         this.plugin = afkBooter.getPlugin();
 
