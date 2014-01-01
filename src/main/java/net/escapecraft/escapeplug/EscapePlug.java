@@ -16,11 +16,12 @@ import com.tehbeard.reserve.ReserveComponent;
 import com.tehbeard.tourbus.TourBusComponent;
 
 import net.escapecraft.component.ComponentManager;
+import net.escapecraft.component.Log;
+
 import net.serubin.hatme.HatComponent;
 import net.serubin.warp.WarpComponent;
 
 import org.tulonsae.afkbooter.AfkBooter;
-import org.tulonsae.mc.util.Log;
 
 import de.hydrox.blockalert.BlockAlertComponent;
 import de.hydrox.bukkit.DroxPerms.DroxPerms;

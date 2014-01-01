@@ -23,19 +23,22 @@ public class ArgumentPack {
     private Map<String,String> flagOptions;
     private List<String> strArgs;
 
-    public ArgumentPack(String[] boolFlags,String[] flagOpts,String[] rawArguments){
+    public ArgumentPack(String[] boolFlags,String[] flagOpts,String[] rawArguments) {
         String r = "";
-        for(String s : rawArguments){
-            if(r.length() > 0){r+=" ";}
+        for (String s : rawArguments) {
+            if (r.length() > 0) {
+                r+=" ";
+            }
             r+=s;
         }
         initialise(boolFlags,flagOpts,r);
     }
-    public ArgumentPack(String[] boolFlags,String[] flagOpts,String rawArguments){
+
+    public ArgumentPack(String[] boolFlags,String[] flagOpts,String rawArguments) {
         initialise(boolFlags,flagOpts,rawArguments);
     }
     
-    private void initialise(String[] boolFlags,String[] flagOpts,String rawArguments){
+    private void initialise(String[] boolFlags,String[] flagOpts,String rawArguments) {
         //initialise
         strArgs = new ArrayList<String>();
         this.boolFlags = new HashSet<String>();
@@ -44,14 +47,14 @@ public class ArgumentPack {
         boolean inQuotes = false;
         StringBuilder token = new StringBuilder();
         List<String> tokens = new ArrayList<String>();
-        for(int i = 0; i< rawArguments.length();i++){
+        for (int i = 0; i< rawArguments.length();i++) {
             char c = rawArguments.charAt(i);
-            switch(c){
+            switch(c) {
             case ' ':
-                if(inQuotes){
+                if (inQuotes) {
                     token.append(c);
-                }else{
-                    if(token.length() > 0){
+                } else {
+                    if (token.length() > 0) {
                         l("" + token.length());
                         tokens.add(token.toString().trim());
                     }
@@ -60,31 +63,31 @@ public class ArgumentPack {
                 }
                 ;break;
             case '"':
-            inQuotes = !inQuotes;
-            l("Swapping to quote mode " +( inQuotes ?"on":"off"));
-            break;
-            default: token.append(c);break;
+                inQuotes = !inQuotes;
+                l("Swapping to quote mode " +( inQuotes ?"on":"off"));
+                break;
+            default:
+                token.append(c);
+                break;
             }
-
         }
-        if(token.length() > 0){
+        if (token.length() > 0) {
             tokens.add(token.toString().trim());
         }
         //parse list of tokens
 
-
         Iterator<String> it = tokens.iterator();
-        while(it.hasNext()){
+        while (it.hasNext()) {
             String tok = it.next();
             //check if it's a potential option (optFlag off, starts with -
-            if(tok.startsWith("-")){
+            if (tok.startsWith("-")) {
                 String t = tok.substring(1);
-                if(inArray(boolFlags, t)){
+                if (inArray(boolFlags, t)) {
                     this.boolFlags.add(t);
                     continue;
                 }
-                if(inArray(flagOpts, t)){
-                    if(it.hasNext()){
+                if (inArray(flagOpts, t)) {
+                    if (it.hasNext()) {
                         l(t);
                         this.flagOptions.put(t, it.next());
                     }
@@ -93,36 +96,34 @@ public class ArgumentPack {
             }
             strArgs.add(tok);
         }
-
-
     }
 
-    private boolean inArray(String[] arr,String search){
-        for(String a : arr){
-            if(a.equalsIgnoreCase(search)){
+    private boolean inArray(String[] arr,String search) {
+        for (String a : arr) {
+            if (a.equalsIgnoreCase(search)) {
                 return true;
             }
         }
         return false;
-
     }
 
-    public boolean getFlag(String flag){
+    public boolean getFlag(String flag) {
         return boolFlags.contains(flag);
     }
     
-    public String getOption(String flag){
+    public String getOption(String flag) {
         return flagOptions.get(flag); 
     }
     
-    public int size(){
+    public int size() {
         return strArgs.size();
     }
     
-    public String get(int index){
+    public String get(int index) {
         return strArgs.size() < index ? strArgs.get(index) : "";
     }
-    public static void main(String[] args){
+
+    public static void main(String[] args) {
         String arg = "create";
         String[] bool = {"a"};
         String[] opt = {"type","c","d"};
@@ -133,7 +134,8 @@ public class ArgumentPack {
         System.out.println(pack.flagOptions.toString());
         System.out.println(pack.getOption("d"));
     }
-    private static void l(String l){
+
+    private static void l(String l) {
         //System.out.println(l);
     }
 }

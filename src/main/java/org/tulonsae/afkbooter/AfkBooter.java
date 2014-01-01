@@ -8,9 +8,8 @@ import java.util.Set;
 
 import net.escapecraft.component.AbstractComponent;
 import net.escapecraft.component.ComponentDescriptor;
+import net.escapecraft.component.Log;
 import net.escapecraft.escapeplug.EscapePlug;
-
-import org.tulonsae.mc.util.Log;
 
 /**
  * AfkBooter component of EscapePlug.

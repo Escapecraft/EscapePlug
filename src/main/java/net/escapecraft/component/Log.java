@@ -1,9 +1,9 @@
-package org.tulonsae.mc.util;
+package net.escapecraft.component;
 
 import java.util.logging.Logger;
 
 /**
- * Logger utility class for TulSys.
+ * Logger utility class for EscapePlug.
  *
  * @author Tulonsae
  */
@@ -31,21 +31,21 @@ public class Log {
     }
 
     /**
-     * Send an info level log to the console.
+     * Sends an info level log to the console.
      */
     public void info(String msg) {
         log.info(prefix + " " + msg);
     }
 
     /**
-     * Send a warning level log to the console.
+     * Sends a warning level log to the console.
      */
     public void warning(String msg) {
         log.warning(prefix + " " + msg);
     }
 
     /**
-     * Send a severe level log to the console.
+     * Sends a severe level log to the console.
      */
     public void severe(String msg) {
         log.severe(prefix + " " + msg);

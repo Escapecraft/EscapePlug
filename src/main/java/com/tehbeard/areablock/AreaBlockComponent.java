@@ -13,16 +13,14 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
-import org.tulonsae.mc.util.Log;
-
-
 
 import net.escapecraft.component.AbstractComponent;
 import net.escapecraft.component.ComponentDescriptor;
+import net.escapecraft.component.Log;
 import net.escapecraft.escapeplug.EscapePlug;
 
 @ComponentDescriptor(name="Area Block",slug="areablock",version="1.00")
-public class AreaBlockComponent extends AbstractComponent implements Listener, Runnable{
+public class AreaBlockComponent extends AbstractComponent implements Listener, Runnable {
 
     ChunkCache<GatedArea> areas = new ChunkCache<GatedArea>();
     public final Map<String,GatedArea> areaMap = new HashMap<String, GatedArea>();
@@ -40,10 +38,10 @@ public class AreaBlockComponent extends AbstractComponent implements Listener, R
 
             
             //load all areas
-            for(String key : config.getKeys(false)){
+            for (String key : config.getKeys(false)) {
                 g = new GatedArea(config.getConfigurationSection(key));
                 areaMap.put(key, g);
-                for(Cuboid area : g.getDetectAreas()){
+                for (Cuboid area : g.getDetectAreas()) {
                     areas.addEntry(area, g);
                 }
             }
@@ -73,7 +71,7 @@ public class AreaBlockComponent extends AbstractComponent implements Listener, R
     @Override
     public void disable() {
         // TODO Auto-generated method stub
-        for(  Entry<String, GatedArea> entry  : areaMap.entrySet()){
+        for (Entry<String, GatedArea> entry  : areaMap.entrySet()) {
             config.set(entry.getKey(),entry.getValue().toConfig());
         }
         try {
@@ -84,28 +82,25 @@ public class AreaBlockComponent extends AbstractComponent implements Listener, R
         }
     }
 
-
     @EventHandler
-    public void onMove(PlayerMoveEvent event){
-        if(event.isCancelled()==false &&
-                (event.getTo().getBlockX() != event.getFrom().getBlockX() || 
-                event.getTo().getBlockY() != event.getFrom().getBlockY() || 
-                event.getTo().getBlockZ() != event.getFrom().getBlockZ() )){
+    public void onMove(PlayerMoveEvent event) {
+        if (event.isCancelled()==false
+                && (event.getTo().getBlockX() != event.getFrom().getBlockX()
+                || event.getTo().getBlockY() != event.getFrom().getBlockY()
+                || event.getTo().getBlockZ() != event.getFrom().getBlockZ())) {
 
-            for(CuboidEntry<GatedArea> entry  :  areas.getEntries(event.getPlayer())){
+            for (CuboidEntry<GatedArea> entry : areas.getEntries(event.getPlayer())) {
                 entry.getEntry().updateArea();
             }
         }
     }
 
     public void run() {
-        for(GatedArea ga : areaMap.values()){
+        for (GatedArea ga : areaMap.values()) {
             
             if(!ga.isOpen()){
                 ga.updateArea();
             }
         }
-
     }
-
 }

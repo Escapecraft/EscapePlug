@@ -10,8 +10,6 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
-
-
 /**
  * Represents a gated area
  * A gated area consists of:
@@ -38,22 +36,21 @@ public class GatedArea {
 
     boolean open = true;
 
-    public GatedArea(int threshold){
+    public GatedArea(int threshold) {
         this.threshold = threshold;
     }
 
-    public GatedArea(ConfigurationSection section){
+    public GatedArea(ConfigurationSection section) {
         this.name = section.getName();
 
         threshold = section.getInt("threshold");
-        for(String s :section.getStringList("areas")){
+        for (String s : section.getStringList("areas")) {
             Cuboid c = new Cuboid();
             c.setCuboid(s);
             detectAreas.add(c);
         }
 
-        for(String s :section.getStringList("gates")){
-
+        for (String s :section.getStringList("gates")) {
             gates.add(new Gate(s));
         }
     }
@@ -62,15 +59,21 @@ public class GatedArea {
      * Returns true if areas have zero players in them
      * @return
      */
-    public boolean isEmpty(){
-        for(Cuboid c : detectAreas){
+    public boolean isEmpty() {
+        for (Cuboid c : detectAreas) {
             int count = 0;
-            for(Player p : Bukkit.getOnlinePlayers()){
+            for (Player p : Bukkit.getOnlinePlayers()) {
 
-                if(c.isInside(p.getLocation())){count++;}
+                if (c.isInside(p.getLocation())) {
+                    count++;
+                }
             }
-            if(count > c.getMaxPly() && c.getMaxPly()!=-1){return true;}
-            if(count > 0){return false;}
+            if (count > c.getMaxPly() && c.getMaxPly()!=-1) {
+                return true;
+            }
+            if (count > 0) {
+                return false;
+            }
         }
 
         return true;
@@ -80,35 +83,35 @@ public class GatedArea {
      * Returns true if area has nessecary number of players
      * @return
      */
-    public boolean isActive(){
+    public boolean isActive() {
         Set<String> ply = new HashSet<String>();
-        for(Cuboid c : detectAreas){
+        for (Cuboid c : detectAreas) {
             int count = 0;
-            for(Player p : Bukkit.getOnlinePlayers()){
-                if(c.isInside(p.getLocation())){ply.add(p.getName());count++;}
+            for (Player p : Bukkit.getOnlinePlayers()) {
+                if (c.isInside(p.getLocation())) {
+                    ply.add(p.getName());count++;
+                }
             }
-            if(count > c.getMaxPly() && c.getMaxPly() != -1){return false;}
+            if (count > c.getMaxPly() && c.getMaxPly() != -1) {
+                return false;
+            }
         }
         return ply.size() >= threshold;
     }
 
+    public void updateArea() {
 
-    public void updateArea(){
-
-        if(open){
-
-            if(isActive()){
+        if (open) {
+            if (isActive()) {
                 //if currently open and number of players needed are inside, close and set open to false.
-                for(Gate g : gates){
+                for (Gate g : gates) {
                     g.close();
                 }
                 open = false;
             }
-        }
-        else
-        {
-            if(isEmpty()){
-                for(Gate g : gates){
+        } else {
+            if (isEmpty()) {
+                for (Gate g : gates) {
                     g.open();
                 }
                 open = true;
@@ -128,22 +131,21 @@ public class GatedArea {
         return open;
     }
 
-    public ConfigurationSection toConfig(){
+    public ConfigurationSection toConfig() {
         ConfigurationSection config = new YamlConfiguration();
         config.set("threshold",threshold);
 
         List<String> areas = new ArrayList<String>();
-        for(Cuboid c :detectAreas){
+        for (Cuboid c : detectAreas) {
             areas.add(c.toString());
         }
         config.set("areas",areas);
 
         List<String> gates = new ArrayList<String>();
-        for(Gate g :this.gates){
+        for (Gate g :this.gates) {
             gates.add(g.toString());
         }
         config.set("gates",gates);
-
 
         return config;
     }

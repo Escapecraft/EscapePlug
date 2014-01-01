@@ -16,43 +16,42 @@ import org.bukkit.event.player.PlayerQuitEvent;
  */
 public class SessionStore<T> implements Listener {
 
-	Map<String,T> sessions;
-	
-	public SessionStore(){
-		sessions = new HashMap<String, T>();
-	}
-	
-	/**
-	 * Put a value into the session store
-	 * @param player
-	 * @param session
-	 */
-	public void putSession(String player,T session){
-		sessions.put(player,session);
-	}
-	
-	/**
-	 * returns if the player has a session stored
-	 * @param player
-	 * @return
-	 */
-	public boolean hasSession(String player){
-		return sessions.containsKey(player);
-	}
-	
-	/**
-	 * returns a session
-	 * @param player
-	 * @return
-	 */
-	public T getSession(String player){
-		return sessions.get(player);
-	}
-	
-		
-	@EventHandler
-	public void logout(PlayerQuitEvent e){
-		sessions.remove(e.getPlayer().getName());
-	}
-	
+    Map<String,T> sessions;
+    
+    public SessionStore(){
+        sessions = new HashMap<String, T>();
+    }
+    
+    /**
+     * Put a value into the session store
+     * @param player
+     * @param session
+     */
+    public void putSession(String player, T session) {
+        sessions.put(player, session);
+    }
+    
+    /**
+     * returns if the player has a session stored
+     * @param player
+     * @return
+     */
+    public boolean hasSession(String player) {
+        return sessions.containsKey(player);
+    }
+    
+    /**
+     * returns a session
+     * @param player
+     * @return
+     */
+    public T getSession(String player) {
+        return sessions.get(player);
+    }
+    
+        
+    @EventHandler
+    public void logout(PlayerQuitEvent e) {
+        sessions.remove(e.getPlayer().getName());
+    }
 }

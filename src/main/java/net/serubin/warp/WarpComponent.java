@@ -5,6 +5,7 @@ import java.util.logging.Logger;
 import net.escapecraft.component.AbstractComponent;
 import net.escapecraft.component.BukkitCommand;
 import net.escapecraft.component.ComponentDescriptor;
+import net.escapecraft.component.Log;
 import net.escapecraft.escapeplug.EscapePlug;
 
 import org.bukkit.ChatColor;
@@ -13,7 +14,6 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.tulonsae.mc.util.Log;
 
 @ComponentDescriptor(name = "Warps", slug = "warps", version = "1.2")
 @BukkitCommand(command = { "warp", "setwarp", "remwarp", "warplist" })

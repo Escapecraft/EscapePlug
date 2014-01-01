@@ -29,7 +29,6 @@ class HatExecutor {
                 }
             }
         } else {
-
             if (!headEmpty(player)) {
                 component.sendMessage(player, ChatColor.RED,
                         component.hatAlreadyOnMessage());

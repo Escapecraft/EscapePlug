@@ -5,13 +5,14 @@ import java.util.logging.Logger;
 import net.escapecraft.component.AbstractComponent;
 import net.escapecraft.component.BukkitCommand;
 import net.escapecraft.component.ComponentDescriptor;
+import net.escapecraft.component.Log;
 import net.escapecraft.escapeplug.EscapePlug;
+
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.tulonsae.mc.util.Log;
 
 @ComponentDescriptor(name="HatMe",slug="hatme",version="2.0.0-ECV")
 @BukkitCommand(command={"hat","unhat"})
@@ -24,7 +25,7 @@ public class HatComponent extends AbstractComponent implements CommandExecutor {
      */
     private final String hatOn = "You now have a hat! Use /unhat to remove it.";
     private final String hatOff = "You have taken off your hat!";
-    private final String noSpace = "You have no space to take of your hat!";
+    private final String noSpace = "You have no space to take off your hat!";
     private final String hatAlreadyOn = "You already have a hat on! Take it off with /unhat.";
     private final String airHead = "You have just tried to put air on your head. Good job.";
     private final String noPerm = "You do not have permission to use this command.";
