@@ -8,6 +8,7 @@ import com.tehbeard.beardstat.BeardStat;
 import com.tehbeard.beardstat.manager.EntityStatManager;
 import com.tehbeard.horsemod.HorseModComponent;
 import com.tehbeard.kit.EscapeKitComponent;
+import com.tehbeard.reserve.ReserveComponent;
 import com.tehbeard.tourbus.TourBusComponent;
 
 import net.escapecraft.component.ComponentManager;
@@ -32,7 +33,6 @@ import en.tehbeard.areablock.AreaBlockComponent;
 import en.tehbeard.gamemode.GameModeToggleComponent;
 import en.tehbeard.mentorTeleport.MentorTeleportComponent;
 import en.tehbeard.pigjouster.PigJousterComponent;
-import en.tehbeard.reserve.ReserveComponent;
 
 public class EscapePlug extends JavaPlugin {
 

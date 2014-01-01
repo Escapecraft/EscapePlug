@@ -1,4 +1,4 @@
-package en.tehbeard.reserve;
+package com.tehbeard.reserve;
 
 import net.escapecraft.component.AbstractComponent;
 import net.escapecraft.component.ComponentDescriptor;
