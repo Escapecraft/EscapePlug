@@ -1,4 +1,4 @@
-package de.hydrox.bukkit.timezone;
+package de.hydrox.timezone;
 
 import java.text.DateFormat;
 import java.text.ParseException;
