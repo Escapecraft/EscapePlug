@@ -1,4 +1,4 @@
-package en.tehbeard.pigjouster;
+package com.tehbeard.pigjouster;
 
 
 import org.bukkit.event.Listener;

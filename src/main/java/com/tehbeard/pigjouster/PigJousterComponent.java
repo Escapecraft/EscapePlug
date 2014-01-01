@@ -1,4 +1,4 @@
-package en.tehbeard.pigjouster;
+package com.tehbeard.pigjouster;
 
 import java.util.HashSet;
 import java.util.Set;
