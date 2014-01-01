@@ -11,7 +11,6 @@ import net.serubin.warp.WarpComponent;
 
 import org.bukkit.plugin.java.JavaPlugin;
 import org.tulonsae.afkbooter.AfkBooter;
-import org.tulonsae.antixray.AntiXrayComponent;
 import org.tulonsae.mc.util.Log;
 
 import com.tehbeard.horsemod.HorseModComponent;
@@ -92,7 +91,6 @@ public class EscapePlug extends JavaPlugin {
         componentManager.addComponent(EndResetComponent.class);
         componentManager.addComponent(HatComponent.class);
         componentManager.addComponent(AfkBooter.class);
-        componentManager.addComponent(AntiXrayComponent.class);
         componentManager.addComponent(WarpComponent.class);
 
         componentManager.addComponent(TourBusComponent.class);
