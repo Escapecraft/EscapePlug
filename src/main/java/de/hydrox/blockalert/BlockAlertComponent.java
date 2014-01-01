@@ -35,11 +35,7 @@ public class BlockAlertComponent extends AbstractComponent {
 	AbstractListener alertListener = null;
 	boolean notifyOnCanceledBreak = plugin.getConfig().getBoolean("plugin.blockalert.notifyOnCanceledBreak");
 	boolean notifyOnCanceledPlace = plugin.getConfig().getBoolean("plugin.blockalert.notifyOnCanceledPlace");
-	if (plugin.isHawkEyeLoaded()) {
-		alertListener = new AlertListenerHawkEye(notifyBlockBreak, notifyBlockPlace, notifyOnCanceledBreak, notifyOnCanceledPlace);
-	} else {
-		alertListener = new AlertListener(notifyBlockBreak, notifyBlockPlace, notifyOnCanceledBreak, notifyOnCanceledPlace);
-	}
+	alertListener = new AlertListener(notifyBlockBreak, notifyBlockPlace, notifyOnCanceledBreak, notifyOnCanceledPlace);
         Bukkit.getPluginManager().registerEvents(alertListener,plugin);
 	return true;
     }

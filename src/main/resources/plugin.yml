@@ -1,7 +1,7 @@
 name: EscapePlug
 main: net.escapecraft.escapePlug.EscapePlug
 version: ${project.version}
-softdepend: [DroxPerms, BeardStat, HawkEye]
+softdepend: [DroxPerms, BeardStat]
 commands:
     pig-active:
         description: Activate pig punching

@@ -18,7 +18,6 @@ import com.tehbeard.horsemod.HorseModComponent;
 import com.tehbeard.kit.EscapeKitComponent;
 import com.tehbeard.tourbus.TourBusComponent;
 
-import uk.co.oliwali.HawkEye.HawkEye;
 import de.hydrox.blockalert.BlockAlertComponent;
 import de.hydrox.bukkit.DroxPerms.DroxPerms;
 import de.hydrox.bukkit.DroxPerms.DroxPermsAPI;
@@ -41,7 +40,6 @@ public class EscapePlug extends JavaPlugin {
     private static final Logger log = Logger.getLogger("Minecraft");
     private ComponentManager componentManager;
     private DroxPermsAPI droxPermsAPI = null;
-    private boolean hawkEyeLoaded = false;
 
     public DroxPermsAPI getDroxPermsAPI() {
         return droxPermsAPI;
@@ -75,12 +73,6 @@ public class EscapePlug extends JavaPlugin {
                 .getPlugin("BeardStat"));
         if (beardStat != null) {
             beardStatManager = beardStat.getStatManager();
-        }
-
-        HawkEye hawkEye = (HawkEye) this.getServer().getPluginManager()
-                .getPlugin("HawkEye");
-        if (hawkEye != null) {
-            hawkEyeLoaded = true;
         }
 
         // start the component manager
@@ -131,9 +123,5 @@ public class EscapePlug extends JavaPlugin {
      */
     public ComponentManager getComponentManager() {
         return componentManager;
-    }
-
-    public boolean isHawkEyeLoaded() {
-        return hawkEyeLoaded;
     }
 }

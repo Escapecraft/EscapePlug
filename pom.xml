@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>net.escapecraft</groupId>
   <artifactId>EscapePlug</artifactId>
-  <version>0.3.6</version>
+  <version>0.3.7</version>
   <packaging>jar</packaging>
   <name>EscapePlug</name>
   <url></url>
@@ -47,13 +47,6 @@
         <groupId>com.tehbeard</groupId>
         <artifactId>BeardStat</artifactId>
         <version>0.7-SNAPSHOT</version>
-    </dependency>
-    <dependency>
-        <groupId>uk.co.oliwali</groupId>
-        <artifactId>HawkEye</artifactId>
-        <version>1.0.5b</version>
-        <scope>system</scope>
-        <systemPath>${project.basedir}/lib/HawkEye.jar</systemPath>
     </dependency>
   </dependencies>
 
