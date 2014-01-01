@@ -3,7 +3,7 @@ package net.escapecraft.escapePlug;
 import java.util.logging.Logger;
 
 import com.tehbeard.beardstat.BeardStat;
-//import com.tehbeard.beardstat.containers.PlayerStatManager;
+import com.tehbeard.beardstat.manager.EntityStatManager;
 
 import net.escapecraft.component.ComponentManager;
 import net.serubin.hatme.HatComponent;
@@ -47,13 +47,11 @@ public class EscapePlug extends JavaPlugin {
         return droxPermsAPI;
     }
 
-/*
-    public PlayerStatManager getBeardStatManager() {
+    public EntityStatManager getBeardStatManager() {
         return beardStatManager;
     }
-*/
 
-//    private PlayerStatManager beardStatManager = null;
+    private EntityStatManager beardStatManager = null;
     public static EscapePlug self = null;
 
     @Override
@@ -73,13 +71,11 @@ public class EscapePlug extends JavaPlugin {
             droxPermsAPI = droxPerms.getAPI();
         }
 
-/*
         BeardStat beardStat = ((BeardStat) this.getServer().getPluginManager()
                 .getPlugin("BeardStat"));
         if (beardStat != null) {
             beardStatManager = beardStat.getStatManager();
         }
-*/
 
         HawkEye hawkEye = (HawkEye) this.getServer().getPluginManager()
                 .getPlugin("HawkEye");

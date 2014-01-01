@@ -2,7 +2,11 @@ package de.hydrox.who;
 
 import java.util.Arrays;
 
-//import com.tehbeard.BeardStat.containers.PlayerStatManager;
+import com.tehbeard.beardstat.BeardStat;
+import com.tehbeard.beardstat.dataproviders.IStatDataProvider;
+import com.tehbeard.beardstat.containers.EntityStatBlob;
+import com.tehbeard.beardstat.manager.EntityStatManager;
+
 import net.escapecraft.component.AbstractComponent;
 import net.escapecraft.component.BukkitCommand;
 import net.escapecraft.component.ComponentDescriptor;
@@ -15,19 +19,19 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
 import org.tulonsae.mc.util.Log;
 
 import de.hydrox.bukkit.DroxPerms.DroxPermsAPI;
 
-@ComponentDescriptor(name="who command",slug="who",version="1.00")
+@ComponentDescriptor(name="who command",slug="who",version="1.01")
 @BukkitCommand(command="who")
 public class WhoCommandComponent extends AbstractComponent implements CommandExecutor {
 
 	private DroxPermsAPI perms = null;
 	private PlayerComparator playerCompare = null;
-//	private PlayerStatManager beardStatManager = null;
+	private EntityStatManager beardStatManager = null;
 
-	
 
 	public boolean onCommand(CommandSender sender, Command cmd,
 			String commandLabel, String[] args) {
@@ -78,45 +82,50 @@ public class WhoCommandComponent extends AbstractComponent implements CommandExe
 				sender.sendMessage(ChatColor.GOLD + "Coords: (" + location.getBlockX() + "," + location.getBlockY() + "," + location.getBlockZ() + ")");
 				sender.sendMessage(ChatColor.GOLD + "Health: " + player.getHealth() + "/20");
 				if (perms != null) {
+					// always get a group back from perms
 					String group = perms.getPlayerGroup(player.getName());
-					String groupPrefix = perms.getGroupInfo(group, "prefix");
+					String groupPrefix = null;
+					groupPrefix = perms.getGroupInfo(group, "prefix");
 					if (groupPrefix != null) {
-					    groupPrefix = groupPrefix.replace("&", "\247");
+						groupPrefix = groupPrefix.replace("&", "\247");
+					} else {
+						groupPrefix = "";
 					}
 					sender.sendMessage(ChatColor.GOLD + "Group: " + groupPrefix + group);
 					String playerPrefix = perms.getPlayerInfo(player.getName(), "prefix");
-					String effectivePrefix = "";
+					String effectivePrefix;
 					if (playerPrefix != null) {
 						effectivePrefix = playerPrefix.replace("&", "\247");
-					} else if (groupPrefix!= null) {
+					} else {
 						effectivePrefix = groupPrefix;
 					}
 					sender.sendMessage(ChatColor.GOLD + "Shown Name: " + effectivePrefix + player.getName());
 				}
-/*
 				if (beardStatManager!=null) {
-					long seconds = beardStatManager.getPlayerBlob(player.getName()).getStats(".*",".*","stats","playedfor").getValue();
-					int weeks   = (int) seconds / 604800;
-					int days = (int)Math.ceil((seconds -604800*weeks) / 86400);
-					int hours = (int)Math.ceil((seconds - (86400 * days + 604800*weeks)) / 3600);
-					int minutes = (int)Math.ceil((seconds - (604800*weeks + 86400 * days + 3600 * hours)) / 60);
-					StringBuffer playTime = new StringBuffer();
-					playTime.append(ChatColor.GOLD + "Playtime: ");
-					if (weeks > 0) {
-						playTime.append(weeks +" weeks ");
+					EntityStatBlob blob = beardStatManager.getBlobByNameType(player.getName(), IStatDataProvider.PLAYER_TYPE).getValue();
+					if (blob != null) {
+						int seconds = blob.getStats(BeardStat.DEFAULT_DOMAIN, ".*", "stats", "playedfor").getValue();
+						int weeks = seconds / 604800;
+						int days = (int)Math.ceil((seconds -604800*weeks) / 86400);
+						int hours = (int)Math.ceil((seconds - (86400 * days + 604800*weeks)) / 3600);
+						int minutes = (int)Math.ceil((seconds - (604800*weeks + 86400 * days + 3600 * hours)) / 60);
+						StringBuffer playTime = new StringBuffer();
+						playTime.append(ChatColor.GOLD + "Playtime: ");
+						if (weeks > 0) {
+							playTime.append(weeks +" weeks ");
+						}
+						if (days > 0) {
+							playTime.append(days +" days ");
+						}
+						if (hours > 0) {
+							playTime.append(hours +" hours ");
+						}
+						if (minutes > 0) {
+							playTime.append(minutes +" mins ");
+						}
+						sender.sendMessage(playTime.toString());
 					}
-					if (days > 0) {
-						playTime.append(days +" days ");
-					}
-					if (hours > 0) {
-						playTime.append(hours +" hours ");
-					}
-					if (minutes > 0) {
-						playTime.append(minutes +" mins ");
-					}
-					sender.sendMessage(playTime.toString());
 				}
-*/
 				sender.sendMessage(ChatColor.GOLD + "OP: " + player.isOp());
 			}
 		}
@@ -127,7 +136,7 @@ public class WhoCommandComponent extends AbstractComponent implements CommandExe
     public boolean enable(Log log, EscapePlug plugin) {
         this.perms = plugin.getDroxPermsAPI();
         this.playerCompare = new PlayerComparator(perms);
-//        this.beardStatManager = plugin.getBeardStatManager();
+        this.beardStatManager = plugin.getBeardStatManager();
         plugin.getComponentManager().registerCommands(this);
         return true;
     }
