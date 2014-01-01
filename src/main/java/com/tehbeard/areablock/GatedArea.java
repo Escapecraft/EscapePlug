@@ -1,4 +1,4 @@
-package en.tehbeard.areablock;
+package com.tehbeard.areablock;
 
 import java.util.ArrayList;
 import java.util.HashSet;

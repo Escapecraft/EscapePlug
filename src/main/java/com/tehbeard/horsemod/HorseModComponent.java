@@ -23,9 +23,9 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.inventory.InventoryHolder;
 import org.tulonsae.mc.util.Log;
 
+import com.tehbeard.areablock.SessionStore;
 import com.tehbeard.horsemod.HorseSession.HorseState;
 
-import en.tehbeard.areablock.SessionStore;
 import net.escapecraft.component.AbstractComponent;
 import net.escapecraft.component.BukkitCommand;
 import net.escapecraft.component.ComponentDescriptor;

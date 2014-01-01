@@ -1,4 +1,4 @@
-package en.tehbeard.areablock;
+package com.tehbeard.areablock;
 
 import java.util.HashMap;
 import java.util.Map;

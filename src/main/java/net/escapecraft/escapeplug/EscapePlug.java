@@ -4,6 +4,7 @@ import java.util.logging.Logger;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.tehbeard.areablock.AreaBlockComponent;
 import com.tehbeard.beardstat.BeardStat;
 import com.tehbeard.beardstat.manager.EntityStatManager;
 import com.tehbeard.horsemod.HorseModComponent;
@@ -29,7 +30,6 @@ import de.hydrox.portalblocker.PortalBlockerComponent;
 import de.hydrox.vanish.VanishComponent;
 import de.hydrox.who.WhoCommandComponent;
 
-import en.tehbeard.areablock.AreaBlockComponent;
 import en.tehbeard.gamemode.GameModeToggleComponent;
 import en.tehbeard.mentorTeleport.MentorTeleportComponent;
 import en.tehbeard.pigjouster.PigJousterComponent;
