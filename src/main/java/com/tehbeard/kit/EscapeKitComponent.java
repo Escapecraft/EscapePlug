@@ -16,7 +16,7 @@ import java.util.Map.Entry;
 import java.util.Scanner;
 import java.util.Set;
 
-import net.escapecraft.escapePlug.EscapePlug;
+import net.escapecraft.escapeplug.EscapePlug;
 import net.escapecraft.component.AbstractComponent;
 import net.escapecraft.component.ComponentDescriptor;
 

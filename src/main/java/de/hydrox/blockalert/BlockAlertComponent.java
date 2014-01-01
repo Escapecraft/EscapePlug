@@ -11,7 +11,7 @@ import org.tulonsae.mc.util.Log;
 
 import net.escapecraft.component.AbstractComponent;
 import net.escapecraft.component.ComponentDescriptor;
-import net.escapecraft.escapePlug.EscapePlug;
+import net.escapecraft.escapeplug.EscapePlug;
 
 @ComponentDescriptor(slug="blockalert",name="Block Alert",version="1.00")
 public class BlockAlertComponent extends AbstractComponent {

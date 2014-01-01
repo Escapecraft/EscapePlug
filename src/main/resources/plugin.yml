@@ -1,5 +1,5 @@
 name: EscapePlug
-main: net.escapecraft.escapePlug.EscapePlug
+main: net.escapecraft.escapeplug.EscapePlug
 version: ${project.version}
 softdepend: [DroxPerms, BeardStat]
 commands:

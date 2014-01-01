@@ -19,7 +19,7 @@ import org.tulonsae.mc.util.Log;
 
 import net.escapecraft.component.AbstractComponent;
 import net.escapecraft.component.ComponentDescriptor;
-import net.escapecraft.escapePlug.EscapePlug;
+import net.escapecraft.escapeplug.EscapePlug;
 
 @ComponentDescriptor(name="Area Block",slug="areablock",version="1.00")
 public class AreaBlockComponent extends AbstractComponent implements Listener, Runnable{

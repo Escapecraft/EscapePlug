@@ -5,7 +5,7 @@ import java.util.HashMap;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-import net.escapecraft.escapePlug.EscapePlug;
+import net.escapecraft.escapeplug.EscapePlug;
 
 /**
  * Schedules a Bukkit process to periodically determine if players have moved.

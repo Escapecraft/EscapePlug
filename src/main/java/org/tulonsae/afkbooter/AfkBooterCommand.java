@@ -6,7 +6,7 @@ import java.util.logging.Logger;
 import java.util.Set;
 
 import net.escapecraft.component.BukkitCommand;
-import net.escapecraft.escapePlug.EscapePlug;
+import net.escapecraft.escapeplug.EscapePlug;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;

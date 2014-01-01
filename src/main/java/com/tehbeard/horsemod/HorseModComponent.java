@@ -29,7 +29,7 @@ import en.tehbeard.areablock.SessionStore;
 import net.escapecraft.component.AbstractComponent;
 import net.escapecraft.component.BukkitCommand;
 import net.escapecraft.component.ComponentDescriptor;
-import net.escapecraft.escapePlug.EscapePlug;
+import net.escapecraft.escapeplug.EscapePlug;
 
 /**
  * escapeplug.horsemod.override - Override all controls OP

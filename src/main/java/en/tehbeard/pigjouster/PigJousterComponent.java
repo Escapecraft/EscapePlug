@@ -6,7 +6,7 @@ import java.util.Set;
 import net.escapecraft.component.AbstractComponent;
 import net.escapecraft.component.BukkitCommand;
 import net.escapecraft.component.ComponentDescriptor;
-import net.escapecraft.escapePlug.EscapePlug;
+import net.escapecraft.escapeplug.EscapePlug;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;

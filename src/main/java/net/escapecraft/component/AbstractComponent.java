@@ -1,6 +1,6 @@
 package net.escapecraft.component;
 
-import net.escapecraft.escapePlug.EscapePlug;
+import net.escapecraft.escapeplug.EscapePlug;
 
 import org.tulonsae.mc.util.Log;
 

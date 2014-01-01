@@ -1,21 +1,21 @@
-package net.escapecraft.escapePlug;
+package net.escapecraft.escapeplug;
 
 import java.util.logging.Logger;
 
+import org.bukkit.plugin.java.JavaPlugin;
+
 import com.tehbeard.beardstat.BeardStat;
 import com.tehbeard.beardstat.manager.EntityStatManager;
+import com.tehbeard.horsemod.HorseModComponent;
+import com.tehbeard.kit.EscapeKitComponent;
+import com.tehbeard.tourbus.TourBusComponent;
 
 import net.escapecraft.component.ComponentManager;
 import net.serubin.hatme.HatComponent;
 import net.serubin.warp.WarpComponent;
 
-import org.bukkit.plugin.java.JavaPlugin;
 import org.tulonsae.afkbooter.AfkBooter;
 import org.tulonsae.mc.util.Log;
-
-import com.tehbeard.horsemod.HorseModComponent;
-import com.tehbeard.kit.EscapeKitComponent;
-import com.tehbeard.tourbus.TourBusComponent;
 
 import de.hydrox.blockalert.BlockAlertComponent;
 import de.hydrox.bukkit.DroxPerms.DroxPerms;
@@ -37,19 +37,28 @@ import en.tehbeard.reserve.ReserveComponent;
 public class EscapePlug extends JavaPlugin {
 
     private static final Logger log = Logger.getLogger("Minecraft");
+    public static EscapePlug self = null;
     private ComponentManager componentManager;
     private DroxPermsAPI droxPermsAPI = null;
+    private EntityStatManager beardStatManager = null;
 
+    /**
+     * Returns the permissions manager.
+     * 
+     * @return
+     */
     public DroxPermsAPI getDroxPermsAPI() {
         return droxPermsAPI;
     }
 
+    /**
+     * Returns the statistics manager.
+     * 
+     * @return
+     */
     public EntityStatManager getBeardStatManager() {
         return beardStatManager;
     }
-
-    private EntityStatManager beardStatManager = null;
-    public static EscapePlug self = null;
 
     @Override
     public void onEnable() {
@@ -62,40 +71,37 @@ public class EscapePlug extends JavaPlugin {
         saveConfig();
         reloadConfig();
 
-        DroxPerms droxPerms = ((DroxPerms) this.getServer().getPluginManager()
-                .getPlugin("DroxPerms"));
+        DroxPerms droxPerms = ((DroxPerms) this.getServer().getPluginManager().getPlugin("DroxPerms"));
         if (droxPerms != null) {
             droxPermsAPI = droxPerms.getAPI();
         }
 
-        BeardStat beardStat = ((BeardStat) this.getServer().getPluginManager()
-                .getPlugin("BeardStat"));
+        BeardStat beardStat = ((BeardStat) this.getServer().getPluginManager().getPlugin("BeardStat"));
         if (beardStat != null) {
             beardStatManager = beardStat.getStatManager();
         }
 
         // start the component manager
         componentManager = new ComponentManager(this, new Log("EscapePlug"));
-        componentManager.addComponent(MentorTeleportComponent.class);
-        componentManager.addComponent(ReserveComponent.class);
-        componentManager.addComponent(GameModeToggleComponent.class);
-        componentManager.addComponent(TimezoneComponent.class);
-        componentManager.addComponent(LockdownComponent.class);
-        componentManager.addComponent(PigJousterComponent.class);
-        componentManager.addComponent(WhoCommandComponent.class);
-        componentManager.addComponent(MobControlComponent.class);
-        componentManager.addComponent(BlockAlertComponent.class);
-        componentManager.addComponent(VanishComponent.class);
-        componentManager.addComponent(PortalBlockerComponent.class);
-        componentManager.addComponent(AreaBlockComponent.class);
-        componentManager.addComponent(EndResetComponent.class);
-        componentManager.addComponent(HatComponent.class);
         componentManager.addComponent(AfkBooter.class);
-        componentManager.addComponent(WarpComponent.class);
-
-        componentManager.addComponent(TourBusComponent.class);
+        componentManager.addComponent(AreaBlockComponent.class);
+        componentManager.addComponent(BlockAlertComponent.class);
+        componentManager.addComponent(EndResetComponent.class);
         componentManager.addComponent(EscapeKitComponent.class);
+        componentManager.addComponent(GameModeToggleComponent.class);
+        componentManager.addComponent(HatComponent.class);
         componentManager.addComponent(HorseModComponent.class);
+        componentManager.addComponent(LockdownComponent.class);
+        componentManager.addComponent(MentorTeleportComponent.class);
+        componentManager.addComponent(MobControlComponent.class);
+        componentManager.addComponent(PigJousterComponent.class);
+        componentManager.addComponent(PortalBlockerComponent.class);
+        componentManager.addComponent(ReserveComponent.class);
+        componentManager.addComponent(TimezoneComponent.class);
+        componentManager.addComponent(TourBusComponent.class);
+        componentManager.addComponent(VanishComponent.class);
+        componentManager.addComponent(WarpComponent.class);
+        componentManager.addComponent(WhoCommandComponent.class);
 
         // start components
         componentManager.startupComponents();
@@ -115,7 +121,7 @@ public class EscapePlug extends JavaPlugin {
     }
 
     /**
-     * Return the component manager
+     * Returns the component manager.
      * 
      * @return
      */

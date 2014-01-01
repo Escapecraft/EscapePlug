@@ -13,7 +13,7 @@ import org.tulonsae.mc.util.Log;
 
 import net.escapecraft.component.AbstractComponent;
 import net.escapecraft.component.ComponentDescriptor;
-import net.escapecraft.escapePlug.EscapePlug;
+import net.escapecraft.escapeplug.EscapePlug;
 
 @ComponentDescriptor(name="Tour Bus",slug="tourbus",version="1.00")
 public class TourBusComponent extends AbstractComponent implements CommandExecutor {
