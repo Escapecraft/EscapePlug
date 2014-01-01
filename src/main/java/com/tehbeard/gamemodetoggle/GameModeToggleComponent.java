@@ -1,4 +1,4 @@
-package en.tehbeard.gamemode;
+package com.tehbeard.gamemodetoggle;
 
 import net.escapecraft.component.AbstractComponent;
 import net.escapecraft.component.BukkitCommand;
