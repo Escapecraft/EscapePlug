@@ -1,4 +1,4 @@
-package en.tehbeard.mentorTeleport;
+package com.tehbeard.mentorteleport;
 
 import java.util.HashMap;
 import java.util.Map;
