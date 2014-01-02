@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
 
 import net.escapecraft.component.AbstractComponent;
 import net.escapecraft.component.ComponentDescriptor;
+import net.escapecraft.escapeplug.EscapePerms;
 import net.escapecraft.escapeplug.EscapePlug;
 
 @ComponentDescriptor(name="Tour Bus",slug="tourbus",version="1.00")
@@ -60,7 +61,7 @@ public class TourBusComponent extends AbstractComponent implements CommandExecut
         //Teleport all those in the tour group
         if (cm.equalsIgnoreCase("port")) {
             //check perm node (op default)
-            if (p.hasPermission("escapeplug.tourbus.port")) {
+            if (p.hasPermission(EscapePerms.HAS_TOURBUS_PORT)) {
                 //loop tourists, check online
                 for (String t : tourists) {
                     Player pp = Bukkit.getPlayer(t);
@@ -77,7 +78,7 @@ public class TourBusComponent extends AbstractComponent implements CommandExecut
         
         if (cm.equalsIgnoreCase("clear")) {
             //check perm node (op default)
-            if (p.hasPermission("escapeplug.tourbus.port")) {
+            if (p.hasPermission(EscapePerms.HAS_TOURBUS_PORT)) {
                 //loop tourists, check online
                 open = false;
                 for (String t : tourists) {
@@ -96,7 +97,7 @@ public class TourBusComponent extends AbstractComponent implements CommandExecut
         
         if (cm.equalsIgnoreCase("open")) {
             //check perm node (op default)
-            if (p.hasPermission("escapeplug.tourbus.port")) {
+            if (p.hasPermission(EscapePerms.HAS_TOURBUS_PORT)) {
                 //loop tourists, check online
                 open = true;
             }

@@ -9,6 +9,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 
+import net.escapecraft.escapeplug.EscapePerms;
+
 public abstract class AbstractListener implements Listener {
 
     protected Map<String, List<Integer>> blockBreak;
@@ -17,7 +19,7 @@ public abstract class AbstractListener implements Listener {
     public void notifyMods(String msg) {
         Player[] players = Bukkit.getOnlinePlayers();
         for (Player player : players) {
-            if (player.hasPermission("escapeplug.blockalert.notify")) {
+            if (player.hasPermission(EscapePerms.GET_BLOCK_ALERTS_SPAM)) {
                 player.sendMessage(msg);
             }
         }

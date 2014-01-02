@@ -2,6 +2,7 @@ package net.serubin.hatme;
 
 import java.util.List;
 
+import net.escapecraft.escapeplug.EscapePerms;
 import net.escapecraft.escapeplug.EscapePlug;
 
 import org.bukkit.configuration.file.FileConfiguration;

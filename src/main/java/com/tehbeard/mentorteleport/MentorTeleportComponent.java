@@ -6,6 +6,7 @@ import java.util.Map;
 import net.escapecraft.component.AbstractComponent;
 import net.escapecraft.component.BukkitCommand;
 import net.escapecraft.component.ComponentDescriptor;
+import net.escapecraft.escapeplug.EscapePerms;
 import net.escapecraft.escapeplug.EscapePlug;
 
 import org.bukkit.Location;
@@ -35,7 +36,7 @@ public class MentorTeleportComponent extends AbstractComponent implements Comman
      */
     public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
         if (commandLabel.equalsIgnoreCase("mentortp")) {
-            if (!(sender.hasPermission("escapeplug.mentor.teleport"))) {
+            if (!(sender.hasPermission(EscapePerms.HAS_MENTORTP))) {
                 sender.sendMessage("You don't have permission to teleport.");
                 return true;
             }
@@ -43,7 +44,7 @@ public class MentorTeleportComponent extends AbstractComponent implements Comman
                 if (commandLabel.equals("mentortp") && args.length == 1) {
                     if (plugin.getServer().getPlayer(args[0]) != null) {
                         Player p = plugin.getServer().getPlayer(args[0]);
-                        if (!p.hasPermission("escapeplug.mentor.teleport.notarget")) {
+                        if (!p.hasPermission(EscapePerms.HAS_MENTORTP_IMMUNITY)) {
                             sender.sendMessage("Sending you to " + p.getName());
                             prevLoc.put(((Player)sender).getName(), ((Player)sender).getLocation());
                             ((Player)sender).teleport(p);
@@ -64,7 +65,7 @@ public class MentorTeleportComponent extends AbstractComponent implements Comman
         }
         
         if (commandLabel.equalsIgnoreCase("mentorback")) {
-            if (!(sender.hasPermission("escapeplug.mentor.teleport"))) {
+            if (!(sender.hasPermission(EscapePerms.HAS_MENTORTP))) {
                 sender.sendMessage("You don't have permission to teleport.");
                 return true;
             }

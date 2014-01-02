@@ -28,6 +28,7 @@ import com.tehbeard.horsemod.HorseSession.HorseState;
 import net.escapecraft.component.AbstractComponent;
 import net.escapecraft.component.BukkitCommand;
 import net.escapecraft.component.ComponentDescriptor;
+import net.escapecraft.escapeplug.EscapePerms;
 import net.escapecraft.escapeplug.EscapePlug;
 
 /**
@@ -42,10 +43,10 @@ import net.escapecraft.escapeplug.EscapePlug;
 @BukkitCommand(command="horsemod")
 public class HorseModComponent extends AbstractComponent implements CommandExecutor,Listener {
 
-    public static final String PERM_INV      = "escapeplug.horsemod.override.inventory";
-    public static final String PERM_TRANSFER = "escapeplug.horsemod.override.transfer";
-    public static final String PERM_DAMAGE   = "escapeplug.horsemod.override.damage";
-    public static final String PERM_RIDE     = "escapeplug.horsemod.override.ride";
+    public static final String PERM_INV      = EscapePerms.MAY_ACCESS_ANY_HORSE_INV;
+    public static final String PERM_TRANSFER = EscapePerms.MAY_XFER_ANY_HORSE;
+    public static final String PERM_DAMAGE   = EscapePerms.MAY_DAMAGE_HORSE;
+    public static final String PERM_RIDE     = EscapePerms.MAY_RIDE_ANY_HORSE;
 
     private SessionStore<HorseSession> session = new SessionStore<HorseSession>();
 
@@ -101,7 +102,6 @@ public class HorseModComponent extends AbstractComponent implements CommandExecu
         return false;
     }
 
-
     /**
      * Disable inventory access unless you own a horse.
      * @param event
@@ -112,7 +112,7 @@ public class HorseModComponent extends AbstractComponent implements CommandExecu
 
         if (holder instanceof Horse) {
             Horse horse = (Horse)holder;
-            if (!haveHorsePermission(horse, (Player) event.getPlayer(),PERM_INV)) {
+            if (!haveHorsePermission(horse, (Player) event.getPlayer(), PERM_INV)) {
                 event.setCancelled(true);
             }
         }
@@ -129,9 +129,9 @@ public class HorseModComponent extends AbstractComponent implements CommandExecu
         Player player = event.getPlayer();
         HorseSession horseSession = getSession(player.getName());
 
-        boolean canInv = haveHorsePermission(horse, event.getPlayer(),PERM_INV);
-        boolean canRide = haveHorsePermission(horse, event.getPlayer(),PERM_RIDE);
-        boolean canTransfer = haveHorsePermission(horse, event.getPlayer(),PERM_TRANSFER);
+        boolean canInv = haveHorsePermission(horse, event.getPlayer(), PERM_INV);
+        boolean canRide = haveHorsePermission(horse, event.getPlayer(), PERM_RIDE);
+        boolean canTransfer = haveHorsePermission(horse, event.getPlayer(), PERM_TRANSFER);
 
         switch (horseSession.state) {
         case NONE:
@@ -182,8 +182,8 @@ public class HorseModComponent extends AbstractComponent implements CommandExecu
      * @param overridePerm
      * @return
      */
-    private boolean haveHorsePermission(Horse horse,Player player,String overridePerm) {
-        return isMyHorse(horse,player.getName()) || player.hasPermission(overridePerm);
+    private boolean haveHorsePermission(Horse horse, Player player, String overridePerm) {
+        return player.hasPermission(EscapePerms.IGNORE_HORSEMOD_LIMITS) || player.hasPermission(overridePerm) || isMyHorse(horse, player.getName());
     }
     
     /**

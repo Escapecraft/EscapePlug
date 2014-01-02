@@ -1,5 +1,7 @@
 package com.tehbeard.areablock;
 
+import net.escapecraft.escapeplug.EscapePerms;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -20,7 +22,7 @@ public class AreaBlockCommands implements CommandExecutor, Listener {
     }
 
     public boolean onCommand(CommandSender sender, Command cmd, String lbl, String[] args) {
-        if (!sender.hasPermission("escapeplug.areablock")) {
+        if (!sender.hasPermission(EscapePerms.USE_AREABLOCK)) {
             return true;
         }
         if (sender instanceof Player == false) {
@@ -193,7 +195,7 @@ public class AreaBlockCommands implements CommandExecutor, Listener {
 
     @EventHandler
     public void onClick(PlayerInteractEvent event) {
-        if (!event.getPlayer().hasPermission("escapeplug.areablock")) {
+        if (!event.getPlayer().hasPermission(EscapePerms.USE_AREABLOCK)) {
             return;
         }
         if (!session.hasSession(event.getPlayer().getName())) {

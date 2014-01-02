@@ -6,6 +6,7 @@ import java.util.Set;
 import net.escapecraft.component.AbstractComponent;
 import net.escapecraft.component.BukkitCommand;
 import net.escapecraft.component.ComponentDescriptor;
+import net.escapecraft.escapeplug.EscapePerms;
 import net.escapecraft.escapeplug.EscapePlug;
 
 import org.bukkit.Bukkit;
@@ -52,7 +53,7 @@ public class PigJousterComponent extends AbstractComponent implements CommandExe
      * @return
      */
     public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
-        if (!(sender.hasPermission("escapeplug.pigjoust"))) {
+        if (!(sender.hasPermission(EscapePerms.USE_PIGJOUST))) {
             sender.sendMessage("You don't have permission for pig-jousting.");
             return true;
         }

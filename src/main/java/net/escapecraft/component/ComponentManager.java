@@ -105,10 +105,9 @@ public class ComponentManager {
      * @param executor
      */
     public void registerCommands(CommandExecutor executor) {
-        for (Annotation a: executor.getClass().getAnnotations()) {
-
+        for (Annotation a : executor.getClass().getAnnotations()) {
             if (a instanceof BukkitCommand) {
-                BukkitCommand bc = (BukkitCommand)a;
+                BukkitCommand bc = (BukkitCommand) a;
                 for (String comm : bc.command()) {
                     plugin.getCommand(comm).setExecutor(executor);
                 }

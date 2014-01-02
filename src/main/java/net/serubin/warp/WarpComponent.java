@@ -3,6 +3,7 @@ package net.serubin.warp;
 import net.escapecraft.component.AbstractComponent;
 import net.escapecraft.component.BukkitCommand;
 import net.escapecraft.component.ComponentDescriptor;
+import net.escapecraft.escapeplug.EscapePerms;
 import net.escapecraft.escapeplug.EscapePlug;
 
 import org.bukkit.ChatColor;
@@ -17,10 +18,9 @@ import org.bukkit.entity.Player;
 public class WarpComponent extends AbstractComponent implements CommandExecutor {
     private EscapePlug plugin;
     private FlatFile flatFile;
+    private CommandSender sender;
 
     boolean debug = false;
-
-    private CommandSender sender;
 
     @Override
     public boolean enable(EscapePlug plugin) {
@@ -38,17 +38,15 @@ public class WarpComponent extends AbstractComponent implements CommandExecutor 
     @Override
     public void disable() {
         // flatFile.pushData();
-        log.info("[Warps] Saved warps file.");
-
+        log.info("Saved warps file.");
     }
 
-    public boolean onCommand(CommandSender sender, Command cmd,
-            String commandLabel, String[] args) {
+    public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
         this.sender = sender;
         boolean isPlayer = (sender instanceof Player) ? true : false;
 
             if (commandLabel.equalsIgnoreCase("warp")) {
-                if (sender.hasPermission("escapeplug.warp.tele")) {
+                if (sender.hasPermission(EscapePerms.MANAGE_WARPS) || sender.hasPermission(EscapePerms.USE_WARPS)) {
                     WarpData warp;
                     Location warpLoc = null;
                     int playerCount = 0;
@@ -167,7 +165,7 @@ public class WarpComponent extends AbstractComponent implements CommandExecutor 
                     return true;
                 }
             } else if (commandLabel.equalsIgnoreCase("setwarp")) {
-                if (sender.hasPermission("escapeplug.warp.edit")) {
+                if (sender.hasPermission(EscapePerms.MANAGE_WARPS) || sender.hasPermission(EscapePerms.EDIT_WARPS)) {
                     if (args.length == 0) {
                         return false;
                     }
@@ -188,7 +186,7 @@ public class WarpComponent extends AbstractComponent implements CommandExecutor 
                 }
 
             } else if (commandLabel.equalsIgnoreCase("remwarp")) {
-                if (sender.hasPermission("escapeplug.warp.edit")) {
+                if (sender.hasPermission(EscapePerms.MANAGE_WARPS) || sender.hasPermission(EscapePerms.EDIT_WARPS)) {
                     if (args.length == 0) {
                         return false;
                     }
@@ -203,7 +201,7 @@ public class WarpComponent extends AbstractComponent implements CommandExecutor 
                     return true;
                 }
             } else if (commandLabel.equalsIgnoreCase("warplist")) {
-                if (sender.hasPermission("escapeplug.warp")) {
+                if (sender.hasPermission(EscapePerms.MANAGE_WARPS) || sender.hasPermission(EscapePerms.LIST_WARPS)) {
                     if (args.length == 0) {
                         flatFile.printWarps(((Player) sender));
                         return true;

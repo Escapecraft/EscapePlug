@@ -10,6 +10,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.permissions.Permissible;
 
+import net.escapecraft.escapeplug.EscapePerms;
+
 /**
  * Represents a kit
  * @author james
@@ -107,8 +109,8 @@ public class Kit implements ConfigurationSerializable {
      * @return
      */
     public boolean canUsePerm(Permissible permissible) {
-        return permissible.hasPermission("escapeplug.kit.kits.*") ||
-            permissible.hasPermission("escapeplug.kit.kits."+name);
+        return permissible.hasPermission(EscapePerms.ALL_KITS) ||
+            permissible.hasPermission(EscapePerms.NAMED_KIT + name);
     }
     
     /**
@@ -118,8 +120,8 @@ public class Kit implements ConfigurationSerializable {
      */
     public Result giveKit(Player player) {
         return giveKit(player, (
-                player.hasPermission("escapeplug.kit.kits.*.nocooldown") ||
-                player.hasPermission("escapeplug.kit.kits." + name + ".nocooldown")
+                player.hasPermission(EscapePerms.ALL_KITS_NO_WAIT) ||
+                player.hasPermission(EscapePerms.NAMED_KIT_NO_WAIT.replace("NAME", name))
                 ), false);
     }
     

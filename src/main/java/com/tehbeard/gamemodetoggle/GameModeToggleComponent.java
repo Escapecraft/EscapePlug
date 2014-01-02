@@ -3,6 +3,7 @@ package com.tehbeard.gamemodetoggle;
 import net.escapecraft.component.AbstractComponent;
 import net.escapecraft.component.BukkitCommand;
 import net.escapecraft.component.ComponentDescriptor;
+import net.escapecraft.escapeplug.EscapePerms;
 import net.escapecraft.escapeplug.EscapePlug;
 
 import org.bukkit.GameMode;
@@ -17,7 +18,7 @@ public class GameModeToggleComponent extends AbstractComponent implements Comman
 
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
-            if (!((Player)sender).hasPermission("escapeplug.gamemode")) {
+            if (!((Player)sender).hasPermission(EscapePerms.SWITCH_GAMEMODE)) {
                 return true;
             }
             if (((Player)sender).getGameMode().equals(GameMode.SURVIVAL)) {
