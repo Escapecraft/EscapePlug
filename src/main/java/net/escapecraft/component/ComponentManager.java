@@ -70,6 +70,10 @@ public class ComponentManager {
                         AbstractComponent instance = component.newInstance();
                         instance.setLog(compLog);
                         instance.setVersion(cd.version());
+                        SchemaDescriptor sd = component.getAnnotation(SchemaDescriptor.class);
+                        if (sd != null) {
+                            instance.setSchema(sd.version());
+                        }
                         if (instance.enable(plugin)) {
                             activeComponents.put(slug, instance);
                         }

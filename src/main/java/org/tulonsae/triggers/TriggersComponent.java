@@ -8,6 +8,7 @@ import java.util.Scanner;
 import net.escapecraft.component.AbstractComponent;
 import net.escapecraft.component.BukkitCommand;
 import net.escapecraft.component.ComponentDescriptor;
+import net.escapecraft.component.SchemaDescriptor;
 import net.escapecraft.escapeplug.EscapePerms;
 import net.escapecraft.escapeplug.EscapePlug;
 
@@ -22,6 +23,7 @@ import org.bukkit.entity.Player;
  * @author Tulonsae
  */
 @ComponentDescriptor(name = "Triggers", slug = "Triggers", version = "0.1")
+@SchemaDescriptor(version = "1")
 @BukkitCommand(command = { "triggers", "addtrigger", "remtrigger", "changetrigger" })
 public class TriggersComponent extends AbstractComponent implements CommandExecutor {
 

@@ -94,7 +94,7 @@ public abstract class JDBCDataProvider implements IDataProvider {
      * @throws SQLException
      */
     protected void createTables() throws SQLException {
-        String sqlText = component.readSQL(SQL_CREATE_TABLES + "." + suffix).replaceAll("\\$\\{PREFIX\\}", prefix).replaceAll("\\$\\{CODE_VER\\}", component.getVersion());
+        String sqlText = component.readSQL(SQL_CREATE_TABLES + "." + suffix).replaceAll("\\$\\{PREFIX\\}", prefix).replaceAll("\\$\\{CODE_VER\\}", component.getVersion()).replaceAll("\\$\\{SCHEMA_VER\\}", component.getSchema());
         String[] sqlStatements = sqlText.split("\\;");
 
         try {
