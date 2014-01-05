@@ -10,9 +10,11 @@ import net.escapecraft.escapeplug.EscapePlug;
 public abstract class AbstractComponent {
 
     protected Log log = null;
+    protected String version = null;
 
     /**
      * Gets the component log.
+     *
      * @returns the log
      */
     public Log getLog() {
@@ -20,7 +22,8 @@ public abstract class AbstractComponent {
     }
 
     /**
-     * Sets up the component log.
+     * Sets the component log.
+     *
      * @param log component log
      */
     public void setLog(Log log) {
@@ -28,7 +31,26 @@ public abstract class AbstractComponent {
     }
 
     /**
+     * Gets the component version.
+     *
+     * @returns the version
+     */
+    public String getVersion() {
+        return version;
+    }
+
+    /**
+     * Sets the component version.
+     *
+     * @param version component version
+     */
+    public void setVersion(String version) {
+        this.version = version;
+    }
+
+    /**
      * Called upon being enabled.
+     *
      * @param plugin instance of EscapePlug
      */
     public abstract boolean enable(EscapePlug plugin);

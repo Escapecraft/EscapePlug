@@ -63,13 +63,13 @@ public class ComponentManager {
             ComponentDescriptor cd = component.getAnnotation(ComponentDescriptor.class);
             if (cd != null) {
                 if (plugin.getConfig().getBoolean("plugin." + cd.slug() + ".enabled", true) || override) {
-//                    enableComponent(cd.name(), cd.version(), component.newInstance());
                     // this log prints both plugin and component prefixes
                     Log compLog = new Log(plugin.getLogPrefix(), cd.name());
                     try {
                         compLog.info("Enabling version " + cd.version());
                         AbstractComponent instance = component.newInstance();
                         instance.setLog(compLog);
+                        instance.setVersion(cd.version());
                         if (instance.enable(plugin)) {
                             activeComponents.put(slug, instance);
                         }

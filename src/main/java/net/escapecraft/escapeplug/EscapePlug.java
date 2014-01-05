@@ -20,6 +20,7 @@ import net.serubin.hatme.HatComponent;
 import net.serubin.warp.WarpComponent;
 
 import org.tulonsae.afkbooter.AfkBooterComponent;
+import org.tulonsae.triggers.TriggersComponent;
 
 import de.hydrox.blockalert.BlockAlertComponent;
 import de.hydrox.bukkit.DroxPerms.DroxPerms;
@@ -108,6 +109,7 @@ public class EscapePlug extends JavaPlugin {
         componentManager.addComponent(PortalBlockerComponent.class);
         componentManager.addComponent(ReserveComponent.class);
         componentManager.addComponent(TimezoneComponent.class);
+        componentManager.addComponent(TriggersComponent.class);
         componentManager.addComponent(TourBusComponent.class);
         componentManager.addComponent(VanishComponent.class);
         componentManager.addComponent(WarpComponent.class);

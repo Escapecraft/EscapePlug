@@ -114,3 +114,14 @@ plugin:
         debug: false
     horsemod:
         enabled: true
+    triggers:
+        enabled: true
+        database:
+# for sqlite, use type sqlite and specify prefix, if you want
+            type: mysql
+            host: localhost
+            port: 3306
+            database: triggers
+            username: name
+            password: password
+            prefix: ''
