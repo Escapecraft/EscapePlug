@@ -15,39 +15,50 @@ CREATE TABLE IF NOT EXISTS `${PREFIX}eventTypes` (
 
 INSERT INTO `${PREFIX}eventTypes` (`id`, `class`) VALUES (1, 'PlayerJoinEvent')
 ON DUPLICATE KEY UPDATE `class` = VALUES(`class`);
-INSERT INTO `${PREFIX}eventTypes` (`id`, `class`) VALUES (2, 'PlayerQuitEvent')
-ON DUPLICATE KEY UPDATE `class` = VALUES(`class`);
 
-CREATE TABLE IF NOT EXISTS `${PREFIX}msgTypes` (
+CREATE TABLE IF NOT EXISTS `${PREFIX}dataTypes` (
+  `id` int(11) NOT NULL,
+  `tableName` varchar(16) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+INSERT INTO `${PREFIX}dataTypes` (`id`, `tableName`) VALUES (1, 'messages')
+ON DUPLICATE KEY UPDATE `messages` = VALUES(`messages`);
+INSERT INTO `${PREFIX}dataTypes` (`id`, `tableName`) VALUES (2, 'commands')
+ON DUPLICATE KEY UPDATE `commands` = VALUES(`commands`);
+
+CREATE TABLE IF NOT EXISTS `${PREFIX}msgTypeLookup` (
   `id` int(11) NOT NULL,
   `msgType` char(16) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-INSERT INTO `${PREFIX}msgTypes` (`id`, `msgType`) VALUES (1, 'Broadcast')
+INSERT INTO `${PREFIX}msgTypeLookup` (`id`, `msgType`) VALUES (1, 'Broadcast')
 ON DUPLICATE KEY UPDATE `msgType` = VALUES(`msgType`);
-INSERT INTO `${PREFIX}msgTypes` (`id`, `msgType`) VALUES (2, 'Individual')
+INSERT INTO `${PREFIX}msgTypeLookup` (`id`, `msgType`) VALUES (2, 'Individual')
 ON DUPLICATE KEY UPDATE `msgType` = VALUES(`msgType`);
-INSERT INTO `${PREFIX}msgTypes` (`id`, `msgType`) VALUES (3, 'Channel')
+INSERT INTO `${PREFIX}msgTypeLookup` (`id`, `msgType`) VALUES (3, 'Channel')
 ON DUPLICATE KEY UPDATE `msgType` = VALUES(`msgType`);
 
 CREATE TABLE IF NOT EXISTS `${PREFIX}trigger` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(32),
   `active` char(1) NOT NULL,
-  `textId` int(11) NOT NULL,
-  `priority` int(11),
-  PRIMARY KEY (`id`)
+  `eventType` int(11) NOT NULL,
+  `dataType` int(11) NOT NULL,
+  `dataId` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY (`dataTable`, `dataId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-CREATE TABLE IF NOT EXISTS `${PREFIX}conditions` (
+CREATE TABLE IF NOT EXISTS `${PREFIX}messages` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `triggerId` int(11) NOT NULL,
-  `code` char(1),
+  `msgType` int(11) NOT NULL,
+  `tag` varchar(16),
+  `text` varchar(300) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-CREATE TABLE IF NOT EXISTS `${PREFIX}text` (
+CREATE TABLE IF NOT EXISTS `${PREFIX}commands` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `data` varchar(1000) NOT NULL,
   PRIMARY KEY (`id`)

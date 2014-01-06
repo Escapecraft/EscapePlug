@@ -3,13 +3,13 @@ package org.tulonsae.triggers;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.HashSet;
 import java.util.Properties;
 
 /*
-import java.sql.ResultSet;
-import java.sql.Statement;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.ExecutorService;
@@ -105,6 +105,34 @@ public abstract class JDBCDataProvider implements IDataProvider {
             component.getLog().severe("Could not create database tables.");
             throw e;
         }
+    }
+
+    /**
+     * Gets the event types from the database.
+     *
+     * @return a set of the event types
+     */
+    public HashSet getEventTypes() {
+        HashSet<String> eventTypes = new HashSet<String>();
+        String sql = "SELECT `class` FROM `" + prefix + "eventTypes`";
+
+        try {
+            Statement stmt = conn.createStatement();
+            if (stmt.execute(sql)) {
+                ResultSet res = stmt.getResultSet();
+                if (res != null) {
+                    while (res.next()) {
+                        eventTypes.add(res.getString("class"));
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            component.getLog().severe("Could not get list of event types, disabling component.");
+            e.printStackTrace();
+            component.disable();
+        }
+
+        return eventTypes;
     }
 
     /**

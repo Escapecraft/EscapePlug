@@ -105,6 +105,20 @@ commands:
     horsemod:
         description: horse controls
         usage: /<command> transfer|info [player]
+    triggers:
+        description: lists the active triggers
+        usage: NOT IMPLEMENTED
+    addtrigger:
+        description: add a trigger to the server
+        usage: |
+            /<command> motd|tip|notice [to:all|*<group-name>] <message>
+            /<command> join|quit for:<player-name|*<group-name> <message>
+    remtrigger:
+        description: remove a trigger from the server
+        usage: NOT IMPLEMENTED
+    edittrigger:
+        description: change or edit a trigger
+        usage: NOT IMPLEMENTED
 permissions:
   escapeplug.*:
     description: Supernode for EscapePlug commands.

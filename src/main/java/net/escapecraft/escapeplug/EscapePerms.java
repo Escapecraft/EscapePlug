@@ -4,6 +4,7 @@ public class EscapePerms {
 
     public static final String ALL_KITS = "escapeplug.kit.kits.*";
     public static final String ALL_KITS_NO_WAIT = "escapeplug.kit.kits.*.nocooldown";
+    public static final String CREATE_TRIGGERS = "escapeplug.triggers.create";
     // edit warps lets you set and remove them
     public static final String EDIT_WARPS = "escapeplug.warps.edit";
     public static final String GET_BLOCK_ALERTS_SPAM = "escapeplug.blockalert.notify";
