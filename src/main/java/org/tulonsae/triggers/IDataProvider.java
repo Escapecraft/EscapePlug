@@ -10,4 +10,6 @@ public interface IDataProvider {
 
     // The event types supported.
     public HashSet getEventTypes();
+
+    public int saveTrigger(MessageTrigger trigger);
 }

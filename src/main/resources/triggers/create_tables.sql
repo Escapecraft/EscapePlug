@@ -31,7 +31,7 @@ ON DUPLICATE KEY UPDATE `msgType` = VALUES(`msgType`);
 INSERT INTO `${PREFIX}msgTypes` (`id`, `msgType`) VALUES (3, 'Channel')
 ON DUPLICATE KEY UPDATE `msgType` = VALUES(`msgType`);
 
-CREATE TABLE IF NOT EXISTS `${PREFIX}trigger` (
+CREATE TABLE IF NOT EXISTS `${PREFIX}triggers` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(32),
   `active` char(1) NOT NULL,

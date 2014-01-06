@@ -36,7 +36,7 @@ public class TriggersManager {
         // initialise event mappings
         eventTypes = db.getEventTypes();
         for (String eventType : eventTypes) {
-            flags.put(eventType, false);  // TODO - get real data
+            flags.put(eventType, false);  // TODO - get real data MUST DO!!!
         }
     }
 
@@ -57,6 +57,7 @@ public class TriggersManager {
      * @param trigger the trigger to add
      */
     protected void addTrigger(MessageTrigger trigger) {
+        // TODO - add target
         // add to internal data structure
         String eventType = trigger.getEventType();
         if (byEvents.containsKey(eventType)) {         // add to list
@@ -71,7 +72,7 @@ public class TriggersManager {
         }
 
         // save to persistent data store
-        //db.saveTrigger(trigger);
+        trigger.setId(db.saveTrigger(trigger));
     }
 
     /**
