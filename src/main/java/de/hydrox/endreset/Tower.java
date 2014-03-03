@@ -22,7 +22,6 @@ public class Tower implements ConfigurationSerializable {
     private Integer zLoc;
     private Integer size;
     private Integer height;
-    private String shape;
 
     /**
      * Creates a tower from the serialized config file.
@@ -32,7 +31,6 @@ public class Tower implements ConfigurationSerializable {
      public Tower(Map<String, Object> map) {
         this.size = (Integer) map.get("size");
         this.height = (Integer) map.get("height");
-        this.shape = (String) map.get("shape");
         this.xLoc = (Integer) map.get("x");
         this.yLoc = (Integer) map.get("y");
         this.zLoc = (Integer) map.get("z");
@@ -45,30 +43,30 @@ public class Tower implements ConfigurationSerializable {
      */
     public void restore(World world) {
         Location cur = new Location(world, 0, 0, 0);
-        double offset = Math.floor((size / 2));
         double xCrystal = xLoc + .5;
         double zCrystal = zLoc + .5;
-        int minCorner = 0;
-        int maxCorner = size - 1;
 
-        // obsidian
-        for (int x = 0; x < size; x++) {
-            for (int z = 0; z < size; z++) {
-                if (("round".equalsIgnoreCase(shape)) && (
-                        (x == minCorner && z == minCorner) ||
-                        (x == maxCorner && z == maxCorner) ||
-                        (x == minCorner && z == maxCorner) ||
-                        (x == maxCorner && z == minCorner)
-                        )) {
-                    continue;
-                }
-                cur.setX(xLoc + x - offset);
-                cur.setZ(zLoc + z - offset);
-                for (int h = 0; h < height; h++) {
-                    cur.setY(yLoc + h);
-                    world.getBlockAt(cur).setType(Material.OBSIDIAN);
-                }
-            }
+        // obsidian - there has got to be a better algorithm for this - Tul
+        // construct the 3x3, also finishes the size 3
+        if (size <= 5) {
+            createObsidianSquare(cur, 1);
+        }
+        // finish off the size 5, edge length is 3
+        if (size == 5) {
+            createObsidianEdges(cur, 1, 2);
+        }
+        // construct the 5x5
+        if (size > 5) {
+            createObsidianSquare(cur, 2);
+        }
+        // finish off the size 7, edge length is 3
+        if (size == 7) {
+            createObsidianEdges(cur, 1, 3);
+        }
+        // finish off the size 9, edge length 5 and 3
+        if (size == 9) {
+            createObsidianEdges(cur, 2, 3);
+            createObsidianEdges(cur, 1, 4);
         }
 
         // bedrock and fire
@@ -93,12 +91,47 @@ public class Tower implements ConfigurationSerializable {
         world.spawn(cur, EnderCrystal.class);
     }
 
+    private void createObsidianEdges(Location loc, int offset1, int offset2) {
+        // top and bottom edges
+        for (int x = xLoc - offset1; x <= xLoc + offset1; x++) {
+            loc.setX(x);
+            loc.setZ(zLoc - offset2);
+            createObsidianColumn(loc);
+            loc.setZ(zLoc + offset2);
+            createObsidianColumn(loc);
+        }
+        // left and right edges
+        for (int z = zLoc - offset1; z <= zLoc + offset1; z++) {
+            loc.setX(xLoc - offset2);
+            loc.setZ(z);
+            createObsidianColumn(loc);
+            loc.setX(xLoc + offset2);
+            createObsidianColumn(loc);
+        }
+    }
+
+    private void createObsidianSquare(Location loc, int offset) {
+        for (int x = xLoc - offset; x <= xLoc + offset; x++) {
+            for (int z = zLoc - offset; z <= zLoc + offset; z++) {
+                loc.setX(x);
+                loc.setZ(z);
+                createObsidianColumn(loc);
+            }
+        }
+    }
+
+    private void createObsidianColumn(Location column) {
+        for (int h = 0; h < height; h++) {
+            column.setY(yLoc + h);
+            column.getWorld().getBlockAt(column).setType(Material.OBSIDIAN);
+        }
+    }
+
     public Map<String, Object> serialize() {
         Map<String, Object> map = new HashMap<String, Object>();
 
         map.put("size", size);
         map.put("height", height);
-        map.put("shape", shape);
         map.put("x", xLoc);
         map.put("y", yLoc);
         map.put("z", zLoc);
