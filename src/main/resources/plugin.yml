@@ -90,7 +90,7 @@ commands:
         description: controls endreset
         usage: |
             /<command> reset - Resets The End
-            /<command> clear - Clears End Reset cache
+            /<command> spawn - Spawns an EnderDragon in The End
     tour:
         description: 
         usage: /<command> [join|leave]
@@ -204,7 +204,7 @@ permissions:
     description: Use endreset command
     children:
       escapeplug.endreset.reset: true
-      escapeplug.endreset.clear: true
+      escapeplug.endreset.spawn: true
   escapeplug.tourbus.port:
     description: allow use of port command for tourbus
     default: op
