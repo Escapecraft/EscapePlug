@@ -3,6 +3,7 @@ package de.hydrox.endreset;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import net.escapecraft.component.AbstractComponent;
@@ -15,21 +16,20 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
-//import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
+import org.bukkit.entity.EnderDragon;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-//import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
-//import org.bukkit.event.entity.EntityExplodeEvent;
-//import org.bukkit.util.Vector;
+import org.bukkit.event.player.PlayerChangedWorldEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 
 @ComponentDescriptor(name = "End Reset", slug = "endreset", version = "1.1")
 @BukkitCommand(command = "endreset")
@@ -66,6 +66,7 @@ public class EndResetComponent extends AbstractComponent implements CommandExecu
 
         Bukkit.getPluginManager().registerEvents(this, plugin);
         plugin.getComponentManager().registerCommands(this);
+
         return true;
     }
 
@@ -75,6 +76,7 @@ public class EndResetComponent extends AbstractComponent implements CommandExecu
 
     public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
         if (args.length == 1) {
+            // reset
             if (args[0].equalsIgnoreCase("reset")) {
                 if (!sender.hasPermission("escapeplug.endreset.reset")) {
                     sender.sendMessage(ChatColor.RED
@@ -86,6 +88,8 @@ public class EndResetComponent extends AbstractComponent implements CommandExecu
                         + "The End has been reset");
                 return true;
             }
+
+            // spawn
             if (args[0].equalsIgnoreCase("spawn")) {
                 if (!sender.hasPermission("escapeplug.endreset.spawn")) {
                     sender.sendMessage(ChatColor.RED
@@ -97,21 +101,63 @@ public class EndResetComponent extends AbstractComponent implements CommandExecu
                         + "EnderDragon has been spawned");
                 return true;
             }
+
         }
+
         return false;
     }
 
+    /**
+     * Checks if an EnderDragon died in The End.  If so, announce the player
+     * that killed it, reset the towers, and spawn another dragon.
+     */
     @EventHandler(priority = EventPriority.MONITOR)
     public void onEntityDeathEvent(EntityDeathEvent event) {
         if (event.getEntity().getWorld().getName().equals(endWorldName) && event.getEntityType() == EntityType.ENDER_DRAGON) {
-            World world = event.getEntity().getWorld();
+            World world = Bukkit.getWorld(endWorldName);
             if (event.getEntity().getKiller() != null) {
                 Bukkit.broadcastMessage(ChatColor.GOLD + event.getEntity().getKiller().getName() + " killed an Enderdragon");
             }
         
             resetTowers(world);
-            spawnDragon(Bukkit.getWorld(endWorldName));
+            spawnDragon(world);
         }
+    }
+
+    /**
+     * When the player changes world, this checks to see if they changed to
+     * The End.  If so, it handles EnderDragon setup.
+     */
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onPlayerChangedWorldEvent(PlayerChangedWorldEvent event) {
+        if (event.getPlayer().getWorld().getName().equals(endWorldName)) {
+            setupEnderDragon();
+        }
+    }
+
+    /**
+     * When the player joins, this checks to see if they were in The End.
+     * If so, it handles EnderDragon setup.
+     */
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onPlayerJoinEvent(PlayerJoinEvent event) {
+        if (event.getPlayer().getWorld().getName().equals(endWorldName)) {
+            setupEnderDragon();
+        }
+    }
+
+    /**
+     * Checks for EnderDragon existance and spawns one if needed.  Also
+     * resets the towers if a dragon is spawned.
+     */
+    private void setupEnderDragon() {
+            World world = Bukkit.getWorld(endWorldName);
+            Collection<EnderDragon> dragons = world.getEntitiesByClass(EnderDragon.class);
+            if (dragons.isEmpty()) {
+                log.info("No EnderDragon found, spawning one and resetting towers");
+                resetTowers(world);
+                spawnDragon(world);
+            }
     }
 
     private void spawnDragon(World world) {

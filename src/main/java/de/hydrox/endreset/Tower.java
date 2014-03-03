@@ -1,5 +1,6 @@
 package de.hydrox.endreset;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -70,16 +71,25 @@ public class Tower implements ConfigurationSerializable {
             }
         }
 
-        // crystal
+        // bedrock and fire
         cur.setX(xLoc);
         cur.setY(yLoc + height);
         cur.setZ(zLoc);
         world.getBlockAt(cur).setType(Material.BEDROCK);
         cur.setY(yLoc + height + 1);
         world.getBlockAt(cur).setType(Material.FIRE);
+
+        // crystal - don't add one if it already exists
         cur.setX(xCrystal);
         cur.setY(yLoc + height);
         cur.setZ(zCrystal);
+        Collection<EnderCrystal> crystals = world.getEntitiesByClass(EnderCrystal.class);
+        for (EnderCrystal crystal : crystals) {
+            Location cLoc = crystal.getLocation();
+            if ((cLoc.getX() == cur.getX()) && ((cLoc.getY() - 1) == cur.getY()) && (cLoc.getZ() == cur.getZ())) {
+                return;  // already a crystal so we're done
+            }
+        }
         world.spawn(cur, EnderCrystal.class);
     }
 
