@@ -92,7 +92,7 @@ commands:
             /<command> reload - Reloads the configuration for EndReset
             /<command> reset - Resets The End
             /<command> setcount NUMBER - Sets the count of EnderDragons
-            /<command> spawn - Spawns an EnderDragon in The End
+            /<command> spawn [NUM] - Spawns the number of EnderDragons in The End, default is 1
     tour:
         description: 
         usage: /<command> [join|leave]
