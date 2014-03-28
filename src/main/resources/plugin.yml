@@ -89,7 +89,9 @@ commands:
         permision: escapeplug.endreset
         description: controls endreset
         usage: |
+            /<command> reload - Reloads the configuration for EndReset
             /<command> reset - Resets The End
+            /<command> setcount NUMBER - Sets the count of EnderDragons
             /<command> spawn - Spawns an EnderDragon in The End
     tour:
         description: 
@@ -202,8 +204,11 @@ permissions:
     default: op
   escapeplug.endreset:
     description: Use endreset command
+    default: op
     children:
+      escapeplug.endreset.reload: true
       escapeplug.endreset.reset: true
+      escapeplug.endreset.setcount: true
       escapeplug.endreset.spawn: true
   escapeplug.tourbus.port:
     description: allow use of port command for tourbus

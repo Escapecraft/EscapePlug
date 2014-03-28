@@ -3,7 +3,6 @@ package de.hydrox.endreset;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import net.escapecraft.component.AbstractComponent;
@@ -31,13 +30,21 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 
-@ComponentDescriptor(name = "End Reset", slug = "endreset", version = "1.1")
+@ComponentDescriptor(name = "End Reset", slug = "endreset", version = "1.2")
 @BukkitCommand(command = "endreset")
 public class EndResetComponent extends AbstractComponent implements CommandExecutor, Listener {
+
+    private static final String CFG_DRAGON_COUNT = "plugin.escapeplug.endreset.dragon-count";
     
     private List<Tower> towers;
 
+    private EscapePlug plugin;
     private String endWorldName = null;
+    private int dragonCount = 0;
+    private int respawnTimer = 0;    // minutes
+    private long lastDragonDeath;        // millis
+    private int convertMinToMillis = 60 * 1000;
+    private boolean resetTowersOnDeath = true;
 
     private YamlConfiguration config = new YamlConfiguration();
     private File file;
@@ -45,6 +52,26 @@ public class EndResetComponent extends AbstractComponent implements CommandExecu
     @SuppressWarnings("unchecked")
     @Override
     public boolean enable(EscapePlug plugin) {
+        this.plugin = plugin;
+
+        loadConfig();
+        // we treat startup as if it's time to respawn dragons
+        lastDragonDeath = System.currentTimeMillis() - (respawnTimer * convertMinToMillis);
+        Bukkit.getPluginManager().registerEvents(this, plugin);
+        plugin.getComponentManager().registerCommands(this);
+
+        return true;
+    }
+
+    @Override
+    public void disable() {
+    }
+
+    /**
+     * Load the configuration for this component.
+     * This loads both values from the config.yml and endReset.yml.
+     */
+    private void loadConfig() {
         try {
             file = new File(plugin.getDataFolder(),"endReset.yml");
             file.createNewFile();
@@ -57,25 +84,35 @@ public class EndResetComponent extends AbstractComponent implements CommandExecu
             }
             log.info("loaded " + towers.size() + " Towers");
 
-            endWorldName = plugin.getConfig().getString("plugin.endreset.world", "survival_the_end");
+            endWorldName = plugin.getConfig().getString("plugin.endreset.world", "world_the_end");
+            resetTowersOnDeath = plugin.getConfig().getBoolean("plugin.endreset.reset-towers-on-death", true);
+            dragonCount = plugin.getConfig().getInt(CFG_DRAGON_COUNT, 1);
+            log.info("dragon count is " + dragonCount);
+            respawnTimer = plugin.getConfig().getInt("plugin.endreset.respawn-timer", 0);
+            log.info("respawn timer is " + respawnTimer + " minutes.");
         } catch (IOException e) {
             e.printStackTrace();
         } catch (InvalidConfigurationException e) {
             e.printStackTrace();
         }
-
-        Bukkit.getPluginManager().registerEvents(this, plugin);
-        plugin.getComponentManager().registerCommands(this);
-
-        return true;
-    }
-
-    @Override
-    public void disable() {
     }
 
     public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
-        if (args.length == 1) {
+        if (args.length >= 1) {
+
+            // reload config
+            if (args[0].equalsIgnoreCase("reload")) {
+                if (!sender.hasPermission("escapeplug.endreset.reload")) {
+                    sender.sendMessage(ChatColor.RED
+                        + "You don't have permission to reload the configuration for EndReset.");
+                    return true;
+                }
+                loadConfig();
+                sender.sendMessage(ChatColor.GREEN
+                        + "The EndReset configuration has been reloaded.");
+                return true;
+            }
+
             // reset
             if (args[0].equalsIgnoreCase("reset")) {
                 if (!sender.hasPermission("escapeplug.endreset.reset")) {
@@ -83,7 +120,7 @@ public class EndResetComponent extends AbstractComponent implements CommandExecu
                         + "You don't have permission to reset The End.");
                     return true;
                 }
-                resetTowers(Bukkit.getWorld(endWorldName));
+                resetTowers();
                 sender.sendMessage(ChatColor.GREEN
                         + "The End has been reset");
                 return true;
@@ -96,12 +133,47 @@ public class EndResetComponent extends AbstractComponent implements CommandExecu
                         + "You don't have permission to spawn an EnderDragon.");
                     return true;
                 }
-                spawnDragon(Bukkit.getWorld(endWorldName));
+                int count = 1;
+                if (args[1] != null) {
+                    try {
+                        count = Integer.parseInt(args[1]);
+                    } catch (NumberFormatException e) {
+                        // leave count at 1
+                    }
+                }
+                spawnDragons(count);
                 sender.sendMessage(ChatColor.GREEN
-                        + "EnderDragon has been spawned");
+                        + String.valueOf(count) + " EnderDragon(s) has/have been spawned");
                 return true;
             }
 
+            // set dragon number
+            if (args[0].equalsIgnoreCase("setnum")) {
+                if (!sender.hasPermission("escapeplug.endreset.setcount")) {
+                    sender.sendMessage(ChatColor.RED
+                        + "You don't have permission to change the number of EnderDragons.");
+                    return true;
+                }
+                if (args[1] == null) {
+                    sender.sendMessage(ChatColor.RED
+                        + "Please specify the number of dragons.");
+                    return true;
+                }
+                int count = 0;
+                try {
+                    count = Integer.parseInt(args[1]);
+                } catch (NumberFormatException e) {
+                    sender.sendMessage(ChatColor.RED
+                        + "Please specify an integer instead of " + args[1]);
+                    return true;
+                }
+                dragonCount = count;
+                sender.sendMessage(ChatColor.GREEN
+                        + "Dragon count has been changed to " + count);
+                plugin.getConfig().set(CFG_DRAGON_COUNT, count);
+                plugin.saveConfig();
+                return true;
+            }
         }
 
         return false;
@@ -114,59 +186,86 @@ public class EndResetComponent extends AbstractComponent implements CommandExecu
     @EventHandler(priority = EventPriority.MONITOR)
     public void onEntityDeathEvent(EntityDeathEvent event) {
         if (event.getEntity().getWorld().getName().equals(endWorldName) && event.getEntityType() == EntityType.ENDER_DRAGON) {
-            World world = Bukkit.getWorld(endWorldName);
             if (event.getEntity().getKiller() != null) {
                 Bukkit.broadcastMessage(ChatColor.GOLD + event.getEntity().getKiller().getName() + " killed an Enderdragon");
             }
+
+            lastDragonDeath = System.currentTimeMillis();
         
-            resetTowers(world);
-            spawnDragon(world);
+            // for multiple dragons and a timer,
+            // this allows us to reset the towers for each dragon death
+            // OR to wait till all dragons die
+            if (resetTowersOnDeath) {
+                // yes, this does mean that the last dragon to die will
+                // cause resetting the towers twice
+                resetTowers();
+            }
+            respawnDragons();
         }
     }
 
     /**
      * When the player changes world, this checks to see if they changed to
-     * The End.  If so, it handles EnderDragon setup.
+     * The End and respawns the dragons.
      */
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerChangedWorldEvent(PlayerChangedWorldEvent event) {
         if (event.getPlayer().getWorld().getName().equals(endWorldName)) {
-            setupEnderDragon();
+            respawnDragons();
         }
     }
 
     /**
-     * When the player joins, this checks to see if they were in The End.
-     * If so, it handles EnderDragon setup.
+     * When the player joins, this checks to see if they were in The End
+     * and respawns the dragons.
      */
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerJoinEvent(PlayerJoinEvent event) {
         if (event.getPlayer().getWorld().getName().equals(endWorldName)) {
-            setupEnderDragon();
+            respawnDragons();
         }
     }
 
     /**
-     * Checks for EnderDragon existance and spawns one if needed.  Also
-     * resets the towers if a dragon is spawned.
+     * Spawns number of specified EnderDragons in The End, after
+     * resetting the towers.
      */
-    private void setupEnderDragon() {
-            World world = Bukkit.getWorld(endWorldName);
-            Collection<EnderDragon> dragons = world.getEntitiesByClass(EnderDragon.class);
-            if (dragons.isEmpty()) {
-                log.info("No EnderDragon found, spawning one and resetting towers");
-                resetTowers(world);
-                spawnDragon(world);
-            }
+    private void spawnDragons(int amount) {
+        World world = Bukkit.getWorld(endWorldName);
+
+        log.info("Resetting towers and spawning " + amount + " EnderDragons");
+        resetTowers();
+        for (int i = 0; i < amount; i++) {
+            world.spawnEntity(new Location(world, 0, 80, 0), EntityType.ENDER_DRAGON);
+        }
     }
 
-    private void spawnDragon(World world) {
-        world.spawnEntity(new Location(world, 0, 80, 0), EntityType.ENDER_DRAGON);
+    /**
+     * Spawns EnderDragons in The End, according to various conditions.
+     * If a dragon is spawned, the towers are reset.
+     */
+    private void respawnDragons() {
+
+        // check to see if enough time has passed
+        if (System.currentTimeMillis() < ((respawnTimer * convertMinToMillis) + lastDragonDeath)) {
+            return;
+        }
+
+        // check for existing dragons, respawn up to dragonCount
+        World world = Bukkit.getWorld(endWorldName);
+        int numDragons = world.getEntitiesByClass(EnderDragon.class).size();
+        int count = dragonCount - numDragons;
+        if (count > 0) { 
+            spawnDragons(count);
+        }
     }
-    
-    private void resetTowers(World world) {
+
+    /**
+     * Resets the towers in The End.
+     */
+    private void resetTowers() {
         for (Tower tower : towers) {
-            tower.restore(world);
+            tower.restore(Bukkit.getWorld(endWorldName));
         }
     }
 }

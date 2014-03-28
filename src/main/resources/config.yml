@@ -107,6 +107,9 @@ plugin:
     endreset:
         enabled: false
         world: tna_the_end
+        respawn-timer: 60
+        dragon-count: 1
+        reset-towers-on-death: true
     tourbus:
         enabled: false
     warp:
